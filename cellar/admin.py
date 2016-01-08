@@ -5,3 +5,5 @@ from models import *
 admin.site.register(Beer)
 admin.site.register(Brewery)
 admin.site.register(Country)
+admin.site.register(Style)
+admin.site.register(Hops)
