@@ -11,13 +11,13 @@ class Country(models.Model):
     )
 
     def __unicode__(self):
-        return u'%s' % self.name
+        return u'%s (%s)' % (self.name, self.code)
 
 
 class Brewery(models.Model):
     name = models.CharField(max_length=512)
     country = models.ForeignKey(Country, blank=True, null=True)
-
+    url = models.URLField(help_text=u'Brewery site url')
     def __unicode__(self):
         return u'%s' % self.name
 
@@ -27,7 +27,7 @@ class Hops(models.Model):
     country = models.ForeignKey(Country, blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s' % self.name
+        return u'%s %s' % (self.name, self.country) 
 
     class Meta:
         verbose_name_plural = u"hops"
@@ -54,4 +54,4 @@ class Beer(models.Model):
     sysbol_url = models.URLField(help_text=u'systembolaget url')
 
     def __unicode__(self):
-        return u'%s %s' % (self.brewery.name, self.name)
+        return u'%s %s - %s' % (self.brewery.name, self.name, self.style)
