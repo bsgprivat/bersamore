@@ -1,1 +1,3 @@
 *.sock
+test.py
+*.pyc
