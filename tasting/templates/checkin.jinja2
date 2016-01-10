@@ -1,0 +1,138 @@
+<div id="checkin_header">
+    <div id="tasting_info">
+        Checking in @ {{ checkin.tasting.name }}
+    </div>
+    <div>
+        {% for b in tasting.beers.all %}
+            <span class="header_beer"
+                    {% if b == checkin.beer %}id="active"{% endif %}>({{ forloop.counter }}) {{ b.style }}</span>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="checkin_body">
+    {{ checkin.beer.style }}
+
+    <table>
+        <tr id="criteria">
+            <th colspan="2">Criteria</th>
+        </tr>
+        <tr>
+            <th>
+                Looks
+            </th>
+            <td>
+                <select name="looks">
+                    <option value="0">---</option>
+                    <option value="1">1</option>
+                    <option value="1">2</option>
+                    <option value="1">3</option>
+                    <option value="1">4</option>
+                    <option value="1">5</option>
+                    <option value="1">6</option>
+                    <option value="1">7</option>
+                    <option value="1">8</option>
+                    <option value="1">9</option>
+                    <option value="1">10</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                Smell
+            </th>
+            <td>
+                <select name="smell">
+                    <option value="0">---</option>
+                    <option value="1">1</option>
+                    <option value="1">2</option>
+                    <option value="1">3</option>
+                    <option value="1">4</option>
+                    <option value="1">5</option>
+                    <option value="1">6</option>
+                    <option value="1">7</option>
+                    <option value="1">8</option>
+                    <option value="1">9</option>
+                    <option value="1">10</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                Taste
+            </th>
+            <td>
+                <select name="taste">
+                    <option value="0">---</option>
+                    <option value="1">1</option>
+                    <option value="1">2</option>
+                    <option value="1">3</option>
+                    <option value="1">4</option>
+                    <option value="1">5</option>
+                    <option value="1">6</option>
+                    <option value="1">7</option>
+                    <option value="1">8</option>
+                    <option value="1">9</option>
+                    <option value="1">10</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                Overall
+            </th>
+            <td>
+                <select name="overall">
+                    <option value="0">---</option>
+                    <option value="1">1</option>
+                    <option value="1">2</option>
+                    <option value="1">3</option>
+                    <option value="1">4</option>
+                    <option value="1">5</option>
+                    <option value="1">6</option>
+                    <option value="1">7</option>
+                    <option value="1">8</option>
+                    <option value="1">9</option>
+                    <option value="1">10</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                Notes
+            </th>
+            <td>
+                <textarea name="notes"></textarea>
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+<style>
+    .header_beer{
+        background-color: lightgray;
+        margin: 0.5em;
+    }
+    #active{
+        background-color: gold;
+    }
+    #checkin_header{
+        border-bottom: solid 1px darkgrey;
+        margin-bottom: 1em;
+    }
+
+    #criteria{
+        padding: 0.3em;
+    }
+    select{
+        width: 70%;
+    }
+    textarea{
+        width: 70%;
+    }
+</style>

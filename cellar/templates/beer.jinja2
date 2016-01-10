@@ -1,0 +1,107 @@
+<div id="wrapper">
+    <div class="title">
+        <h1>
+            {{ beer.name }}
+        </h1>
+        <h2>{{ beer.brewery }} {{ beer.brewery.country.name }}
+            <img src="http://bsg.ddns.net/static/images/uploads/flags/se.png">
+        </h2>
+
+    </div>
+    <div class="beer_info_wrap">
+        <div class="beer_info_img">
+            <img src="http://bsg.ddns.net/static/images/uploads/beers/maz.jpg">
+        </div>
+        <div class="beer_info_text">
+            <table>
+                <tr id="style">
+                    <th>
+                        Style
+                    </th>
+                    <td>
+                         {{ beer.style }}
+                    </td>
+                </tr>
+
+                <tr id="abv">
+                    <th>
+                        ABV
+                    </th>
+                    <td>
+                         {{ beer.abv }}
+                    </td>
+                </tr>
+
+                <tr id="ibu">
+                    <th>
+                        IBU
+                    </th>
+                    <td>
+                         {{ beer.ibu }}
+                    </td>
+                </tr>
+
+                <tr id="hops">
+                    <th>
+                        Hops
+                    </th>
+                    <td>
+                        {%  for hop in beer.hops.all %}
+                            {{ hop }}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+
+                <tr id="desc">
+                    <th>
+                        Description
+                    </th>
+                    <td>
+                        {{ beer.description }}
+                    </td>
+                </tr>
+
+                <tr id="links">
+                    <th>
+                    </th>
+                    <td>
+                        {%  if beer.sysbol_url %}
+                            <a href="{{ beer.sysbol_url }}">
+                            <img src="http://bsg.ddns.net/static/images/systembolaget.png" id="sysbol">
+                        </a>
+                    {% endif %}
+
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+
+<style>
+
+    #wrapper{
+        border: 3px solid gray;
+        padding: 5em;
+        margin: auto;
+    }
+    .beer_info_img{
+        float: left;
+        border: 1px solid brown;
+    }
+    .beer_info_img img{
+                height: 50%;
+    }
+
+    .beer_info_text{
+        border: 1px solid pink;
+    }
+
+    #sysbol{
+        width: 30px;
+    }
+</style>

@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
+from cellar.models import Beer
 
-# Create your views here.
+
+def beer_view(request):
+    beer = Beer.objects.first()
+
+    context = {
+        'beer': beer
+    }
+
+    return render_to_response('beer.jinja2', context)
