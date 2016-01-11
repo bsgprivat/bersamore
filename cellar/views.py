@@ -9,4 +9,4 @@ def beer_view(request):
         'beer': beer
     }
 
-    return render_to_response('beer.jinja2', context)
+    return render_to_response('beer.html', context)

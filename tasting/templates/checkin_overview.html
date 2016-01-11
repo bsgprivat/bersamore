@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<div id="topbar">
+    {% for beer in beers %}
+        <span><a href="/tasting/overview/?active_beer={{ beer.pk }}">{{ forloop.counter }} {{ beer.style }}</a></span>
+    {% endfor %}
+</div>
+
+<div id="content_wrapper">
+    <div id="beer_div">
+        <div id="beer_img_td" rowspan="2">
+            <img src="http://bsg.ddns.net/static/images/uploads/beers/maz.jpg" id="beer_img">
+        </div>
+        <div id="beer_info">
+            <table>
+                <tr id="name">
+                    <th>
+                        Name
+                    </th>
+                    <td>
+                         {{ beer.name }}
+                    </td>
+                </tr>
+
+                <tr id="brewery">
+                    <th>
+                        Brewery
+                    </th>
+                    <td>
+                         {{ beer.brewery }}
+                    </td>
+                </tr>
+
+                <tr id="origin">
+                    <th>
+                        Origin
+                    </th>
+                    <td>
+                         {{ beer.brewery.country.name }}
+                    </td>
+                </tr>
+
+                <tr id="style">
+                    <th>
+                        Style
+                    </th>
+                    <td>
+                         {{ beer.style }}
+                    </td>
+                </tr>
+
+                <tr id="abv">
+                    <th>
+                        ABV
+                    </th>
+                    <td>
+                         {{ beer.abv }}
+                    </td>
+                </tr>
+
+                <tr id="ibu">
+                    <th>
+                        IBU
+                    </th>
+                    <td>
+                         {{ beer.ibu }}
+                    </td>
+                </tr>
+
+                <tr id="hops">
+                    <th>
+                        Hops
+                    </th>
+                    <td>
+                        {%  for hop in beer.hops.all %}
+                            {{ hop.name }} ({{ hop.country.code }})<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+
+                <tr id="desc">
+                    <th>
+                        Description
+                    </th>
+                    <td>
+                        {{ beer.description }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="stats_div">
+        {%  if show_stats %}
+            <table id="statstable">
+                <tr>
+                    <th colspan="2">
+                        Statistics
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        looks<br>
+                        {{ avg_looks }}
+                    </td>
+                    <td>
+                        smell<br>
+                        {{ avg_smell }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        taste<br>
+                        {{ avg_taste }}
+                    </td>
+                    <td>
+                        overall<br>
+                        {{ avg_overall }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        random comments<br>
+                        {{ random_comments }}
+                    </td>
+                </tr>
+            </table>
+        {% else %}
+            <a href="/tasting/overview/?active_beer={{ beer.pk }}&show_stats=1">SHOW STATS</a>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+
+
+<style>
+    #beer_img{
+        max-height: 90vh;
+        max-width: 50vh;
+        float: left;
+    }
+    #content_wrapper{
+        width: 100%;
+        height: 95vh;
+    }
+    #beer_div{
+        float:left;
+        width: 50%;
+    }
+    #stats_div{
+        width: 50%;
+        margin-left: 50%;
+    }
+    th{
+        vertical-align: top;
+        text-align: left;
+    }
+    #topbar span{
+        margin-left: 2em;
+    }
+    #statstable{
+        width:90%
+    }
+    #statstable td{
+        padding: 2em;
+    }
+</style>
+
+</html>
