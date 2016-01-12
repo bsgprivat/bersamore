@@ -1,5 +1,7 @@
-from django.shortcuts import render, render_to_response
-from cellar.models import Beer
+from django.shortcuts import render, render_to_response, redirect
+from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
+from cellar.models import Beer, UploadedUntappdCSV
 
 
 def beer_view(request):

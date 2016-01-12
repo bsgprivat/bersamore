@@ -55,3 +55,12 @@ class Beer(models.Model):
 
     def __unicode__(self):
         return u'%s %s - %s' % (self.brewery.name, self.name, self.style)
+
+
+class UploadedUntappdCSV(models.Model):
+    name = models.CharField(max_length=128)
+    date = models.DateTimeField(auto_now_add=True)
+    csv_file = models.FileField(upload_to=u'static/files/uploads/csv')
+
+    def __unicode__(self):
+        return u'%s %s - %s' % (self.csv_file, self.name, self.date)
