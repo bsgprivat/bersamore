@@ -1,13 +1,48 @@
 from __future__ import division
 import random
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
+from cellar.models import Beer
 from tasting.models import Checkin, TastingSession
 
 
 def checkin_view(request):
-    checkin = Checkin.objects.first()
-    tasting = checkin.tasting
+    checkin = None
+    tasting = None
+    beer = None
+    error = u''
+    usr = request.user
+    if 'tasting' in request.GET:
+        try:
+            t_id = int(request.GET['tasting'])
+            tasting = TastingSession.objects.get(pk=t_id)
+            beers = tasting.beers.all()
+            if 'beer' in request.GET:
+                print tasting
+                print beers
+                beer_id = int(request.GET['beer'])
+                beer = Beer.objects.get(pk=beer_id)
+        except:
+            error = u'Noo tastingsession?'
+
+        print '----------------------'
+        print Checkin.objects.all()
+        print tasting
+        print tasting.__class__
+        print beer
+        print beer.__class__
+        print '----------------------'
+        checkin = Checkin.objects.get(tasting=tasting, beer=beer, taster=usr.taster)
+        print checkin
+
+
+    else:
+        return redirect('/profile')
+
+
     context = {
+        'error': error,
+        'beer': beer,
+        'usr': usr,
         'checkin': checkin,
         'tasting': tasting
     }
