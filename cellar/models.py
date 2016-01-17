@@ -17,7 +17,8 @@ class Country(models.Model):
 class Brewery(models.Model):
     name = models.CharField(max_length=512)
     country = models.ForeignKey(Country, blank=True, null=True)
-    url = models.URLField(help_text=u'Brewery site url')
+    url = models.URLField(help_text=u'Brewery site url', blank=True)
+
     def __unicode__(self):
         return u'%s' % self.name
 
@@ -51,7 +52,7 @@ class Beer(models.Model):
     abv = models.FloatField(default=0.0)
     ibu = models.IntegerField(default=0)
     description = models.TextField(blank=True, null=True)
-    sysbol_url = models.URLField(help_text=u'systembolaget url')
+    sysbol_url = models.URLField(help_text=u'systembolaget url', blank=True)
 
     def __unicode__(self):
         return u'%s %s - %s' % (self.brewery.name, self.name, self.style)
