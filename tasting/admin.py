@@ -1,8 +1,10 @@
 from django.contrib import admin
 from models import *
 
+
 class TasterAdmin(admin.ModelAdmin):
-    filter_horizontal = ('friends', 'fav_beers', 'fav_breweries', 'fav_styles')
+    filter_horizontal = (u'friends', u'fav_beers', u'fav_breweries', u'fav_styles')
+    search_fields = (u'name', )
 
 
 class TastingInline(admin.TabularInline):
@@ -11,8 +13,17 @@ class TastingInline(admin.TabularInline):
 
 class TastingAdmin(admin.ModelAdmin):
     inlines = (TastingInline,)
-    filter_horizontal = ('tasters',)
+    filter_horizontal = (u'tasters',)
+    search_fields = (u'name', u'description')
+
+
+class CheckinAdmin(admin.ModelAdmin):
+    search_fields = (u'beer',)
+    list_filter = (u'tasting__date', u'beer__brewery')
+    list_display = (u'taster', u'beer')
 
 admin.site.register(TastingSession, TastingAdmin)
 admin.site.register(Taster, TasterAdmin)
-admin.site.register(Checkin)
+
+#TODO: no need?
+admin.site.register(Checkin, CheckinAdmin)

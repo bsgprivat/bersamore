@@ -131,7 +131,9 @@
                 </tr>
             </table>
         {% else %}
-            <a href="/tasting/overview/{{ tasting.pk }}/?active_beer={{ beer.pk }}&show_stats=1">SHOW STATS</a>
+            <a href="/tasting/overview/{{ tasting.pk }}/?active_beer={{ beer.pk }}&show_stats=1">
+                <img src="/static/images/stats.png">
+            </a>
         {% endif %}
     </div>
 </div>
