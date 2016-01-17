@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ usr.username }}</title>
+</head>
+<body>
+<h3>{{ now }}</h3>
+
+
+{%  if tasting %}
+    {% if not usr.taster in tasting.tasters.all %}
+        Sorry, you're not invited to ths tasting
+    {% else %}
+        <b>{{ tasting.name }}</b> - {{ tasting.description }}
+        Links: [
+        <a href="/tasting/{{ tasting.pk }}/stats/">  Your stats</a> |
+        {%  if not tasting.finished %}
+            <a href="/tasting/checkin/{{ tasting.pk }}/">  Start checkin' in! </a>
+        {% endif %}
+        ]
+    {% endif %}
+
+{%  else %}
+    <h2>Ölprovningar</h2>
+
+    {%  for t in tastings %}
+        {%  if usr.taster in t.tasters.all %}
+            <a href="/tasting/{{ t.pk }}">{{ t.name }}</a> {{ t.description }}
+        {% endif %}
+
+        {%  if t.finished %}
+            <a href="/tasting/{{ t.pk }}">{{ t.name }}</a> {{ t.description }} [ avslutad ]
+        {% endif %}
+    {% endfor %}
+{%  endif %}
+</body>
+</html>

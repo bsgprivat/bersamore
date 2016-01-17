@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ usr.username }}</title>
+</head>
+<body>
+Välkommen {{ usr.first_name }}
+<hr>
+
+<h2>Dina ölprovningar</h2>
+
+{%  for tasting in tastings %}
+    <a href="/tasting/{{ tasting.pk }}">{{ tasting.name }}</a>
+{% endfor %}
+
+</body>
+</html>

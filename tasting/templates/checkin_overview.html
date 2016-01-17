@@ -8,7 +8,7 @@
 
 <div id="topbar">
     {% for beer in beers %}
-        <span><a href="/tasting/overview/?active_beer={{ beer.pk }}">{{ forloop.counter }} {{ beer.style }}</a></span>
+        <span><a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ beer.pk }}">{{ forloop.counter }} {{ beer.style }}</a></span>
     {% endfor %}
 </div>
 
@@ -84,12 +84,12 @@
                     </td>
                 </tr>
 
-                <tr id="desc">
+                <tr id="notes">
                     <th>
-                        Description
+                        Notes
                     </th>
                     <td>
-                        {{ beer.description }}
+                        {{ beer.notes }}
                     </td>
                 </tr>
             </table>
@@ -109,8 +109,8 @@
                         {{ avg_looks }}
                     </td>
                     <td>
-                        smell<br>
-                        {{ avg_smell }}
+                        nose<br>
+                        {{ avg_nose }}
                     </td>
                 </tr>
                 <tr>
@@ -131,7 +131,7 @@
                 </tr>
             </table>
         {% else %}
-            <a href="/tasting/overview/?active_beer={{ beer.pk }}&show_stats=1">SHOW STATS</a>
+            <a href="/tasting/overview/{{ tasting.pk }}/?active_beer={{ beer.pk }}&show_stats=1">SHOW STATS</a>
         {% endif %}
     </div>
 </div>

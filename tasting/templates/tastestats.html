@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ usr.username }}</title>
+</head>
+<body>
+<h2>Your stats for {{ tasting.name }}</h2>
+
+
+<table>
+    <tr>
+        <th>
+            Beer
+        </th>
+        <th>
+            Style
+        </th>
+        <th>
+            Brewery
+        </th>
+        <th>
+            Country
+        </th>
+        <th>
+            Abv
+        </th>
+        <th>
+            IBU
+        </th>
+        <th>
+            Looks
+        </th>
+        <th>
+            Nose
+        </th>
+        <th>
+            Taste
+        </th>
+        <th>
+            Overall
+        </th>
+        <th>
+            Notes
+        </th>
+
+    </tr>
+
+        {%  for checkin in checkins %}
+            <tr>
+            <td>{{ checkin.beer.name }}</td>
+            <td>{{ checkin.beer.style }}</td>
+            <td>{{ checkin.beer.brewery }}</td>
+            <td>{{ checkin.beer.brewery.country.name }}</td>
+            <td>{{ checkin.beer.abv }}</td>
+            <td>{{ checkin.beer.ibu }}</td>
+            <td>{{ checkin.looks }}</td>
+            <td>{{ checkin.nose }}</td>
+            <td>{{ checkin.taste }}</td>
+            <td>{{ checkin.overall }}</td>
+            <td>{{ checkin.notes }}</td>
+            </tr>
+        {%  endfor %}
+</table>
+
+</body>
+</html>

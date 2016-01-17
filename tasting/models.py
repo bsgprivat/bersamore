@@ -1,11 +1,15 @@
 from django.contrib.auth.models import User
 from django.db import models
-from cellar.models import Beer
+from cellar.models import Beer, Brewery, Style
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Taster(models.Model):
     user = models.OneToOneField(User)
+    fav_beers = models.ManyToManyField(Beer, blank=True)
+    fav_breweries = models.ManyToManyField(Brewery, blank=True)
+    fav_styles = models.ManyToManyField(Style, blank=True)
+    friends = models.ManyToManyField('tasting.Taster', related_name=u'tasterfriends')
 
     def __unicode__(self):
         if self.user.last_name:
@@ -19,10 +23,19 @@ class TastingSession(models.Model):
     description = models.TextField()
     date = models.DateTimeField()
     tasters = models.ManyToManyField(Taster)
-    beers = models.ManyToManyField(Beer, blank=True)
+    beers = models.ManyToManyField(Beer, blank=True, through='tasting.TastingBeers')
+    finished = models.BooleanField(default=False)
 
     def __unicode__(self):
         return u'%s %s' % (self.name, self.date.strftime('%y-%m-%d %H:%M'))
+
+
+class TastingBeers(models.Model):
+    beer = models.ForeignKey(Beer)
+    tasting = models.ForeignKey(TastingSession)
+
+    class Meta:
+        unique_together = ('beer', 'tasting')
 
 
 class Checkin(models.Model):
@@ -36,7 +49,7 @@ class Checkin(models.Model):
             MaxValueValidator(10)
         ]
     )
-    smell = models.IntegerField(
+    nose = models.IntegerField(
         blank=True, null=True, validators=[
             MinValueValidator(1),
             MaxValueValidator(10)
@@ -55,7 +68,7 @@ class Checkin(models.Model):
         ]
     )
 
-    description = models.TextField(blank=True, null=True, max_length=300)
+    notes = models.TextField(blank=True, null=True, max_length=300)
 
     def __unicode__(self):
         return u'%s %s %s (%s)' % (self.taster, self.beer, self.tasting, self.overall)

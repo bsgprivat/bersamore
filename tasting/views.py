@@ -1,48 +1,87 @@
 from __future__ import division
 import random
+import datetime
+from django.http import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
+from django.views.decorators.csrf import csrf_exempt
 from cellar.models import Beer
 from tasting.models import Checkin, TastingSession
 
 
-def checkin_view(request):
+
+@csrf_exempt
+def checkin_view(request, tasting_id=None, beer_i=None):
     checkin = None
     tasting = None
     beer = None
+    prev = None
+    next = None
     error = u''
     usr = request.user
-    if 'tasting' in request.GET:
-        try:
-            t_id = int(request.GET['tasting'])
-            tasting = TastingSession.objects.get(pk=t_id)
-            beers = tasting.beers.all()
-            if 'beer' in request.GET:
-                print tasting
-                print beers
-                beer_id = int(request.GET['beer'])
-                beer = Beer.objects.get(pk=beer_id)
-        except:
-            error = u'Noo tastingsession?'
 
-        print '----------------------'
-        print Checkin.objects.all()
-        print tasting
-        print tasting.__class__
-        print beer
-        print beer.__class__
-        print '----------------------'
+    try:
+        tasting = TastingSession.objects.get(pk=tasting_id)
+
+        if usr.taster not in tasting.tasters.all():
+            return HttpResponse("You are not participating in this tasting, are you?")
+
+    except Exception as e:
+        return HttpResponse(e)
+
+    beers = tasting.beers.all()
+    beer_count = tasting.beers.count()
+
+    if beer_i:
+        beer_i = int(beer_i)
+        beer = beers[beer_i-1]
+        if beer_i < beer_count:
+            next = beer_i + 1
+        if beer_i > 1:
+            prev = beer_i-1
+
+    try:
         checkin = Checkin.objects.get(tasting=tasting, beer=beer, taster=usr.taster)
-        print checkin
+    except:
+        pass
 
+    if request.POST:
+        print '-------------------------------------------------------------------------------------------'
+        print request.POST
+        print '-------------------------------------------------------------------------------------------'
 
-    else:
-        return redirect('/profile')
+        t_id = int(request.POST['tasting'])
+        b_id = int(request.POST['beer'])
+
+        tasting = TastingSession.objects.get(pk=t_id)
+        beer = Beer.objects.get(pk=b_id)
+        notes = request.POST['notes']
+        looks = int(request.POST['looks'])
+        nose = int(request.POST['nose'])
+        taste = int(request.POST['taste'])
+        overall = int(request.POST['overall'])
+        
+        checkin, created = Checkin.objects.get_or_create(
+            tasting=tasting, beer=beer, taster=usr.taster,
+        )
+
+        checkin.looks = looks
+        checkin.nose = nose
+        checkin.taste = taste
+        checkin.overall = overall
+        checkin.notes = notes
+        checkin.save()
+
+        return redirect(u'.', t_id, b_id)
 
 
     context = {
         'error': error,
         'beer': beer,
+        'beer_i': beer_i,
+        'beer_count': beer_count,
         'usr': usr,
+        'prev': prev,
+        'next': next,
         'checkin': checkin,
         'tasting': tasting
     }
@@ -50,16 +89,20 @@ def checkin_view(request):
     return render_to_response('checkin.html', context)
 
 
-def checkin_overview(request):
+def checkin_overview(request, tasting_id=None):
     tasting = TastingSession.objects.first()
     checkins = tasting.checkin_set.all()
     beers = tasting.beers.all()
     chosen_beer = None
     show_stats = False
     avg_looks = 0
-    avg_smell = 0
+    avg_nose = 0
     avg_taste = 0
     avg_overall = 0
+    count_looks = 0
+    count_nose = 0
+    count_taste = 0
+    count_overall = 0
     random_comments = None
 
     print request.GET
@@ -73,24 +116,35 @@ def checkin_overview(request):
             filtered_checkins = checkins.filter(beer__pk=active_beer)
             list_of_comments = []
             aggregated_looks = 0
-            aggregated_smell = 0
+            aggregated_nose = 0
             aggregated_taste = 0
             aggregated_overall = 0
 
             for checkin in filtered_checkins:
-                print checkin.taster, checkin.looks, checkin.smell, checkin.taste, checkin.overall, checkin.description
-                aggregated_looks += checkin.looks
-                aggregated_smell += checkin.smell
-                aggregated_taste += checkin.taste
-                aggregated_overall += checkin.overall
-                if checkin.description:
+                print checkin.taster, checkin.looks, checkin.nose, checkin.taste, checkin.overall, checkin.notes
+                if checkin.looks:
+                    aggregated_looks += checkin.looks
+                    count_looks += 1
+                if checkin.nose:
+                    aggregated_nose += checkin.nose
+                    count_nose +=1
+
+                if checkin.taste:
+                    aggregated_taste += checkin.taste
+                    count_taste += 1
+
+                if checkin.overall:
+                    aggregated_overall += checkin.overall
+                    count_overall += 1
+
+                if checkin.notes:
                     list_of_comments.append(
-                        checkin.description
+                        checkin.notes
                     )
-            avg_looks = aggregated_looks/len(filtered_checkins) if aggregated_looks else u'No votes'
-            avg_smell = aggregated_smell/len(filtered_checkins) if aggregated_smell else u'No votes'
-            avg_taste = aggregated_taste/len(filtered_checkins) if aggregated_taste else u'No votes'
-            avg_overall = aggregated_overall/len(filtered_checkins) if aggregated_overall else u'No votes'
+            avg_looks = aggregated_looks/count_looks if aggregated_looks else u'No votes'
+            avg_nose = aggregated_nose/count_nose if aggregated_nose else u'No votes'
+            avg_taste = aggregated_taste/count_taste if aggregated_taste else u'No votes'
+            avg_overall = aggregated_overall/count_overall if aggregated_overall else u'No votes'
 
             if list_of_comments:
                 get_i = random.randint(0, len(filtered_checkins)-1)
@@ -103,7 +157,7 @@ def checkin_overview(request):
         'beer': chosen_beer,
         'show_stats': show_stats,
         'avg_looks': avg_looks,
-        'avg_smell': avg_smell,
+        'avg_nose': avg_nose,
         'avg_taste': avg_taste,
         'avg_overall': avg_overall,
         'random_comments': random_comments
@@ -124,3 +178,51 @@ def stats_view(request):
     }
 
     return render_to_response('stats_view.html', context)
+
+
+def profile(request):
+    usr = request.user
+    tastings = TastingSession.objects.filter(tasters=usr.taster)
+
+    context={
+        'usr': usr,
+        'tastings':tastings
+    }
+
+    return render_to_response(
+        'profile.html', context
+    )
+
+
+def baseview(request, tasting_id=None):
+    usr = request.user
+    tastings = TastingSession.objects.all()
+    tasting = None
+    now = datetime.datetime.now()
+    if tasting_id:
+        tasting = tastings.get(pk=int(tasting_id))
+
+
+    context = {
+        'usr': usr,
+        'now': now,
+        'tasting': tasting,
+        'tastings': tastings
+    }
+
+    return render_to_response(
+        'tasting_base.html', context
+    )
+
+def tastestats(request, tasting_id=None):
+    tasting = TastingSession.objects.get(pk=int(tasting_id))
+    usr = request.user
+    checkins = tasting.checkin_set.filter(taster=usr.taster)
+
+    context ={
+        'usr': usr,
+        'tasting': tasting,
+        'checkins': checkins
+    }
+
+    return render_to_response('tastestats.html', context)

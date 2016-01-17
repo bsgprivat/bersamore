@@ -20,4 +20,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^cellar/', include('cellar.urls')),
     url(r'^tasting/', include('tasting.urls'))
+
+
 ]

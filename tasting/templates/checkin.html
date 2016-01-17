@@ -1,4 +1,4 @@
-{{ beer }}, {{ tasting }}, {{ checkin }}
+{#{{ beer }}, {{ tasting }}, {{ checkin }}#}
 
 {%  if error %}
     {{ error }}
@@ -13,120 +13,158 @@
                         {% if b == beer %}
                       id="active"
                         {% endif %}>
-                <a href="/tasting/checkin/?tasting={{ tasting.pk }}&beer=">
-                    ({{ forloop.counter }})
-                   </a>
+                <a href="/tasting/checkin/{{ tasting.pk }}/{{ forloop.counter}}">
+                    ( {{ forloop.counter }} )</a>
                 </span>
             {% endfor %}
         </div>
     </div>
 
+    {%  if not beer %}
+        What beer are you tasting?<br>
+        Get started above.
+    {% else %}
+        <div id="checkin_body">
+            {{ beer.style }}
 
-    <div id="checkin_body">
-        {{ beer.style }}
+        <form action="." method="post">
+            <table>
+                <tr id="criteria">
+                    <th colspan="2">Criteria</th>
+                </tr>
+                <tr>
+                    <th>
+                        Looks
+                    </th>
+                    <td>
+                        <select name="looks">
+                            <option value="0">---</option>
+                            <option value="1" {% if checkin.looks == 1 %}selected{% endif %}>1</option>
+                            <option value="2" {% if checkin.looks == 2 %}selected{% endif %}>2</option>
+                            <option value="3" {% if checkin.looks == 3 %}selected{% endif %}>3</option>
+                            <option value="4" {% if checkin.looks == 4 %}selected{% endif %}>4</option>
+                            <option value="5" {% if checkin.looks == 5 %}selected{% endif %}>5</option>
+                            <option value="6" {% if checkin.looks == 6 %}selected{% endif %}>6</option>
+                            <option value="7" {% if checkin.looks == 7 %}selected{% endif %}>7</option>
+                            <option value="8" {% if checkin.looks == 8 %}selected{% endif %}>8</option>
+                            <option value="9" {% if checkin.looks == 9 %}selected{% endif %}>9</option>
+                            <option value="10" {% if checkin.looks == 10 %}selected{% endif %}>10</option>
+                        </select>
+                    </td>
+                </tr>
 
-        <table>
-            <tr id="criteria">
-                <th colspan="2">Criteria</th>
-            </tr>
-            <tr>
-                <th>
-                    Looks
-                </th>
-                <td>
-                    <select name="looks">
-                        <option value="0">---</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7" {% if checkin.looks == 7 %}selected{% endif %}>7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </td>
-            </tr>
+                <tr>
+                    <th>
+                        Nose
+                    </th>
+                    <td>
+                        <select name="nose">
+                            <option value="0">---</option>
+                            <option value="1" {% if checkin.nose == 1 %}selected{% endif %}>1</option>
+                            <option value="2" {% if checkin.nose == 2 %}selected{% endif %}>2</option>
+                            <option value="3" {% if checkin.nose == 3 %}selected{% endif %}>3</option>
+                            <option value="4" {% if checkin.nose == 4 %}selected{% endif %}>4</option>
+                            <option value="5" {% if checkin.nose == 5 %}selected{% endif %}>5</option>
+                            <option value="6" {% if checkin.nose == 6 %}selected{% endif %}>6</option>
+                            <option value="7" {% if checkin.nose == 7 %}selected{% endif %}>7</option>
+                            <option value="8" {% if checkin.nose == 8 %}selected{% endif %}>8</option>
+                            <option value="9" {% if checkin.nose == 9 %}selected{% endif %}>9</option>
+                            <option value="10" {% if checkin.nose == 10 %}selected{% endif %}>10</option>
+                        </select>
+                    </td>
+                </tr>
 
-            <tr>
-                <th>
-                    Smell
-                </th>
-                <td>
-                    <select name="smell">
-                        <option value="0">---</option>
-                        <option value="1">1</option>
-                        <option value="1">2</option>
-                        <option value="1">3</option>
-                        <option value="1">4</option>
-                        <option value="1">5</option>
-                        <option value="1">6</option>
-                        <option value="1">7</option>
-                        <option value="1">8</option>
-                        <option value="1">9</option>
-                        <option value="1">10</option>
-                    </select>
-                </td>
-            </tr>
+                <tr>
+                    <th>
+                        Taste
+                    </th>
+                    <td>
+                        <select name="taste">
+                                <option value="0">---</option>
+                                <option value="1" {% if checkin.taste == 1 %}selected{% endif %}>1</option>
+                                <option value="2" {% if checkin.taste == 2 %}selected{% endif %}>2</option>
+                                <option value="3" {% if checkin.taste == 3 %}selected{% endif %}>3</option>
+                                <option value="4" {% if checkin.taste == 4 %}selected{% endif %}>4</option>
+                                <option value="5" {% if checkin.taste == 5 %}selected{% endif %}>5</option>
+                                <option value="6" {% if checkin.taste == 6 %}selected{% endif %}>6</option>
+                                <option value="7" {% if checkin.taste == 7 %}selected{% endif %}>7</option>
+                                <option value="8" {% if checkin.taste == 8 %}selected{% endif %}>8</option>
+                                <option value="9" {% if checkin.taste == 9 %}selected{% endif %}>9</option>
+                                <option value="10" {% if checkin.taste == 10 %}selected{% endif %}>10</option>
+                        </select>
+                    </td>
+                </tr>
 
-            <tr>
-                <th>
-                    Taste
-                </th>
-                <td>
-                    <select name="taste">
-                        <option value="0">---</option>
-                        <option value="1">1</option>
-                        <option value="1">2</option>
-                        <option value="1">3</option>
-                        <option value="1">4</option>
-                        <option value="1">5</option>
-                        <option value="1">6</option>
-                        <option value="1">7</option>
-                        <option value="1">8</option>
-                        <option value="1">9</option>
-                        <option value="1">10</option>
-                    </select>
-                </td>
-            </tr>
+                <tr>
+                    <th>
+                        Overall
+                    </th>
+                    <td>
+                        <select name="overall">
+                            <option value="0">---</option>
+                            <option value="1" {% if checkin.overall == 1 %}selected{% endif %}>1</option>
+                            <option value="2" {% if checkin.overall == 2 %}selected{% endif %}>2</option>
+                            <option value="3" {% if checkin.overall == 3 %}selected{% endif %}>3</option>
+                            <option value="4" {% if checkin.overall == 4 %}selected{% endif %}>4</option>
+                            <option value="5" {% if checkin.overall == 5 %}selected{% endif %}>5</option>
+                            <option value="6" {% if checkin.overall == 6 %}selected{% endif %}>6</option>
+                            <option value="7" {% if checkin.overall == 7 %}selected{% endif %}>7</option>
+                            <option value="8" {% if checkin.overall == 8 %}selected{% endif %}>8</option>
+                            <option value="9" {% if checkin.overall == 9 %}selected{% endif %}>9</option>
+                            <option value="10" {% if checkin.overall == 10 %}selected{% endif %}>10</option>
+                        </select>
+                    </td>
+                </tr>
 
-            <tr>
-                <th>
-                    Overall
-                </th>
-                <td>
-                    <select name="overall">
-                        <option value="0">---</option>
-                        <option value="1">1</option>
-                        <option value="1">2</option>
-                        <option value="1">3</option>
-                        <option value="1">4</option>
-                        <option value="1">5</option>
-                        <option value="1">6</option>
-                        <option value="1">7</option>
-                        <option value="1">8</option>
-                        <option value="1">9</option>
-                        <option value="1">10</option>
-                    </select>
-                </td>
-            </tr>
+                <tr>
+                    <th>
+                        Notes
+                    </th>
+                    <td>
+                        <textarea name="notes">{{ checkin.notes }}</textarea>
+                    </td>
+                </tr>
 
-            <tr>
-                <th>
-                    Notes
-                </th>
-                <td>
-                    <textarea name="notes"></textarea>
-                </td>
-            </tr>
+                <tr>
+                    <th colspan="2">
+                        <input type="hidden" name="tasting" value="{{ tasting.pk }}">
+                        <input type="hidden" name="beer" value="{{ beer.pk }}">
 
-        </table>
-    </div>
+                        {%  if not tasting.finished %}
+                            <input type="submit"
+                                   {% if checkin %}
+                                        value="update">
+                                   {% else %}
+                                        value="checkin">
+                                   {% endif %}
+
+                        {% endif %}
+                        <hr>
+                        {% if prev %}
+                            <a href="/tasting/checkin/{{ tasting.pk }}/{{ prev }}"><< Previous</a>
+                        {%  endif %}
+
+                        {% if next %}
+                            <a href="/tasting/checkin/{{ tasting.pk }}/{{ next }}">Next >></a>
+                        {% else %}
+                            {%  if checkin %}
+                                [<a href="/tasting/{{ tasting.pk }}/stats/">stats</a>]
+                            {% endif %}
+                        {% endif %}
+                        <hr>
+                    </th>
+                </tr>
+
+            </table>
+        </form>
+        </div>
+    {% endif %}
 {%  endif %}
 
 <style>
+    a{
+        text-decoration: none;
+    }
     .header_beer{
         background-color: lightgray;
         margin: 0.5em;
