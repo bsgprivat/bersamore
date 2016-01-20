@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^overview/(?P<tasting_id>\d+)/$', checkin_overview),
     url(r'^profile/$', profile),
 
+
 ]

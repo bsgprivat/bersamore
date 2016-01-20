@@ -4,13 +4,18 @@
             {{ beer.name }}
         </h1>
         <h2>{{ beer.brewery }} {{ beer.brewery.country.name }}
-            <img src="http://bsg.ddns.net/static/images/uploads/flags/se.png">
+            <img src="/static/images/uploads/flags/{{ beer.brewery.country.code }}.png">
         </h2>
 
     </div>
     <div class="beer_info_wrap">
         <div class="beer_info_img">
-            <img src="http://bsg.ddns.net/static/images/uploads/beers/maz.jpg">
+            <img src="
+            {%  if beer.image %}
+                {{ beer.image.url }}
+            {%  else %}
+                /static/images/uploads/beer/emptybeer.jpg
+            {% endif %}">
         </div>
         <div class="beer_info_text">
             <table>

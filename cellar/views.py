@@ -4,8 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from cellar.models import Beer, UploadedUntappdCSV
 
 
-def beer_view(request):
-    beer = Beer.objects.first()
+def beer_view(request, beer_id=None):
+    beer = Beer.objects.get(pk=int(beer_id))
 
     context = {
         'beer': beer

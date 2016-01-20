@@ -6,5 +6,5 @@ from django.conf.urls import url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^beer/', beer_view),
+    url(r'^beer/(?P<beer_id>\d+)/$', beer_view),
 ]

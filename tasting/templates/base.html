@@ -1,0 +1,49 @@
+<html>
+    <head>
+        {% block style  %}
+            <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.css">
+            <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+        {% endblock style %}
+
+        {%  block script %}
+            <script src="/static/bootstrap/js/bootstrap.js"></script>
+            <script src="/static/js/jquery.js"></script>
+        {%  endblock %}
+    <title>The BeerMS</title>
+
+    <style>
+        #top{
+            width: 100%;
+            height: 3.5em;
+            position: fixed;
+            left: 0;
+            top:0;
+            background-color: dimgray;
+            border-bottom: 1.5em solid lightslategray;
+            text-align: center;
+            color: whitesmoke;
+            text-shadow: 2px 2px 2px #000;
+        }
+        html{
+            background-color: lightgray;
+        }
+
+
+    </style>
+
+    </head>
+    <body>
+        <div id="top">
+            {%  block top %}
+            {%  endblock top %}
+        </div>
+
+
+    {%  block content %}
+    {%  endblock content %}
+
+    {%  block bottom %}
+    {%  endblock bottom %}
+
+    </body>
+</html>

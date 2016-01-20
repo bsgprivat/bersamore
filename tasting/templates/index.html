@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block style%}
+    {{ block.super }}
+{% endblock style%}
+
+{% block script%}
+    {{ block.super }}
+{% endblock script%}
+
+{%  block top %}
+    {{ block.super }}
+
+    <script>console.log(jQuery);</script>
+    <h2>The BeerMS</h2>
+{% endblock top %}

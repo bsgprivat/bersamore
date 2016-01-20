@@ -4,11 +4,6 @@ from django.db import models
 class Country(models.Model):
     name = models.CharField(max_length=128)
     code = models.CharField(max_length=2)
-    flag = models.ImageField(
-        null=True, blank=True,
-        upload_to=u'static/images/uploads/flags/',
-        help_text=u'Use "country-code.png"'
-    )
 
     def __unicode__(self):
         return u'%s (%s)' % (self.name, self.code)
@@ -43,7 +38,8 @@ class Style(models.Model):
 
 class Beer(models.Model):
     name = models.CharField(max_length=512)
-    image = models.ImageField(null=True, blank=True, upload_to=u'static/images/uploads/beers/')
+    image = models.ImageField(null=True, blank=True, upload_to=u'static/images/uploads/beers/',
+                              default=u'static/images/uploads/beers/emptybeer.jpg')
     brewery = models.ForeignKey(Brewery, blank=True, null=True)
     collabs = models.ManyToManyField(Brewery, related_name=u'collabs', blank=True, help_text=u'Collaborating breweries')
     #, limit_choices_to={})
