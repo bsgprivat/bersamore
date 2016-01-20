@@ -3,6 +3,12 @@ from django.db import models
 from cellar.models import Beer, Brewery, Style
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+INVITATION_STATUSES = (
+    (0, u'Invited'),
+    (1, u'Accepted'),
+    (2, u'Declined')
+)
+
 
 class Taster(models.Model):
     user = models.OneToOneField(User)
@@ -10,6 +16,18 @@ class Taster(models.Model):
     fav_breweries = models.ManyToManyField(Brewery, blank=True)
     fav_styles = models.ManyToManyField(Style, blank=True)
     friends = models.ManyToManyField('tasting.Taster', related_name=u'tasterfriends')
+
+    @property
+    def beers(self):
+        return self.fav_beers.all()
+
+    @property
+    def breweries(self):
+        return self.fav_breweries.all()
+
+    @property
+    def styles(self):
+        return self.fav_styles.all()
 
     def __unicode__(self):
         if self.user.last_name:
@@ -29,6 +47,9 @@ class TastingSession(models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.name, self.date.strftime('%y-%m-%d %H:%M'))
 
+    def participating_tasters(self):
+        return [t for t in self.tastinginvitation_set.all() if t.status == INVITATION_STATUSES[1]]
+
 
 class TastingBeers(models.Model):
     beer = models.ForeignKey(Beer)
@@ -38,10 +59,20 @@ class TastingBeers(models.Model):
         unique_together = ('beer', 'tasting')
 
 
+class TastingInvitation(models.Model):
+    tasting = models.ForeignKey(TastingSession)
+    taster = models.ForeignKey(Taster)
+    status = models.IntegerField(choices=INVITATION_STATUSES, default=0)
+
+    class Meta:
+        unique_together = ('taster', 'tasting')
+
+
 class Checkin(models.Model):
     taster = models.ForeignKey(Taster)
     beer = models.ForeignKey(Beer)
-    tasting = models.ForeignKey(TastingSession)
+    date = models.DateTimeField(auto_now_add=True)
+    tasting = models.ForeignKey(TastingSession, blank=True, null=True)
 
     looks = models.IntegerField(
         blank=True, null=True, validators=[

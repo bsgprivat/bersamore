@@ -54,6 +54,9 @@ class Beer(models.Model):
     description = models.TextField(blank=True, null=True)
     sysbol_url = models.URLField(help_text=u'systembolaget url', blank=True)
 
+    class Meta:
+        unique_together = ('name', 'brewery')
+
     def __unicode__(self):
         return u'%s %s - %s' % (self.brewery.name, self.name, self.style)
 

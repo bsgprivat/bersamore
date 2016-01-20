@@ -90,7 +90,7 @@ def checkin_view(request, tasting_id=None, beer_i=None):
 
 
 def checkin_overview(request, tasting_id=None):
-    tasting = TastingSession.objects.first()
+    tasting = TastingSession.objects.get(pk=int(tasting_id))
     checkins = tasting.checkin_set.all()
     beers = tasting.beers.all()
     chosen_beer = None
@@ -184,7 +184,7 @@ def profile(request):
     usr = request.user
     tastings = TastingSession.objects.filter(tasters=usr.taster)
 
-    context={
+    context = {
         'usr': usr,
         'tastings':tastings
     }

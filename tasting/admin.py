@@ -9,10 +9,22 @@ class TasterAdmin(admin.ModelAdmin):
 
 class TastingInline(admin.TabularInline):
     model = TastingBeers
+    raw_id_fields = (u'beer',)
 
+
+class TastingInviteInline(admin.TabularInline):
+    model = TastingInvitation
+    raw_id_fields = (u'taster',)
+
+
+class TastingInviteAdmin(admin.ModelAdmin):
+    def send_invite(self):
+        print self
+
+    actions = [send_invite, ]
 
 class TastingAdmin(admin.ModelAdmin):
-    inlines = (TastingInline,)
+    inlines = (TastingInviteInline, TastingInline)
     filter_horizontal = (u'tasters',)
     search_fields = (u'name', u'description')
 

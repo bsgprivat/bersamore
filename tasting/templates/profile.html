@@ -9,10 +9,29 @@ Välkommen {{ usr.first_name }}
 <hr>
 
 <h2>Dina ölprovningar</h2>
-
 {%  for tasting in tastings %}
-    <a href="/tasting/{{ tasting.pk }}">{{ tasting.name }}</a>
+    <a href="/tasting/{{ tasting.pk }}">{{ tasting.name }}</a><br>
 {% endfor %}
 
+<h2>Dina högst rankade öl</h2>
+{%  for checkin in usr.taster.checkin_set.all %}
+    {{ checkin.beer }} - {{ checkin.overall }} ({{ checkin.date|date:'d/m-y' }}) <br>
+{%  endfor %}
+
+<h2>Dna favoriter</h2>
+<h3>Öl</h3>
+{%  for beer in usr.taster.beers %}
+    {{ beer }}<br>
+{%  endfor %}
+
+<h3>Bryggerier</h3>
+{%  for brewery in usr.taster.breweries %}
+    {{ brewery }}<br>
+{%  endfor %}
+
+<h3>Stilar</h3>
+{%  for style in usr.taster.styles %}
+    {{ style }}<br>
+{%  endfor %}
 </body>
 </html>

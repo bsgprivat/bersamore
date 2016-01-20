@@ -13,6 +13,9 @@
 </div>
 
 <div id="content_wrapper">
+{%  if not beer %}
+ You'll need to choose a beer to start with!
+{% else %}
     <div id="beer_div">
         <div id="beer_img_td" rowspan="2">
             <img src="/{{ beer.image.url }}" id="beer_img">
@@ -138,6 +141,7 @@
     </div>
 </div>
 
+{% endif %}
 </body>
 
 

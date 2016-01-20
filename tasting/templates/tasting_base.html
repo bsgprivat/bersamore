@@ -16,7 +16,11 @@
         Links: [
         <a href="/tasting/{{ tasting.pk }}/stats/">  Your stats</a> |
         {%  if not tasting.finished %}
-            <a href="/tasting/checkin/{{ tasting.pk }}/">  Start checkin' in! </a>
+            <a href="/tasting/checkin/{{ tasting.pk }}/">  Start checkin' in!</a>
+        {% endif %}
+
+        {%  if usr.is_superuser %}
+                 | <a href="/tasting/overview/{{ tasting.pk }}/">  Start/go to the tasting!</a>
         {% endif %}
         ]
     {% endif %}
