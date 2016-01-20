@@ -18,7 +18,7 @@
 {% else %}
     <div id="beer_div">
         <div id="beer_img_td" rowspan="2">
-            <img src="{% if beer.image %}{{ beer.image.url }}{%  else %}/static/images/uploads/beer/emptybeer.jpg{% endif %}"
+            <img src="/{% if beer.image %}{{ beer.image.url }}{%  else %}/static/images/uploads/beer/emptybeer.jpg{% endif %}"
                     id="beer_img">
         </div>
         <div id="beer_info">

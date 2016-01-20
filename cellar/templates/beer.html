@@ -10,7 +10,7 @@
     </div>
     <div class="beer_info_wrap">
         <div class="beer_info_img">
-            <img src="{% if beer.image %}{{ beer.image.url }}{%  else %}/static/images/uploads/beer/emptybeer.jpg{% endif %}">
+            <img src="/{% if beer.image %}{{ beer.image.url }}{%  else %}/static/images/uploads/beer/emptybeer.jpg{% endif %}">
         </div>
         <div class="beer_info_text">
             <table>
