@@ -1,13 +1,17 @@
 <html>
     <head>
         {% block style  %}
-            <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.css">
-            <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+            <link rel="stylesheet" href="http://bsg.ddns.net/static/bootstrap/css/bootstrap-theme.css">
+            <link rel="stylesheet" href="http://bsg.ddns.net/static/bootstrap/css/bootstrap.css">
         {% endblock style %}
 
         {%  block script %}
-            <script src="/static/bootstrap/js/bootstrap.js"></script>
-            <script src="/static/js/jquery.js"></script>
+            <script src="http://bsg.ddns.net/static/bootstrap/js/bootstrap.js"></script>
+            <script src="http://bsg.ddns.net/static/js/jquery.js"></script>
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+            <script>
+            </script>
         {%  endblock %}
     <title>The BeerMS</title>
 
@@ -18,10 +22,12 @@
             position: fixed;
             left: 0;
             top:0;
-            background-color: dimgray;
+            background-color: darkgrey;
             text-align: center;
             color: whitesmoke;
             text-shadow: 2px 2px 2px #000;
+            font-size: 2.5em;
+            font-weight: 600;
         }
         #menu{
             width: 100%;
@@ -29,25 +35,30 @@
             position: fixed;
             left: 0;
             top:50px;
-            background-color: gold;
-            border-bottom: solid 2px darkorange;
-            box-shadow: 2px 2px orange;
+            background-color: white;
+{#            border-bottom: solid 2px darkorange;#}
+{#            box-shadow: 2px 2px orange;#}
             text-align: center;
             color: whitesmoke;
             text-shadow: 2px 2px 2px #000;
+            border-bottom: solid 8px darkgray;
         }
         .menuspan{
-            padding: 2em;
+            padding-left: 1.5em;
+            font-weight: 900;
+
         }
 
         #menu a:link{
             text-decoration: none;
-            color: white;
+            color: whitesmoke;
             font-size:2em;
         }
         #menu a:visited{
+            color: whitesmoke;
         }
         #menu a:hover{
+            color: #28a4c9;
         }
 
         #contentblock{
@@ -56,29 +67,51 @@
             width:70%;
             /*text-align: center;*/
             top: 100px;
-            border: solid 2px orange;
-            box-shadow: 2px 2px orange;
+            border-right: solid 8px darkgray;
+            border-left: solid 8px darkgray;
+            /*box-shadow: 2px 2px orange;*/
         }
 
         html{
             background-color: lightgray;
+            font-family: sans-serif;
         }
         #beer_img{
-            max-height: 90vh;
+            /*max-height: 90vh;*/
             max-width: 50vh;
             float: left;
+            z-index: 0;
+        }
+        #beer_name{
+            position: fixed;
+            left:13%;
+            width:70%;
+            /*text-align: center;*/
+            top: 120px;
+            color:white;
+            font-size: 2.5em;
+            font-weight: 600;
+            text-shadow: 2px 2px 3px black;
+
         }
         #content_wrapper{
             width: 100%;
             height: 95vh;
+            background-color: white;
         }
         #beer_div{
             float:left;
-            width: 50%;
+            width: 100%;
         }
+        #beertable{
+            margin-top: 2em;
+            width: 40%;
+        }
+
         #stats_div{
-            width: 50%;
-            margin-left: 50%;
+/*            width: 40%;
+            margin-left: 60%;*/
+            margin-top: 2em;
         }
         th{
             vertical-align: top;
@@ -90,6 +123,21 @@
         #statstable td{
             padding: 2em;
         }
+        #keyhole{
+            height: 25px;
+            width: 25px;
+            position: fixed;
+            top: 10px;
+            right: 40px;
+        }
+        #keyhole img{
+            height: 25px;
+            width: 25px;
+
+        }
+        #statsimg{
+            width: 50px;
+        }
 
     </style>
 
@@ -98,7 +146,8 @@
 
         <div id="top">
             {%  block top %}
-                The BeerMS
+                <div class="top_div">The BeerMS</div>
+            <div id="keyhole"><img src="http://bsg.ddns.net/static/images/key.png"></div>
             {%  endblock top %}
         </div>
         <div id="menu">

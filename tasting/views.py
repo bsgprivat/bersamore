@@ -159,6 +159,11 @@ def checkin_overview(request, tasting_id=None):
                 get_i = random.randint(0, len(filtered_checkins)-1)
                 random_comments = list_of_comments[get_i]
 
+                #TODO: stats needs to be:
+                # [grade (dvs 1), number of ones for nose, ..looks, taste.. overall
+                # list of lists.
+
+
     context = {
         'tasting': tasting,
         'checkins': checkins,

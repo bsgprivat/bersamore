@@ -5,14 +5,87 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    {% block script %}
+    {{ block.super }}
+
+    <script type="text/javascript">
+google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawAxisTickColors);
+
+function drawAxisTickColors() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'X');
+      data.addColumn('number', 'Nose');
+      data.addColumn('number', 'Looks');
+      data.addColumn('number', 'Taste');
+      data.addColumn('number', 'Overall');
+
+      data.addRows([
+          [0, 0, 0, 0, 0],
+          [1, 1, 8, 1, 5],
+          [2, 2, 8, 2, 1],
+          [3, 1, 8, 1, 9],
+          [4, 1, 8, 1, 1],
+          [5, 9, 8, 9, 5],
+          [6, 1, 8, 1, 3],
+          [7, 2, 8, 2, 1],
+          [8, 3, 8, 3, 2],
+          [9, 4, 8, 4, 3],
+          [10, 3, 8, 3, 2]
+      ]);
+
+      var options = {
+        hAxis: {
+          title: 'Time',
+          textStyle: {
+            color: '#01579b',
+            fontSize: 20,
+            fontName: 'Arial',
+            bold: true,
+            italic: true
+          },
+          titleTextStyle: {
+            color: '#01579b',
+            fontSize: 16,
+            fontName: 'Arial',
+            bold: false,
+            italic: true
+          }
+        },
+        vAxis: {
+          title: 'Popularity',
+          textStyle: {
+            color: '#1a237e',
+            fontSize: 18,
+            bold: false
+          },
+          titleTextStyle: {
+            color: '#1a237e',
+            fontSize: 18,
+            bold: false
+          }
+        },
+        colors: ['#a52714', '#097138', '#000000', '#333333']
+      };
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+    </script>
+    {% endblock script %}
+
+
+
 </head>
 <body>
 
 {% block menu %}
 <div id="menubar">
-    {% for beer in beers %}
-        <span class="menuspan" title="{{ beer.style }}"><a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ beer.pk }}">
+    {% for b in beers %}
+        <span class="menuspan" title="{{ b.style }}">
+            <a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ b.pk }}"
+                style="{%  if b == beer %}color:red{% endif %}">
             {{ forloop.counter }}
+
         </a></span>
     {% endfor %}
 </div>
@@ -25,35 +98,22 @@
  You'll need to choose a beer to start with!
 {% else %}
     <div id="beer_div">
-        <div id="beer_img_td" rowspan="2">
-            {%  if not beer.image %}
-                <img src="http://bsg.ddns.net/static/images/uploads/beers/emptybeer.jpg"
+        <div id="beer_img_td">
+{#            {%  if not beer.image %}#}
+                <img src="http://bsg.ddns.net/static/images/uploads/beers/maz.jpg"
                     id="beer_img">
-            {%  else %}
-                <img src="/{{ beer.image.url }}"
-                    id="beer_img">
-            {%  endif %}
+{#            {%  else %}#}
+{#                <img src="/{{ beer.image.url }}"#}
+{#                    id="beer_img">#}
+{#            {%  endif %}#}
         </div>
+        <span id="beer_name">
+            {{ beer.brewery.name }}<br>
+            {{ beer.name }}
+        </span>
+
         <div id="beer_info">
-            <table>
-                <tr id="name">
-                    <th>
-                        Name
-                    </th>
-                    <td>
-                         {{ beer.name }}
-                    </td>
-                </tr>
-
-                <tr id="brewery">
-                    <th>
-                        Brewery
-                    </th>
-                    <td>
-                         {{ beer.brewery }}
-                    </td>
-                </tr>
-
+            <table id="beertable">
                 <tr id="origin">
                     <th>
                         Origin
@@ -103,56 +163,65 @@
 
                 <tr id="notes">
                     <th>
-                        Notes
+                        {%  if beer.notes %}Description{% endif %}
                     </th>
                     <td>
                         {{ beer.notes }}
                     </td>
                 </tr>
+            <tr>
+                <td colspan="2">
+                    <div id="stats_div">
+                        {%  if show_stats %}
+                            <table id="statstable">
+                                <tr>
+                                    <th colspan="2">
+                                        Statistics
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        looks<br>
+                                        {{ avg_looks }}
+                                    </td>
+                                    <td>
+                                        nose<br>
+                                        {{ avg_nose }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        taste<br>
+                                        {{ avg_taste }}
+                                    </td>
+                                    <td>
+                                        overall<br>
+                                        {{ avg_overall }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        random comments<br>
+                                        {{ random_comments }}
+                                    </td>
+                                </tr>
+                            </table>
+                        {% else %}
+                            <a href="/tasting/overview/{{ tasting.pk }}/?active_beer={{ beer.pk }}&show_stats=1">
+                                <img src="http://bsg.ddns.net/static/images/stats.png" id="statsimg">
+                            </a>
+                        {% endif %}
+
+                        <div id="chart_div" style="width: 600px; height: 300px"></div>
+
+                    </div>
+                </td>
+            </tr>
+
             </table>
         </div>
     </div>
-    <div id="stats_div">
-        {%  if show_stats %}
-            <table id="statstable">
-                <tr>
-                    <th colspan="2">
-                        Statistics
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        looks<br>
-                        {{ avg_looks }}
-                    </td>
-                    <td>
-                        nose<br>
-                        {{ avg_nose }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        taste<br>
-                        {{ avg_taste }}
-                    </td>
-                    <td>
-                        overall<br>
-                        {{ avg_overall }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        random comments<br>
-                        {{ random_comments }}
-                    </td>
-                </tr>
-            </table>
-        {% else %}
-            <a href="/tasting/overview/{{ tasting.pk }}/?active_beer={{ beer.pk }}&show_stats=1">
-                <img src="http://bsg.ddns.net/static/images/stats.png">
-            </a>
-        {% endif %}
-    </div>
+
 </div>
 {% endif %}
 {% endblock content %}
