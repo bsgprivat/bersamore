@@ -11,8 +11,8 @@
 {% block menu %}
 <div id="menubar">
     {% for beer in beers %}
-        <span class="menuspan"><a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ beer.pk }}">
-            {{ forloop.counter }} {{ beer.style }}
+        <span class="menuspan" title="{{ beer.style }}"><a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ beer.pk }}">
+            {{ forloop.counter }}
         </a></span>
     {% endfor %}
 </div>
