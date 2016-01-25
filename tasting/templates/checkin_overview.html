@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,19 +8,25 @@
 </head>
 <body>
 
-<div id="topbar">
+{% block menu %}
+<div id="menubar">
     {% for beer in beers %}
-        <span><a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ beer.pk }}">{{ forloop.counter }} {{ beer.style }}</a></span>
+        <span class="menuspan"><a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ beer.pk }}">
+            {{ forloop.counter }} {{ beer.style }}
+        </a></span>
     {% endfor %}
 </div>
+{% endblock menu %}
 
+
+{% block content %}
 <div id="content_wrapper">
 {%  if not beer %}
  You'll need to choose a beer to start with!
 {% else %}
     <div id="beer_div">
         <div id="beer_img_td" rowspan="2">
-            <img src="/{% if beer.image %}{{ beer.image.url }}{%  else %}/static/images/uploads/beer/emptybeer.jpg{% endif %}"
+            <img src="http://bsg.ddns.net/static/images/uploads/beers/maz.jpg"
                     id="beer_img">
         </div>
         <div id="beer_info">
@@ -136,14 +144,16 @@
             </table>
         {% else %}
             <a href="/tasting/overview/{{ tasting.pk }}/?active_beer={{ beer.pk }}&show_stats=1">
-                <img src="/static/images/stats.png">
+                <img src="http://bsg.ddns.net/static/images/stats.png">
             </a>
         {% endif %}
     </div>
 </div>
-
 {% endif %}
+{% endblock content %}
 </body>
+
+
 
 
 <style>
@@ -167,9 +177,6 @@
     th{
         vertical-align: top;
         text-align: left;
-    }
-    #topbar span{
-        margin-left: 2em;
     }
     #statstable{
         width:90%

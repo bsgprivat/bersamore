@@ -92,7 +92,7 @@ def checkin_view(request, tasting_id=None, beer_i=None):
 def checkin_overview(request, tasting_id=None):
     tasting = TastingSession.objects.get(pk=int(tasting_id))
     checkins = tasting.checkin_set.all()
-    beers = tasting.beers.all()
+    beers = tasting.ordered_beers
     chosen_beer = None
     show_stats = False
     avg_looks = 0
@@ -109,8 +109,17 @@ def checkin_overview(request, tasting_id=None):
 
     if 'active_beer' in request.GET:
         active_beer = int(request.GET['active_beer'])
+        print active_beer
+        for beer in beers:
+            print beer
+            print beer.pk
+            print active_beer == beer.pk
+            print '......'
         if active_beer in [beer.pk for beer in beers]:
-            chosen_beer = beers.get(pk=active_beer)
+            print True
+            chosen_beer = Beer.objects.get(pk=active_beer)
+
+        print chosen_beer
         if 'show_stats' in request.GET:
             show_stats = True
             filtered_checkins = checkins.filter(beer__pk=active_beer)
@@ -213,6 +222,7 @@ def baseview(request, tasting_id=None):
     return render_to_response(
         'tasting_base.html', context
     )
+
 
 def tastestats(request, tasting_id=None):
     tasting = TastingSession.objects.get(pk=int(tasting_id))

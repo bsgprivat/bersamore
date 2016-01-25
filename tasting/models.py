@@ -47,6 +47,10 @@ class TastingSession(models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.name, self.date.strftime('%y-%m-%d %H:%M'))
 
+    @property
+    def ordered_beers(self):
+        return [beer.beer for beer in self.tastingbeers_set.order_by(u'position')]
+
     def participating_tasters(self):
         return [t for t in self.tastinginvitation_set.all() if t.status == INVITATION_STATUSES[1]]
 
@@ -54,9 +58,11 @@ class TastingSession(models.Model):
 class TastingBeers(models.Model):
     beer = models.ForeignKey(Beer)
     tasting = models.ForeignKey(TastingSession)
+    position = models.PositiveIntegerField(default=0)
 
     class Meta:
-        unique_together = ('beer', 'tasting')
+        unique_together = (u'beer', u'tasting')
+        ordering = [u'position', ]
 
 
 class TastingInvitation(models.Model):

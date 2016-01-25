@@ -10,6 +10,7 @@ class TasterAdmin(admin.ModelAdmin):
 class TastingInline(admin.TabularInline):
     model = TastingBeers
     raw_id_fields = (u'beer',)
+    ordering = (u'position', )
 
 
 class TastingInviteInline(admin.TabularInline):
@@ -22,6 +23,7 @@ class TastingInviteAdmin(admin.ModelAdmin):
         print self
 
     actions = [send_invite, ]
+
 
 class TastingAdmin(admin.ModelAdmin):
     inlines = (TastingInviteInline, TastingInline)
