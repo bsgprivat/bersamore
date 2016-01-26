@@ -1,37 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ usr.username }}</title>
-</head>
-<body>
-Välkommen {{ usr.first_name }}
-<hr>
+{% extends 'base.html' %}
 
-<h2>Dina ölprovningar</h2>
-{%  for tasting in tastings %}
-    <a href="/tasting/{{ tasting.pk }}">{{ tasting.name }}</a><br>
-{% endfor %}
+{%  block top %}
+    Välkommen {{ usr.first_name }}
+{% endblock %}
 
-<h2>Dina högst rankade öl</h2>
-{%  for checkin in usr.taster.checkin_set.all %}
-    {{ checkin.beer }} - {{ checkin.overall }} ({{ checkin.date|date:'d/m-y' }}) <br>
-{%  endfor %}
+{%  block menu %}
+    <span class="menuspan"><a href="hej">tom meny 1</a></span>
+    <span class="menuspan"><a href="hej">tom meny 2</a></span>
+    <span class="menuspan"><a href="hej">tom meny 3</a></span>
+    <span class="menuspan"><a href="hej">tom meny 4</a></span>
+{%  endblock menu %}
 
-<h2>Dna favoriter</h2>
-<h3>Öl</h3>
-{%  for beer in usr.taster.beers %}
-    {{ beer }}<br>
-{%  endfor %}
+{%  block content %}
 
-<h3>Bryggerier</h3>
-{%  for brewery in usr.taster.breweries %}
-    {{ brewery }}<br>
-{%  endfor %}
+    <h2>Dina ölprovningar</h2>
+    {%  for tasting in tastings %}
+        <a href="/tasting/{{ tasting.pk }}">
+            {{ tasting.name }}
+        </a> {% if tasting.finished %}
+            ( Avslutad )
+    {% else %}
+        börjar: {{ tasting.date }}
+    {% endif %}
+        <br>
+    {% endfor %}
 
-<h3>Stilar</h3>
-{%  for style in usr.taster.styles %}
-    {{ style }}<br>
-{%  endfor %}
-</body>
-</html>
+    {%  if usr.taster.checkin_set %}
+        <h2>Dina högst rankade öl</h2>
+        {%  for checkin in usr.taster.checkin_set.all %}
+            {{ checkin.beer }} - {{ checkin.overall }} ({{ checkin.date|date:'d/m-y' }}) <br>
+        {%  endfor %}
+    {%  endif %}
+
+{#    <h2>Dna favoriter</h2>#}
+{#    <h3>Öl</h3>#}
+{#    {%  for beer in usr.taster.beers %}#}
+{#        {{ beer }}<br>#}
+{#    {%  endfor %}#}
+{##}
+{#    <h3>Bryggerier</h3>#}
+{#    {%  for brewery in usr.taster.breweries %}#}
+{#        {{ brewery }}<br>#}
+{#    {%  endfor %}#}
+{##}
+{#    <h3>Stilar</h3>#}
+{#    {%  for style in usr.taster.styles %}#}
+{#        {{ style }}<br>#}
+{#    {%  endfor %}#}
+
+{%  endblock content %}

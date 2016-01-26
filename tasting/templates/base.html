@@ -69,6 +69,10 @@
             top: 100px;
             border-right: solid 8px darkgray;
             border-left: solid 8px darkgray;
+            border-bottom: solid 8px darkgray;
+            padding-left: 1em;
+            padding-right: 1em;
+            padding-bottom: 1em;
             /*box-shadow: 2px 2px orange;*/
         }
 
@@ -147,7 +151,7 @@
         <div id="top">
             {%  block top %}
                 <div class="top_div">The BeerMS</div>
-            <div id="keyhole"><img src="http://bsg.ddns.net/static/images/key.png"></div>
+            <div id="keyhole"><a href="/logout/"><img src="http://bsg.ddns.net/static/images/key.png"></a></div>
             {%  endblock top %}
         </div>
         <div id="menu">

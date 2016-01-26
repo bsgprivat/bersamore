@@ -28,7 +28,7 @@
                         {% if b == beer %}
                       id="active"
                         {% endif %}>
-                <a href="/tasting/checkin/{{ tasting.pk }}/{{ forloop.counter}}">
+                <a href="/tasting/checkin/{{ tasting.pk }}/{{ forloop.counter}}/">
                     ( {{ forloop.counter }} )</a>
                 </span>
             {% endfor %}
@@ -155,11 +155,11 @@
 
                         {% endif %}
                         {% if prev %}
-                            <a href="/tasting/checkin/{{ tasting.pk }}/{{ prev }}"><< Previous</a>
+                            <a href="/tasting/checkin/{{ tasting.pk }}/{{ prev }}/"><< Previous</a>
                         {%  endif %}
 
                         {% if next %}
-                            <a href="/tasting/checkin/{{ tasting.pk }}/{{ next }}">Next >></a>
+                            <a href="/tasting/checkin/{{ tasting.pk }}/{{ next }}/">Next >></a>
                         {% else %}
                             {%  if checkin %}
                                 [<a href="/tasting/{{ tasting.pk }}/stats/">stats</a>]

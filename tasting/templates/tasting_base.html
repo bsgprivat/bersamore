@@ -1,28 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ usr.username }}</title>
-</head>
-<body>
-<h3>{{ now }}</h3>
+{% extends 'base.html' %}
 
+{%  block top %}
+    Välkommen {{ usr.first_name }}
+{% endblock %}
+
+{%  block menu %}
+    <span class="menuspan"><a href="hej">tom meny 1</a></span>
+    <span class="menuspan"><a href="hej">tom meny 2</a></span>
+    <span class="menuspan"><a href="hej">tom meny 3</a></span>
+    <span class="menuspan"><a href="hej">tom meny 4</a></span>
+{%  endblock menu %}
+
+{%  block content %}
 
 {%  if tasting %}
     {% if not usr.taster in tasting.tasters.all %}
         Sorry, you're not invited to ths tasting
     {% else %}
-        <b>{{ tasting.name }}</b> - {{ tasting.description }}
-        Links: [
-        <a href="/tasting/{{ tasting.pk }}/stats/">  Your stats</a> |
-        {%  if not tasting.finished %}
+        <h2>{{ tasting.name }}</h2>
+        {{ tasting.date }}
+        <br>
+        {{ tasting.description }}
+        <br>
+
+        {%  if not tasting.finished and can_start %}
             <a href="/tasting/checkin/{{ tasting.pk }}/">  Start checkin' in!</a>
+            <br>
         {% endif %}
 
-        {%  if usr.is_superuser %}
-                 | <a href="/tasting/overview/{{ tasting.pk }}/">  Start/go to the tasting!</a>
+        <a href="/tasting/{{ tasting.pk }}/stats/">  Your stats</a>
+
+        {%  if usr.is_superuser %}<br>
+            <a href="/tasting/overview/{{ tasting.pk }}/">  [ADMIN] Start/go to the tasting!</a>
         {% endif %}
-        ]
+
     {% endif %}
 
 {%  else %}
@@ -38,5 +49,4 @@
         {% endif %}
     {% endfor %}
 {%  endif %}
-</body>
-</html>
+{%  endblock content %}

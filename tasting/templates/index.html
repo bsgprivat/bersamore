@@ -1,16 +1,57 @@
-{% extends 'base.html' %}
+<div id="background">
+    <img src="https://www.heartinternet.uk/assets/icons/icon_hybrid-lock.png" class="stretch" alt="" />
+</div>
 
-{% block style%}
-    {{ block.super }}
-{% endblock style%}
 
-{% block script%}
-    {{ block.super }}
-{% endblock script%}
+<div id="over">
+    <form method="post" action=".">{% csrf_token %}
+        <input name="usr" type="text" value=""><br>
+        <input name="pwd" type="password" value=""><br>
+        <input type="submit" value="submit" class="submit">
+    </form>
+</div>
 
-{%  block top %}
-    {{ block.super }}
 
-    <script>console.log(jQuery);</script>
-    <h2>The BeerMS</h2>
-{% endblock top %}
+
+<style>
+html{
+    background-color: darkgrey
+}
+
+#background {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: -1; /* Ensure div tag stays behind content; -999 might work, too. */
+}
+
+#over {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 50%;
+    z-index: 1; /* Ensure div tag stays behind content; -999 might work, too. */
+    text-align: center;
+}
+
+.stretch {
+    width:100%;
+    height:100%;
+}
+
+    input{
+        width: 15em;
+        font-family: sans-serif;
+        font-weight: 900;
+        font-size: 1.5em;
+        box-shadow: 2px 2px 2px black;
+    }
+    .submit{
+        margin-top: 1em;
+        background-color: white;
+    }
+
+</style>

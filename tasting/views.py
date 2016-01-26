@@ -1,6 +1,7 @@
 from __future__ import division
 import random
 import datetime
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -194,6 +195,7 @@ def stats_view(request):
     return render_to_response('stats_view.html', context)
 
 
+@login_required(login_url='/')
 def profile(request):
     usr = request.user
     tastings = TastingSession.objects.filter(tasters=usr.taster)
@@ -213,15 +215,18 @@ def baseview(request, tasting_id=None):
     tastings = TastingSession.objects.all()
     tasting = None
     now = datetime.datetime.now()
+    can_start = False
     if tasting_id:
         tasting = tastings.get(pk=int(tasting_id))
-
+        if tasting.date.replace(tzinfo=None) < now.replace(tzinfo=None):
+            can_start = True
 
     context = {
         'usr': usr,
         'now': now,
         'tasting': tasting,
-        'tastings': tastings
+        'tastings': tastings,
+        'can_start': can_start
     }
 
     return render_to_response(
