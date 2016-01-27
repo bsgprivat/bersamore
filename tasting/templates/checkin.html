@@ -1,5 +1,6 @@
 <html>
     <head>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block style  %}
             <link rel="stylesheet" href="http://bsg.ddns.net/static/bootstrap/css/bootstrap-theme.css">
             <link rel="stylesheet" href="http://bsg.ddns.net/static/bootstrap/css/bootstrap.css">
@@ -20,186 +21,197 @@
 {%  else %}
     <div id="checkin_header">
         <div id="tasting_info">
-            {{ usr }} -  Checking in @ {{ tasting.name }}
-        </div>
-        <div>
+            <div class="header_beer">
+                {{ usr }} -  Checking in @ {{ tasting.name }}
+            </div>
+
+            <div class="header_beer">
             {% for b in tasting.beers.all %}
                 <span class="header_beer"
                         {% if b == beer %}
                       id="active"
                         {% endif %}>
-                <a href="/tasting/checkin/{{ tasting.pk }}/{{ forloop.counter}}/">
-                    ( {{ forloop.counter }} )</a>
+                    {{ forloop.counter }}
                 </span>
             {% endfor %}
+            </div>
         </div>
     </div>
 
     {%  if not beer %}
-        What beer are you tasting?<br>
-        Get started above.
+        <h1><a href="1/">start</a></h1>
     {% else %}
         <div id="checkin_body" class="form_group">
-            {% if checkin %}{{ beer.style }}{% endif %}
+            {% if checkin %}
+                <div class="header_beer">
+                    <strong>{{ beer.style }}</strong>
+                </div>
+            {% endif %}
 
         <form action="." method="post">
-            <table>
-                <tr id="criteria">
-                    <th colspan="2">Criteria</th>
-                </tr>
-                <tr>
-                    <th>
-                        Looks
-                    </th>
-                    <td>
-                        <select class="form-control" name="looks">
-                            <option value="0">---</option>
-                            <option value="1" {% if checkin.looks == 1 %}selected{% endif %}>1</option>
-                            <option value="2" {% if checkin.looks == 2 %}selected{% endif %}>2</option>
-                            <option value="3" {% if checkin.looks == 3 %}selected{% endif %}>3</option>
-                            <option value="4" {% if checkin.looks == 4 %}selected{% endif %}>4</option>
-                            <option value="5" {% if checkin.looks == 5 %}selected{% endif %}>5</option>
-                            <option value="6" {% if checkin.looks == 6 %}selected{% endif %}>6</option>
-                            <option value="7" {% if checkin.looks == 7 %}selected{% endif %}>7</option>
-                            <option value="8" {% if checkin.looks == 8 %}selected{% endif %}>8</option>
-                            <option value="9" {% if checkin.looks == 9 %}selected{% endif %}>9</option>
-                            <option value="10" {% if checkin.looks == 10 %}selected{% endif %}>10</option>
-                        </select>
-                    </td>
-                </tr>
+            <div class="header_beer">
+            <label>Looks</label>
+            <select class="form-control" name="looks">
+                <option value="0">---</option>
+                <option value="1" {% if checkin.looks == 1 %}selected{% endif %}>1</option>
+                <option value="2" {% if checkin.looks == 2 %}selected{% endif %}>2</option>
+                <option value="3" {% if checkin.looks == 3 %}selected{% endif %}>3</option>
+                <option value="4" {% if checkin.looks == 4 %}selected{% endif %}>4</option>
+                <option value="5" {% if checkin.looks == 5 %}selected{% endif %}>5</option>
+                <option value="6" {% if checkin.looks == 6 %}selected{% endif %}>6</option>
+                <option value="7" {% if checkin.looks == 7 %}selected{% endif %}>7</option>
+                <option value="8" {% if checkin.looks == 8 %}selected{% endif %}>8</option>
+                <option value="9" {% if checkin.looks == 9 %}selected{% endif %}>9</option>
+                <option value="10" {% if checkin.looks == 10 %}selected{% endif %}>10</option>
+            </select>
+            </div>
 
-                <tr>
-                    <th>
-                        Nose
-                    </th>
-                    <td>
-                        <select class="form-control" name="nose">
-                            <option value="0">---</option>
-                            <option value="1" {% if checkin.nose == 1 %}selected{% endif %}>1</option>
-                            <option value="2" {% if checkin.nose == 2 %}selected{% endif %}>2</option>
-                            <option value="3" {% if checkin.nose == 3 %}selected{% endif %}>3</option>
-                            <option value="4" {% if checkin.nose == 4 %}selected{% endif %}>4</option>
-                            <option value="5" {% if checkin.nose == 5 %}selected{% endif %}>5</option>
-                            <option value="6" {% if checkin.nose == 6 %}selected{% endif %}>6</option>
-                            <option value="7" {% if checkin.nose == 7 %}selected{% endif %}>7</option>
-                            <option value="8" {% if checkin.nose == 8 %}selected{% endif %}>8</option>
-                            <option value="9" {% if checkin.nose == 9 %}selected{% endif %}>9</option>
-                            <option value="10" {% if checkin.nose == 10 %}selected{% endif %}>10</option>
-                        </select>
-                    </td>
-                </tr>
+            <div class="header_beer">
+            <label>Nose</label>
+                <select class="form-control" name="nose">
+                <option value="0">---</option>
+                <option value="1" {% if checkin.nose == 1 %}selected{% endif %}>1</option>
+                <option value="2" {% if checkin.nose == 2 %}selected{% endif %}>2</option>
+                <option value="3" {% if checkin.nose == 3 %}selected{% endif %}>3</option>
+                <option value="4" {% if checkin.nose == 4 %}selected{% endif %}>4</option>
+                <option value="5" {% if checkin.nose == 5 %}selected{% endif %}>5</option>
+                <option value="6" {% if checkin.nose == 6 %}selected{% endif %}>6</option>
+                <option value="7" {% if checkin.nose == 7 %}selected{% endif %}>7</option>
+                <option value="8" {% if checkin.nose == 8 %}selected{% endif %}>8</option>
+                <option value="9" {% if checkin.nose == 9 %}selected{% endif %}>9</option>
+                <option value="10" {% if checkin.nose == 10 %}selected{% endif %}>10</option>
+            </select>
+            </div>
 
-                <tr>
-                    <th>
-                        Taste
-                    </th>
-                    <td>
-                        <select class="form-control" name="taste">
-                                <option value="0">---</option>
-                                <option value="1" {% if checkin.taste == 1 %}selected{% endif %}>1</option>
-                                <option value="2" {% if checkin.taste == 2 %}selected{% endif %}>2</option>
-                                <option value="3" {% if checkin.taste == 3 %}selected{% endif %}>3</option>
-                                <option value="4" {% if checkin.taste == 4 %}selected{% endif %}>4</option>
-                                <option value="5" {% if checkin.taste == 5 %}selected{% endif %}>5</option>
-                                <option value="6" {% if checkin.taste == 6 %}selected{% endif %}>6</option>
-                                <option value="7" {% if checkin.taste == 7 %}selected{% endif %}>7</option>
-                                <option value="8" {% if checkin.taste == 8 %}selected{% endif %}>8</option>
-                                <option value="9" {% if checkin.taste == 9 %}selected{% endif %}>9</option>
-                                <option value="10" {% if checkin.taste == 10 %}selected{% endif %}>10</option>
-                        </select>
-                    </td>
-                </tr>
+            <div class="header_beer">
+            <label>Taste</label>
+                <select class="form-control" name="taste">
+                    <option value="0">---</option>
+                    <option value="1" {% if checkin.taste == 1 %}selected{% endif %}>1</option>
+                    <option value="2" {% if checkin.taste == 2 %}selected{% endif %}>2</option>
+                    <option value="3" {% if checkin.taste == 3 %}selected{% endif %}>3</option>
+                    <option value="4" {% if checkin.taste == 4 %}selected{% endif %}>4</option>
+                    <option value="5" {% if checkin.taste == 5 %}selected{% endif %}>5</option>
+                    <option value="6" {% if checkin.taste == 6 %}selected{% endif %}>6</option>
+                    <option value="7" {% if checkin.taste == 7 %}selected{% endif %}>7</option>
+                    <option value="8" {% if checkin.taste == 8 %}selected{% endif %}>8</option>
+                    <option value="9" {% if checkin.taste == 9 %}selected{% endif %}>9</option>
+                    <option value="10" {% if checkin.taste == 10 %}selected{% endif %}>10</option>
+            </select>
+            </div>
 
-                <tr>
-                    <th>
-                        Overall
-                    </th>
-                    <td>
-                        <select class="form-control" name="overall">
-                            <option value="0">---</option>
-                            <option value="1" {% if checkin.overall == 1 %}selected{% endif %}>1</option>
-                            <option value="2" {% if checkin.overall == 2 %}selected{% endif %}>2</option>
-                            <option value="3" {% if checkin.overall == 3 %}selected{% endif %}>3</option>
-                            <option value="4" {% if checkin.overall == 4 %}selected{% endif %}>4</option>
-                            <option value="5" {% if checkin.overall == 5 %}selected{% endif %}>5</option>
-                            <option value="6" {% if checkin.overall == 6 %}selected{% endif %}>6</option>
-                            <option value="7" {% if checkin.overall == 7 %}selected{% endif %}>7</option>
-                            <option value="8" {% if checkin.overall == 8 %}selected{% endif %}>8</option>
-                            <option value="9" {% if checkin.overall == 9 %}selected{% endif %}>9</option>
-                            <option value="10" {% if checkin.overall == 10 %}selected{% endif %}>10</option>
-                        </select>
-                    </td>
-                </tr>
+            <div class="header_beer">
+            <label>Overall</label>
+                <select class="form-control" name="overall">
+                <option value="0">---</option>
+                <option value="1" {% if checkin.overall == 1 %}selected{% endif %}>1</option>
+                <option value="2" {% if checkin.overall == 2 %}selected{% endif %}>2</option>
+                <option value="3" {% if checkin.overall == 3 %}selected{% endif %}>3</option>
+                <option value="4" {% if checkin.overall == 4 %}selected{% endif %}>4</option>
+                <option value="5" {% if checkin.overall == 5 %}selected{% endif %}>5</option>
+                <option value="6" {% if checkin.overall == 6 %}selected{% endif %}>6</option>
+                <option value="7" {% if checkin.overall == 7 %}selected{% endif %}>7</option>
+                <option value="8" {% if checkin.overall == 8 %}selected{% endif %}>8</option>
+                <option value="9" {% if checkin.overall == 9 %}selected{% endif %}>9</option>
+                <option value="10" {% if checkin.overall == 10 %}selected{% endif %}>10</option>
+            </select>
+            </div>
 
-                <tr>
-                    <th>
-                        Notes
-                    </th>
-                    <td>
-                        <textarea name="notes">{{ checkin.notes }}</textarea>
-                    </td>
-                </tr>
+            <div class="header_beer">
+            <label>Looks</label><br>
+             <textarea name="notes">{{ checkin.notes }}</textarea>
+            </div>
 
-                <tr>
-                    <th colspan="2">
-                        <input type="hidden" name="tasting" value="{{ tasting.pk }}">
-                        <input type="hidden" name="beer" value="{{ beer.pk }}">
+            <input type="hidden" name="tasting" value="{{ tasting.pk }}">
+            <input type="hidden" name="beer" value="{{ beer.pk }}">
+<hr>
+            {%  if not tasting.finished %}
 
-                        {%  if not tasting.finished %}
-                            <input type="submit"
-                                   {% if checkin %}
-                                        value="update">
-                                   {% else %}
-                                        value="checkin">
-                                   {% endif %}
+            <div class="header_beer" id="bottom_div">
+                {% if prev %}
+                    <a href="/tasting/checkin/{{ tasting.pk }}/{{ prev }}/">
+                        <img src="http://bsg.ddns.net/static/images/back.png">
+                    </a>
+                {%  endif %}
 
-                        {% endif %}
-                        {% if prev %}
-                            <a href="/tasting/checkin/{{ tasting.pk }}/{{ prev }}/"><< Previous</a>
-                        {%  endif %}
+                <input id="subbut" type="image" name="submit"
+                       src="http://bsg.ddns.net/static/images/check.png"
+                       alt="Submit" />
+                {% endif %}
 
-                        {% if next %}
-                            <a href="/tasting/checkin/{{ tasting.pk }}/{{ next }}/">Next >></a>
-                        {% else %}
-                            {%  if checkin %}
-                                [<a href="/tasting/{{ tasting.pk }}/stats/">stats</a>]
-                            {% endif %}
-                        {% endif %}
-                        <hr>
-                    </th>
-                </tr>
-
-            </table>
+                {% if next %}
+                    <a href="/tasting/checkin/{{ tasting.pk }}/{{ next }}/">
+                        <img src="http://bsg.ddns.net/static/images/right.png">
+                    </a>
+                {% else %}
+                    {%  if checkin %}
+                        <a href="/tasting/{{ tasting.pk }}/stats/">
+                            <img src="http://bsg.ddns.net/static/images/stats.png" id="stats_img">
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </div>
         </form>
         </div>
     {% endif %}
 {%  endif %}
 
 <style>
+    body{
+        max-width: 100%;
+        max-height: 90%;
+        background-color: darkgray;
+    }
     a{
         text-decoration: none;
     }
     .header_beer{
         background-color: lightgray;
         margin: 0.5em;
+        padding: 0.5em;
+        border: 1px solid dimgrey;
+    }
+    .header_beer span{
+        background-color: lightgray;
+        margin: 0.5em;
+        padding: 0.5em;
+        border: 0;
+    }
+    #bottom_div{
+        text-align: center;
     }
     #active{
         background-color: gold;
     }
     #checkin_header{
-        width: 100%;
+        width: 90vw;
         border-bottom: solid 1px darkgrey;
         margin-bottom: 1em;
     }
-
-    #criteria{
+    #tasting_info{
+        text-align: center;
+    }
+    #subbut{
+        margin: 0.3em;
         padding: 0.3em;
+        margin-bottom: -34px;
+    }
+    #stats_img{
+        width: 64px;
+        height: 64px;
+    }
+
+    div{
+        background-color: darkgray;
     }
     select{
-        width: 70vh;
+        border: solid 5px dimgray;
+        max-width: 90%;
+        width: 85vw;
     }
     textarea{
-        width: 70vh;
+        max-width: 90%;
+        width: 85vw;
     }
 </style>
 {% endblock %}

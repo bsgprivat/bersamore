@@ -2,13 +2,11 @@
 
 {%  block top %}
     Välkommen {{ usr.first_name }}
+    {{ block.super }}
 {% endblock %}
 
 {%  block menu %}
-    <span class="menuspan"><a href="hej">tom meny 1</a></span>
-    <span class="menuspan"><a href="hej">tom meny 2</a></span>
-    <span class="menuspan"><a href="hej">tom meny 3</a></span>
-    <span class="menuspan"><a href="hej">tom meny 4</a></span>
+    <span class="menuspan"><a href=".">tom meny</a></span>
 {%  endblock menu %}
 
 {%  block content %}

@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^$', baseview),
     url(r'^stats/', stats_view),
     url(r'^overview/(?P<tasting_id>\d+)/$', checkin_overview),
-    url(r'^profile/$', profile),
+#    url(r'^profile/$', profile),
 
 
 ]

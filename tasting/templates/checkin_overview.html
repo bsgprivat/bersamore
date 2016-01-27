@@ -78,6 +78,10 @@ function drawAxisTickColors() {
 </head>
 <body>
 
+{% block top %}
+    Beer Management System
+{% endblock top %}
+
 {% block menu %}
 <div id="menubar">
     {% for b in beers %}
@@ -212,7 +216,7 @@ function drawAxisTickColors() {
                             </a>
                         {% endif %}
 
-                        <div id="chart_div" style="width: 600px; height: 300px"></div>
+{#                        <div id="chart_div" style="width: 600px; height: 300px"></div>#}
 
                     </div>
                 </td>

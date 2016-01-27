@@ -127,20 +127,29 @@
         #statstable td{
             padding: 2em;
         }
-        #keyhole{
+        #links{
             height: 25px;
-            width: 25px;
             position: fixed;
-            top: 10px;
+            top: 0;
             right: 40px;
         }
-        #keyhole img{
+
+        #links img{
             height: 25px;
             width: 25px;
 
         }
+        #links a:hover{
+            background-color: white;
+        }
         #statsimg{
             width: 50px;
+        }
+        .stats_td{
+            padding:0.4em;
+        }
+        .stats_th{
+            padding:0.4em;
         }
 
     </style>
@@ -151,9 +160,14 @@
         <div id="top">
             {%  block top %}
                 <div class="top_div">The BeerMS</div>
-            <div id="keyhole"><a href="/logout/"><img src="http://bsg.ddns.net/static/images/key.png"></a></div>
+            <div id="links">
+                <a href="/profile/"><img src="http://bsg.ddns.net/static/images/home.png"></a>
+                <a href="/settings/"><img src="http://bsg.ddns.net/static/images/gear.png"></a>
+                <a href="/logout/"><img src="http://bsg.ddns.net/static/images/logout.png"></a>
+            </div>
             {%  endblock top %}
         </div>
+
         <div id="menu">
             {% block menu %}
             {% endblock %}

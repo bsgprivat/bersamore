@@ -1,46 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ usr.username }}</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{%  block top %}
+    Välkommen {{ usr.first_name }}
+    {{ block.super }}
+{% endblock %}
+
+{%  block menu %}
+    <span class="menuspan"><a href=".">tom meny</a></span>
+{%  endblock menu %}
+
+{%  block content %}
+
 <h2>Your stats for {{ tasting.name }}</h2>
 
 
 <table>
     <tr>
-        <th>
+        <th class="stats_th">
             Beer
         </th>
-        <th>
+        <th class="stats_th">
             Style
         </th>
-        <th>
+        <th class="stats_th">
             Brewery
         </th>
-        <th>
+        <th class="stats_th">
             Country
         </th>
-        <th>
+        <th class="stats_th">
             Abv
         </th>
-        <th>
+        <th class="stats_th">
             IBU
         </th>
-        <th>
+        <th class="stats_th">
             Looks
         </th>
-        <th>
+        <th class="stats_th">
             Nose
         </th>
-        <th>
+        <th class="stats_th">
             Taste
         </th>
-        <th>
+        <th class="stats_th">
             Overall
         </th>
-        <th>
+        <th class="stats_th">
             Notes
         </th>
 
@@ -48,20 +54,29 @@
 
         {%  for checkin in checkins %}
             <tr>
-            <td>{{ checkin.beer.name }}</td>
-            <td>{{ checkin.beer.style }}</td>
-            <td>{{ checkin.beer.brewery }}</td>
-            <td>{{ checkin.beer.brewery.country.name }}</td>
-            <td>{{ checkin.beer.abv }}</td>
-            <td>{{ checkin.beer.ibu }}</td>
-            <td>{{ checkin.looks }}</td>
-            <td>{{ checkin.nose }}</td>
-            <td>{{ checkin.taste }}</td>
-            <td>{{ checkin.overall }}</td>
-            <td>{{ checkin.notes }}</td>
+            <td class="stats_td">{{ checkin.beer.name }}</td>
+            <td class="stats_td">{{ checkin.beer.style }}</td>
+            <td class="stats_td">{{ checkin.beer.brewery }}</td>
+            <td class="stats_td">{{ checkin.beer.brewery.country.name }}</td>
+            <td class="stats_td">{{ checkin.beer.abv }}</td>
+            <td class="stats_td">{{ checkin.beer.ibu }}</td>
+            <td class="stats_td">{{ checkin.looks }}</td>
+            <td class="stats_td">{{ checkin.nose }}</td>
+            <td class="stats_td">{{ checkin.taste }}</td>
+            <td class="stats_td">{{ checkin.overall }}</td>
+            <td class="stats_td">{{ checkin.notes }}</td>
             </tr>
         {%  endfor %}
+    <tr>
+        <th colspan="6"></th>
+        <th>Snitt</th>
+        <th>Snitt</th>
+        <th>Snitt</th>
+        <th>Snitt</th>
+        <th></th>
+    </tr>
 </table>
+{% endblock content %}
 
 </body>
 </html>

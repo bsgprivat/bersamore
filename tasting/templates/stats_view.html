@@ -1,3 +1,17 @@
+{% extends 'base.html' %}
+
+{%  block top %}
+    Välkommen {{ usr.first_name }}
+    {{ block.super }}
+{% endblock %}
+
+{%  block menu %}
+    <span class="menuspan"><a href=".">tom meny</a></span>
+{%  endblock menu %}
+
+{%  block content %}
+    {{ block.super }}
+
 <h2>{{ tasting }}</h2>
 <hr>
 
@@ -10,4 +24,4 @@
     {{ checkin }}<br>
 {% endfor %}
 
-<hr>
+{% endblock content %}

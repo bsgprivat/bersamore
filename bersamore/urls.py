@@ -16,11 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from bersamore.views import index, logout_usr
+from tasting.views import profile
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^cellar/', include('cellar.urls')),
     url(r'^tasting/', include('tasting.urls')),
     url(r'^$', index),
-    url(r'^logout/$', logout_usr)
+    url(r'^logout/$', logout_usr),
+    url(r'^profile/$', profile)
 ]

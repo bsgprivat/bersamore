@@ -11,6 +11,7 @@ from tasting.models import Checkin, TastingSession
 
 
 @csrf_exempt
+@login_required(login_url='/')
 def checkin_view(request, tasting_id=None, beer_i=None):
     checkin = None
     tasting = None
@@ -46,10 +47,6 @@ def checkin_view(request, tasting_id=None, beer_i=None):
         pass
 
     if request.POST:
-        print '-------------------------------------------------------------------------------------------'
-        print request.POST
-        print '-------------------------------------------------------------------------------------------'
-
         t_id = int(request.POST['tasting'])
         b_id = int(request.POST['beer'])
 
@@ -89,7 +86,7 @@ def checkin_view(request, tasting_id=None, beer_i=None):
 
     return render_to_response('checkin.html', context)
 
-
+@login_required(login_url='/')
 def checkin_overview(request, tasting_id=None):
     tasting = TastingSession.objects.get(pk=int(tasting_id))
     checkins = tasting.checkin_set.all()
@@ -180,7 +177,7 @@ def checkin_overview(request, tasting_id=None):
 
     return render_to_response('checkin_overview.html', context)
 
-
+@login_required(login_url='/')
 def stats_view(request):
     tasting = TastingSession.objects.first()
     checkins = tasting.checkin_set.all()
@@ -202,14 +199,14 @@ def profile(request):
 
     context = {
         'usr': usr,
-        'tastings':tastings
+        'tastings': tastings
     }
 
     return render_to_response(
         'profile.html', context
     )
 
-
+@login_required(login_url='/')
 def baseview(request, tasting_id=None):
     usr = request.user
     tastings = TastingSession.objects.all()
@@ -233,7 +230,7 @@ def baseview(request, tasting_id=None):
         'tasting_base.html', context
     )
 
-
+@login_required(login_url='/')
 def tastestats(request, tasting_id=None):
     tasting = TastingSession.objects.get(pk=int(tasting_id))
     usr = request.user
