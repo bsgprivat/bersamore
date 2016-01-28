@@ -8,9 +8,8 @@ urlpatterns = [
     url(r'^(?P<tasting_id>\d+)/$', baseview),
     url(r'^(?P<tasting_id>\d+)/stats/$', tastestats),
     url(r'^$', baseview),
-    url(r'^stats/', stats_view),
+    url(r'^(?P<tasting_id>\d+)/wrapitup/', stats_view),
     url(r'^overview/(?P<tasting_id>\d+)/$', checkin_overview),
 #    url(r'^profile/$', profile),
-
 
 ]

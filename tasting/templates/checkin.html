@@ -139,7 +139,7 @@
                        alt="Submit" />
                 {% endif %}
 
-                {% if next %}
+                {% if checkin and next %}
                     <a href="/tasting/checkin/{{ tasting.pk }}/{{ next }}/">
                         <img src="http://bsg.ddns.net/static/images/right.png">
                     </a>

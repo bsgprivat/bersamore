@@ -107,12 +107,6 @@ def checkin_overview(request, tasting_id=None):
 
     if 'active_beer' in request.GET:
         active_beer = int(request.GET['active_beer'])
-        print active_beer
-        for beer in beers:
-            print beer
-            print beer.pk
-            print active_beer == beer.pk
-            print '......'
         if active_beer in [beer.pk for beer in beers]:
             print True
             chosen_beer = Beer.objects.get(pk=active_beer)
@@ -134,12 +128,10 @@ def checkin_overview(request, tasting_id=None):
                     count_looks += 1
                 if checkin.nose:
                     aggregated_nose += checkin.nose
-                    count_nose +=1
-
+                    count_nose += 1
                 if checkin.taste:
                     aggregated_taste += checkin.taste
                     count_taste += 1
-
                 if checkin.overall:
                     aggregated_overall += checkin.overall
                     count_overall += 1
@@ -161,7 +153,6 @@ def checkin_overview(request, tasting_id=None):
                 # [grade (dvs 1), number of ones for nose, ..looks, taste.. overall
                 # list of lists.
 
-
     context = {
         'tasting': tasting,
         'checkins': checkins,
@@ -178,8 +169,8 @@ def checkin_overview(request, tasting_id=None):
     return render_to_response('checkin_overview.html', context)
 
 @login_required(login_url='/')
-def stats_view(request):
-    tasting = TastingSession.objects.first()
+def stats_view(request, tasting_id):
+    tasting = TastingSession.objects.get(pk=int(tasting_id))
     checkins = tasting.checkin_set.all()
     beers = tasting.beers.all()
 
@@ -188,7 +179,6 @@ def stats_view(request):
         'checkins': checkins,
         'beers': beers
     }
-
     return render_to_response('stats_view.html', context)
 
 

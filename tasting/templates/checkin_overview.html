@@ -79,7 +79,7 @@ function drawAxisTickColors() {
 <body>
 
 {% block top %}
-    Beer Management System
+    Beer Management System [beta]
 {% endblock top %}
 
 {% block menu %}
@@ -92,6 +92,12 @@ function drawAxisTickColors() {
 
         </a></span>
     {% endfor %}
+    <span class="menuspan">
+        <a href="/tasting/{{ tasting.pk }}/wrapitup/">
+            <img src="http://bsg.ddns.net/static/images/stats.png"  id="statsimg_menu">
+        </a>
+    </span>
+
 </div>
 {% endblock menu %}
 
@@ -103,21 +109,25 @@ function drawAxisTickColors() {
 {% else %}
     <div id="beer_div">
         <div id="beer_img_td">
-            {%  if not beer.image %}
-                <img src="http://bsg.ddns.net/static/images/uploads/beers/maz.jpg"
+{#            {%  if not beer.image %}#}
+                <img src="http://bsg.ddns.net/static/images/uploads/beers/emptybeer.jpg"
                     id="beer_img">
-            {%  else %}
-                <img src="/{{ beer.image.url }}"
-                    id="beer_img">
-            {%  endif %}
+{#            {%  else %}#}
+{#                <img src="/{{ beer.image.url }}"#}
+{#                    id="beer_img">#}
+{#            {%  endif %}#}
         </div>
-        <span id="beer_name">
-            {{ beer.brewery.name }}<br>
-            {{ beer.name }}
-        </span>
 
         <div id="beer_info">
             <table id="beertable">
+            <tr>
+                <td colspan="2">
+                    <span id="beer_name">
+                        {{ beer.brewery.name }}<br>
+                        {{ beer.name }}
+                    </span>
+                </td>
+            </tr>
                 <tr id="origin">
                     <th>
                         Origin
@@ -167,10 +177,10 @@ function drawAxisTickColors() {
 
                 <tr id="notes">
                     <th>
-                        {%  if beer.notes %}Description{% endif %}
+                        {%  if beer.description %}Description{% endif %}
                     </th>
                     <td>
-                        {{ beer.notes }}
+                        {{ beer.description }}
                     </td>
                 </tr>
             <tr>
