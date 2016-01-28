@@ -36,8 +36,16 @@ class CheckinAdmin(admin.ModelAdmin):
     list_filter = (u'tasting__date', u'beer__brewery')
     list_display = (u'taster', u'beer')
 
+
+class LoginAdmin(admin.ModelAdmin):
+    list_display = (u'usr', u'dt')
+    list_filter = (u'usr', u'dt')
+    search_fields = (u'usr__username',)
+
+
 admin.site.register(TastingSession, TastingAdmin)
 admin.site.register(Taster, TasterAdmin)
+admin.site.register(Login, LoginAdmin)
 
 #TODO: no need?
 admin.site.register(Checkin, CheckinAdmin)

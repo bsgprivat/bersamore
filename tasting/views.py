@@ -9,7 +9,6 @@ from cellar.models import Beer
 from tasting.models import Checkin, TastingSession
 
 
-
 @csrf_exempt
 @login_required(login_url='/')
 def checkin_view(request, tasting_id=None, beer_i=None):
@@ -23,7 +22,6 @@ def checkin_view(request, tasting_id=None, beer_i=None):
 
     try:
         tasting = TastingSession.objects.get(pk=tasting_id)
-
         if usr.taster not in tasting.tasters.all():
             return HttpResponse("You are not participating in this tasting, are you?")
 
@@ -86,6 +84,7 @@ def checkin_view(request, tasting_id=None, beer_i=None):
 
     return render_to_response('checkin.html', context)
 
+
 @login_required(login_url='/')
 def checkin_overview(request, tasting_id=None):
     tasting = TastingSession.objects.get(pk=int(tasting_id))
@@ -103,15 +102,12 @@ def checkin_overview(request, tasting_id=None):
     count_overall = 0
     random_comments = None
 
-    print request.GET
 
     if 'active_beer' in request.GET:
         active_beer = int(request.GET['active_beer'])
         if active_beer in [beer.pk for beer in beers]:
-            print True
             chosen_beer = Beer.objects.get(pk=active_beer)
 
-        print chosen_beer
         if 'show_stats' in request.GET:
             show_stats = True
             filtered_checkins = checkins.filter(beer__pk=active_beer)
@@ -122,7 +118,6 @@ def checkin_overview(request, tasting_id=None):
             aggregated_overall = 0
 
             for checkin in filtered_checkins:
-                print checkin.taster, checkin.looks, checkin.nose, checkin.taste, checkin.overall, checkin.notes
                 if checkin.looks:
                     aggregated_looks += checkin.looks
                     count_looks += 1
@@ -168,16 +163,37 @@ def checkin_overview(request, tasting_id=None):
 
     return render_to_response('checkin_overview.html', context)
 
+
 @login_required(login_url='/')
 def stats_view(request, tasting_id):
     tasting = TastingSession.objects.get(pk=int(tasting_id))
     checkins = tasting.checkin_set.all()
     beers = tasting.beers.all()
+    checkin_beers_dict = {}
+    best_of = []
+
+    for checkin in checkins:
+        try:
+            checkin_beers_dict[checkin.beer].append(checkin.overall)
+        except KeyError:
+            checkin_beers_dict[checkin.beer] = [checkin.overall]
+
+    for k, v in checkin_beers_dict.items():
+        n = len(v)
+        tot = 0
+        for i in v:
+            tot += i
+        avg = tot/n
+        best_of.append((avg, k))
+
+    sorted(best_of, key=lambda best: best[0])
+    best_of.reverse()
 
     context = {
         'tasting': tasting,
         'checkins': checkins,
-        'beers': beers
+        'beers': beers,
+        'best_of': best_of,
     }
     return render_to_response('stats_view.html', context)
 
@@ -195,6 +211,20 @@ def profile(request):
     return render_to_response(
         'profile.html', context
     )
+
+
+@login_required(login_url='/')
+def settings(request):
+    usr = request.user
+
+    context = {
+        'usr': usr,
+    }
+
+    return render_to_response(
+        'settings.html', context
+    )
+
 
 @login_required(login_url='/')
 def baseview(request, tasting_id=None):
@@ -219,6 +249,7 @@ def baseview(request, tasting_id=None):
     return render_to_response(
         'tasting_base.html', context
     )
+
 
 @login_required(login_url='/')
 def tastestats(request, tasting_id=None):

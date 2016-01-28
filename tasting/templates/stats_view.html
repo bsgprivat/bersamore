@@ -1,12 +1,27 @@
 {% extends 'base.html' %}
 
-{%  block top %}
-    Välkommen {{ usr.first_name }}
-    {{ block.super }}
-{% endblock %}
+{% block top %}
+    Beer Management System [beta]
+{% endblock top %}
 
-{%  block menu %}
-{%  endblock menu %}
+{% block menu %}
+<div id="menubar">
+    {% for b in beers %}
+        <span class="menuspan" title="{{ b.style }}">
+            <a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ b.pk }}"
+                style="{%  if b == beer %}color:red{% endif %}">
+            {{ forloop.counter }}
+
+        </a></span>
+    {% endfor %}
+    <span class="menuspan">
+        <a href="/tasting/{{ tasting.pk }}/wrapitup/">
+            <img src="http://bsg.ddns.net/static/images/stats.png"  id="statsimg_menu">
+        </a>
+    </span>
+
+</div>
+{% endblock menu %}
 
 {%  block content %}
     {{ block.super }}
@@ -14,13 +29,21 @@
 <h2>{{ tasting }}</h2>
 <hr>
 
-{%  for beer in beers %}
-    {{ beer }}<br>
-{% endfor %}
+<table style="width: 50%">
+    {%  for beer in best_of %}
+        <tr>
+        {% if forloop.first %}
+            <th><h3 style="color: goldenrod">{{ beer.1 }}</h3></th><th><h3>{{ beer.0 }}</h3></th>
+        {% else %}
+            <strong><td>{{ beer.1 }}</td><td>{{ beer.0 }}</td></strong>
+        {% endif %}
+        </tr>
+    {% endfor %}
+</>
 
-<hr>
-{%  for checkin in checkins %}
-    {{ checkin }}<br>
-{% endfor %}
+{#<hr>#}
+{#{%  for checkin in checkins %}#}
+{#    {{ checkin }}<br>#}
+{#{% endfor %}#}
 
 {% endblock content %}

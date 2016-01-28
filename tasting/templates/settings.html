@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{%  block top %}
+    Välkommen {{ usr.first_name }}
+    {{ block.super }}
+{% endblock %}
+
+{%  block menu %}
+{%  endblock menu %}
+
+{%  block content %}
+
+    <h2>Settings</h2>
+        Här kommer du inom kort kunna ändra dina inställningar, etc.
+
+{%  endblock content %}

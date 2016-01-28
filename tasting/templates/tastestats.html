@@ -56,7 +56,9 @@
             <td class="stats_td">{{ checkin.beer.name }}</td>
             <td class="stats_td">{{ checkin.beer.style }}</td>
             <td class="stats_td">{{ checkin.beer.brewery }}</td>
-            <td class="stats_td">{{ checkin.beer.brewery.country.name }}</td>
+            <td class="stats_td" title="{{ checkin.beer.brewery.country.name }}">
+                {{ checkin.beer.brewery.country.code }}
+            </td>
             <td class="stats_td">{{ checkin.beer.abv }}</td>
             <td class="stats_td">{{ checkin.beer.ibu }}</td>
             <td class="stats_td">{{ checkin.looks }}</td>
@@ -66,14 +68,14 @@
             <td class="stats_td">{{ checkin.notes }}</td>
             </tr>
         {%  endfor %}
-    <tr>
-        <th colspan="6"></th>
-        <th>Snitt</th>
-        <th>Snitt</th>
-        <th>Snitt</th>
-        <th>Snitt</th>
-        <th></th>
-    </tr>
+{#    <tr>#}
+{#        <th colspan="6"></th>#}
+{#        <th>Snitt</th>#}
+{#        <th>Snitt</th>#}
+{#        <th>Snitt</th>#}
+{#        <th>Snitt</th>#}
+{#        <th></th>#}
+{#    </tr>#}
 </table>
 {% endblock content %}
 

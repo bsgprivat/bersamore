@@ -10,6 +10,11 @@ INVITATION_STATUSES = (
 )
 
 
+class Login(models.Model):
+    usr = models.ForeignKey(User)
+    dt = models.DateTimeField(auto_now_add=True)
+
+
 class Taster(models.Model):
     user = models.OneToOneField(User)
     fav_beers = models.ManyToManyField(Beer, blank=True)

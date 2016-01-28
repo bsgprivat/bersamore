@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from bersamore.views import index, logout_usr
-from tasting.views import profile
+from tasting.views import profile, settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^tasting/', include('tasting.urls')),
     url(r'^$', index),
     url(r'^logout/$', logout_usr),
-    url(r'^profile/$', profile)
+    url(r'^profile/$', profile),
+    url(r'^settings/$', settings)
 ]

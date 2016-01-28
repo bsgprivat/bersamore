@@ -103,6 +103,10 @@ function drawAxisTickColors() {
 
 
 {% block content %}
+
+<img src="http://bsg.ddns.net/static/images/logga.png"
+        style="position: fixed; width: 13%; left: 0; bottom:0">
+
 <div id="content_wrapper">
 {%  if not beer %}
  You'll need to choose a beer to start with!
@@ -151,7 +155,7 @@ function drawAxisTickColors() {
                         ABV
                     </th>
                     <td>
-                         {{ beer.abv }}
+                         {{ beer.abv }} %
                     </td>
                 </tr>
 
@@ -195,27 +199,27 @@ function drawAxisTickColors() {
                                 </tr>
                                 <tr>
                                     <td>
-                                        looks<br>
+                                        Looks<br>
                                         {{ avg_looks }}
                                     </td>
                                     <td>
-                                        nose<br>
+                                        Nose<br>
                                         {{ avg_nose }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        taste<br>
+                                        Taste<br>
                                         {{ avg_taste }}
                                     </td>
                                     <td>
-                                        overall<br>
+                                        Overall<br>
                                         {{ avg_overall }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        random comments<br>
+                                        Comments<br>
                                         {{ random_comments }}
                                     </td>
                                 </tr>
