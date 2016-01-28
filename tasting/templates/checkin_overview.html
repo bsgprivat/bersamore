@@ -109,13 +109,13 @@ function drawAxisTickColors() {
 {% else %}
     <div id="beer_div">
         <div id="beer_img_td">
-{#            {%  if not beer.image %}#}
+            {%  if not beer.image %}
                 <img src="http://bsg.ddns.net/static/images/uploads/beers/emptybeer.jpg"
                     id="beer_img">
-{#            {%  else %}#}
-{#                <img src="/{{ beer.image.url }}"#}
-{#                    id="beer_img">#}
-{#            {%  endif %}#}
+            {%  else %}
+                <img src="/{{ beer.image.url }}"
+                    id="beer_img">
+            {%  endif %}
         </div>
 
         <div id="beer_info">
