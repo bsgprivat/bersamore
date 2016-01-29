@@ -200,27 +200,31 @@ function drawAxisTickColors() {
                                 <tr>
                                     <td>
                                         Looks<br>
-                                        {{ avg_looks }}
+                                        <strong>
+                                            {{ avg_looks }}
+                                        </strong>
                                     </td>
                                     <td>
                                         Nose<br>
-                                        {{ avg_nose }}
+                                        <strong>{{ avg_nose }}</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         Taste<br>
-                                        {{ avg_taste }}
+                                        <strong>{{ avg_taste }}</strong>
                                     </td>
                                     <td>
                                         Overall<br>
-                                        {{ avg_overall }}
+                                        <strong>{{ avg_overall }}</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        Comments<br>
-                                        {{ random_comments }}
+                                        Comments<br><strong>
+                                        {%  for c in random_comments %}
+                                            {{ c }}{% if not forloop.last %}<br>{% endif %}
+                                        {% endfor %}</strong>
                                     </td>
                                 </tr>
                             </table>

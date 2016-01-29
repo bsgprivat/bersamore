@@ -102,7 +102,6 @@ def checkin_overview(request, tasting_id=None):
     count_overall = 0
     random_comments = None
 
-
     if 'active_beer' in request.GET:
         active_beer = int(request.GET['active_beer'])
         if active_beer in [beer.pk for beer in beers]:
@@ -141,8 +140,8 @@ def checkin_overview(request, tasting_id=None):
             avg_overall = aggregated_overall/count_overall if aggregated_overall else u'No votes'
 
             if list_of_comments:
-                get_i = random.randint(0, len(filtered_checkins)-1)
-                random_comments = list_of_comments[get_i]
+                random.shuffle(list_of_comments)
+                random_comments = list_of_comments[:3]
 
                 #TODO: stats needs to be:
                 # [grade (dvs 1), number of ones for nose, ..looks, taste.. overall
