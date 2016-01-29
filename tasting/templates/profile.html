@@ -17,12 +17,12 @@
         </a> {% if tasting.finished %}
             ( Avslutad )
     {% else %}
-        börjar: {{ tasting.date }}
+        börjar: {{ tasting.date|date:'d/m-y H:i' }}
     {% endif %}
         <br>
     {% endfor %}
 
-    {%  if usr.taster.checkin_set %}
+    {%  if usr.taster.checkin_set.exists %}
         <h2>Dina högst rankade öl</h2>
         {%  for checkin in usr.taster.checkin_set.all %}
             {{ checkin.beer }} - {{ checkin.overall }} ({{ checkin.date|date:'d/m-y' }}) <br>
