@@ -185,7 +185,7 @@ def stats_view(request, tasting_id):
         avg = tot/n
         best_of.append((avg, k))
 
-    sorted(best_of, key=lambda best: best[0])
+    sorted(best_of, key=lambda best: best[1])
     best_of.reverse()
 
     context = {
@@ -201,10 +201,12 @@ def stats_view(request, tasting_id):
 def profile(request):
     usr = request.user
     tastings = TastingSession.objects.filter(tasters=usr.taster)
+    checkins = Checkin.objects.filter(taster=usr.taster).order_by('overall')
 
     context = {
         'usr': usr,
-        'tastings': tastings
+        'tastings': tastings,
+        'checkins': checkins,
     }
 
     return render_to_response(
