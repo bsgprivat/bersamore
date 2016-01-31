@@ -53,6 +53,7 @@
 
         {%  for checkin in checkins %}
             <tr>
+            <td class="stats_td"><input type="checkbox" value="{{ checkin.beer }}"/> </td>
             <td class="stats_td">{{ checkin.beer.name }}</td>
             <td class="stats_td">{{ checkin.beer.style }}</td>
             <td class="stats_td">{{ checkin.beer.brewery }}</td>
