@@ -44,7 +44,7 @@
         <div id="checkin_body" class="form_group">
             {% if checkin %}
                 <div class="header_beer">
-                    <strong>{{ beer.style }}</strong>
+                    <strong>{{ beer.style }} ({{ beer.name }}-{{ beer.pk }})</strong>
                 </div>
             {% endif %}
 
@@ -118,7 +118,7 @@
             </div>
 
             <div class="header_beer">
-            <label>Looks</label><br>
+            <label>Notes</label><br>
              <textarea name="notes">{{ checkin.notes }}</textarea>
             </div>
 

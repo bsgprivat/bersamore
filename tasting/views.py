@@ -28,8 +28,8 @@ def checkin_view(request, tasting_id=None, beer_i=None):
     except Exception as e:
         return HttpResponse(e)
 
-    beers = tasting.beers.all()
-    beer_count = tasting.beers.count()
+    beers = tasting.ordered_beers.all()
+    beer_count = tasting.ordered_beers.count()
 
     if beer_i:
         beer_i = int(beer_i)
@@ -166,7 +166,7 @@ def checkin_overview(request, tasting_id=None):
 @login_required(login_url='/')
 def stats_view(request, tasting_id):
     tasting = TastingSession.objects.get(pk=int(tasting_id))
-    checkins = tasting.checkin_set.all()
+    checkins = tasting.checkin_set.all().order_by('-date')
     beers = tasting.beers.all()
     checkin_beers_dict = {}
     best_of = []
