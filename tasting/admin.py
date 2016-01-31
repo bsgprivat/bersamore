@@ -33,8 +33,8 @@ class TastingAdmin(admin.ModelAdmin):
 
 class CheckinAdmin(admin.ModelAdmin):
     search_fields = (u'beer',)
-    list_filter = (u'tasting__date', u'beer__brewery')
-    list_display = (u'taster', u'beer')
+    list_filter = (u'tasting', u'tasting__date', u'beer__brewery')
+    list_display = (u'taster', u'beer', u'date', u'tasting')
 
 
 class LoginAdmin(admin.ModelAdmin):
