@@ -26,7 +26,7 @@
             </div>
 
             <div class="header_beer">
-            {% for b in tasting.beers.all %}
+            {% for b in tasting.ordered_beers %}
                 <span class="header_beer"
                         {% if b == beer %}
                       id="active"
