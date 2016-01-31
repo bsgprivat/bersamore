@@ -29,6 +29,11 @@ class StyleAdmin(admin.ModelAdmin):
     list_display = (u'name',)
 
 
+class ForeginIDInline(admin.TabularInline):
+    model = ForeignID
+    raw_id_fields = (u'beer',)
+
+
 admin.site.register(Beer, BeerAdmin)
 admin.site.register(Brewery, BreweryAdmin)
 admin.site.register(Country)

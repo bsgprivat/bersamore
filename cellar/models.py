@@ -1,6 +1,15 @@
 from django.db import models
 
 
+SOURCES = (
+    (0, u'Systembolaget'),
+    (1, u'Untappd'),
+    (2, u'Boxbeers'),
+    (3, u'Ratebeer'),
+    (4, u'BeerAdvocate'),
+)
+
+
 class Country(models.Model):
     name = models.CharField(max_length=128)
     code = models.CharField(max_length=2)
@@ -55,6 +64,12 @@ class Beer(models.Model):
 
     def __unicode__(self):
         return u'%s %s - %s' % (self.brewery.name, self.name, self.style)
+
+
+class ForeignID(models.Model):
+    beer = models.ForeignKey(Beer)
+    u_id = models.CharField(max_length=255)
+    source = models.IntegerField(choices=SOURCES)
 
 
 class UploadedUntappdCSV(models.Model):

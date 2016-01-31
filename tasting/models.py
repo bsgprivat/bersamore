@@ -64,6 +64,8 @@ class TastingBeers(models.Model):
     beer = models.ForeignKey(Beer)
     tasting = models.ForeignKey(TastingSession)
     position = models.PositiveIntegerField(default=0)
+    # TODO
+    # description = models.TextField(blank=True, null=True, help_text=u'Overrides description from beer.')
 
     class Meta:
         unique_together = (u'beer', u'tasting')
