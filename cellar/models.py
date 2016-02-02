@@ -71,6 +71,9 @@ class ForeignID(models.Model):
     u_id = models.CharField(max_length=255)
     source = models.IntegerField(choices=SOURCES)
 
+    class Meta:
+        unique_together = ('beer', 'source')
+
 
 class UploadedUntappdCSV(models.Model):
     name = models.CharField(max_length=128)

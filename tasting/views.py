@@ -167,7 +167,6 @@ def checkin_overview(request, tasting_id=None):
 def stats_view(request, tasting_id):
     tasting = TastingSession.objects.get(pk=int(tasting_id))
     checkins = tasting.checkin_set.all().order_by('-date')
-    #beers = tasting.beers.all()
     checkin_beers_dict = {}
     best_of = []
 
@@ -185,13 +184,12 @@ def stats_view(request, tasting_id):
         avg = tot/n
         best_of.append((avg, k))
 
-    sorted(best_of, key=lambda best: best[1])
+    best_of = sorted(best_of, key=lambda best: float(best[0]))
     best_of.reverse()
 
     context = {
         'tasting': tasting,
         'checkins': checkins,
-        #'beers': beers,
         'best_of': best_of,
     }
     return render_to_response('stats_view.html', context)
@@ -201,7 +199,7 @@ def stats_view(request, tasting_id):
 def profile(request):
     usr = request.user
     tastings = TastingSession.objects.filter(tasters=usr.taster)
-    checkins = Checkin.objects.filter(taster=usr.taster).order_by('overall')
+    checkins = Checkin.objects.filter(taster=usr.taster).order_by('-overall')
 
     context = {
         'usr': usr,
@@ -238,6 +236,8 @@ def baseview(request, tasting_id=None):
         tasting = tastings.get(pk=int(tasting_id))
         if tasting.date.replace(tzinfo=None) < now.replace(tzinfo=None):
             can_start = True
+    else:
+        return redirect('/profile/')
 
     context = {
         'usr': usr,

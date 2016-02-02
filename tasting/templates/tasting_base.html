@@ -37,12 +37,16 @@
 
     {%  for t in tastings %}
         {%  if usr.taster in t.tasters.all %}
-            <a href="/tasting/{{ t.pk }}">{{ t.name }}</a> {{ t.description }}
+            <a href="/tasting/{{ t.pk }}">
+                {{ t.name }}
+            </a>
+            {{ t.description }}
+            {%  if t.finished %}
+                [ finished ]
+            {% endif %}
         {% endif %}
 
-        {%  if t.finished %}
-            <a href="/tasting/{{ t.pk }}">{{ t.name }}</a> {{ t.description }} [ avslutad ]
-        {% endif %}
+
     {% endfor %}
 {%  endif %}
 {%  endblock content %}

@@ -11,11 +11,17 @@ class handle_csv_admin(admin.ModelAdmin):
     actions = [handle_csv, ]
 
 
+class ForeginIDInline(admin.TabularInline):
+    model = ForeignID
+    raw_id_fields = (u'beer',)
+
+
 class BeerAdmin(admin.ModelAdmin):
     search_fields = (u'name', u'brewery__name', u'style__name')
     list_display = (u'name', u'brewery', u'style')
     filter_horizontal = (u'collabs', u'hops')
     list_filter = (u'brewery__country', u'brewery', u'abv', u'ibu')
+    inlines = (ForeginIDInline, )
 
 
 class BreweryAdmin(admin.ModelAdmin):
@@ -28,10 +34,6 @@ class StyleAdmin(admin.ModelAdmin):
     search_fields = (u'name',)
     list_display = (u'name',)
 
-
-class ForeginIDInline(admin.TabularInline):
-    model = ForeignID
-    raw_id_fields = (u'beer',)
 
 
 admin.site.register(Beer, BeerAdmin)
