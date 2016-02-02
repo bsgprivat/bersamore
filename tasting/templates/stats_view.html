@@ -33,9 +33,9 @@
     {%  for beer in best_of %}
         <tr>
         {% if forloop.first %}
-            <th><h3 style="color: goldenrod">{{ beer.1.name }} [{{ beer.1.pk }}]</h3></th><th><h3>{{ beer.0|floatformat }}</h3></th>
+            <th><h3 style="color: goldenrod">{{ beer.1.name }}</h3></th><th><h3>{{ beer.0|floatformat }}</h3></th>
         {% else %}
-            <strong><td>{{ beer.1.name }} [{{ beer.1.pk }}]</td><td>{{ beer.0|floatformat }}</td></strong>
+            <strong><td>{{ beer.1.name }}</td><td>{{ beer.0|floatformat }}</td></strong>
         {% endif %}
         </tr>
     {% endfor %}
