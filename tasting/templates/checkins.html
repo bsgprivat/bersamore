@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{%  block top %}
+    Welcome {{ usr.first_name }}
+    {{ block.super }}
+{% endblock %}
+
+{%  block menu %}
+{%  endblock menu %}
+
+{%  block content %}
+    <h2>Checked in Beers</h2>
+    {%  if usr.taster.checkin_set.exists %}
+        <h3>Your top 10 rated beers {% if not filters %} (unfiltered){% endif %}</h3>
+        <table>
+{#        <tr><th colspan="4">Add filters</th></tr>#}
+{#        <tr>#}
+{#            <td colspan="4">#}
+{#                [country]#}
+{#                [brewery]#}
+{#                [style]#}
+{#                [checkin date from]#}
+{#                [checkin date to]#}
+{#                [specific grade from]#}
+{#                [specific grade to]#}
+{#            </td>#}
+{#        </tr>#}
+            <tr>
+                <th>
+                    Beer
+                </th>
+                <th>
+                    Style
+                </th>
+                <th>
+                    Brewery
+                </th>
+                <th>
+                    avg Rating
+                </th>
+            </tr>
+            {%  for avg,beer in beers %}
+                <tr>
+                <td>
+                    <a href="/cellar/beer/{{ beer.pk }}">{{ beer.name }}</a>
+                </td>
+                <td>
+                    <a href="/cellar/style/{{ beer.style.pk }}">{{ beer.style.name }}</a>
+                </td>
+                <td>
+                    <a href="/cellar/brewery/{{ beer.brewery.pk }}">{{ beer.brewery.name }}</a>
+                </td>
+                <td>{{ avg }}</td>
+                </tr>
+            {%  endfor %}
+        </table>
+    {%  endif %}
+
+
+{%  endblock content %}

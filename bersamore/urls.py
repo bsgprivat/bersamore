@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from bersamore.views import index, logout_usr
-from tasting.views import profile, settings
+from tasting.views import profile, settings, checkins
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^$', index),
     url(r'^logout/$', logout_usr),
     url(r'^profile/$', profile),
+    url(r'^checkins/$', checkins),
     url(r'^settings/$', settings)
 ]

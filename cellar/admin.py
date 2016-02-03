@@ -11,17 +11,23 @@ class handle_csv_admin(admin.ModelAdmin):
     actions = [handle_csv, ]
 
 
-class ForeginIDInline(admin.TabularInline):
-    model = ForeignID
-    raw_id_fields = (u'beer',)
-
-
 class BeerAdmin(admin.ModelAdmin):
     search_fields = (u'name', u'brewery__name', u'style__name')
     list_display = (u'name', u'brewery', u'style')
     filter_horizontal = (u'collabs', u'hops')
     list_filter = (u'brewery__country', u'brewery', u'abv', u'ibu')
-    inlines = (ForeginIDInline, )
+    fieldsets = (
+        (None, {
+            'fields': (
+                u'name', u'image', u'brewery', u'abv', u'ibu', u'description',
+                u'year', u'hops', u'collabs'
+            )
+        }),
+        ('External connections', {
+            'classes': ('collapse',),
+            'fields': (u'sysbol_id', u'sysbol_cart_id', u'untappd_id'),
+        }),
+    )
 
 
 class BreweryAdmin(admin.ModelAdmin):

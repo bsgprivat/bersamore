@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {%  block top %}
-    Välkommen {{ usr.first_name }}
+    Welcome {{ usr.first_name }}
     {{ block.super }}
 {% endblock %}
 
@@ -10,23 +10,59 @@
 
 {%  block content %}
 
-    <h2>Dina ölprovningar</h2>
+    <h2>Your tastings</h2>
     {%  for tasting in tastings %}
         <a href="/tasting/{{ tasting.pk }}">
             {{ tasting.name }}
         </a> {% if tasting.finished %}
             ( Avslutad )
     {% else %}
-        börjar: {{ tasting.date|date:'d/m-y H:i' }}
+        starts at: {{ tasting.date|date:'d/m-y H:i' }}
     {% endif %}
         <br>
     {% endfor %}
 
     {%  if usr.taster.checkin_set.exists %}
-        <h2>Dina högst rankade öl</h2>
+        <h2>Your 10 latest checkins</h2>
+        <table>
+        <tr>
+            <th>
+                Beer
+            </th>
+            <th>
+                Style
+            </th>
+            <th>
+                Brewery
+            </th>
+            <th>
+                Rating
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Tasting
+            </th>
+        </tr>
         {%  for checkin in checkins %}
-            {{ checkin.beer }} - {{ checkin.overall }} ({{ checkin.date|date:'d/m-y' }}) <br>
+            <tr>
+            <td>
+                <a href="/cellar/beer/{{ checkin.beer.pk }}">{{ checkin.beer.name }}</a>
+            </td>
+            <td>
+                <a href="/cellar/style/{{ checkin.beer.style.pk }}">{{ checkin.beer.style.name }}</a>
+            </td>
+            <td>
+                <a href="/cellar/brewery/{{ checkin.beer.brewery.pk }}">{{ checkin.beer.brewery }}</a>
+            </td>
+            <td>{{ checkin.overall }}</td>
+            <td>{{ checkin.date|date:'d/m-y' }}</td>
+            <td>{{ checkin.tasting.name }}</td>
+            </tr>
         {%  endfor %}
+        </table>
+                <a href="/checkins/">View all checkins</a>
     {%  endif %}
 
 {#    <h2>Dna favoriter</h2>#}

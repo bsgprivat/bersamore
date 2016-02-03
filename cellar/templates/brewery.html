@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    {% block script %}
+    {{ block.super }}
+    {% endblock script %}
+
+</head>
+<body>
+
+{% block top %}
+    Beer Management System [beta]
+{% endblock top %}
+
+{% block menu %}
+{% endblock menu %}
+
+
+{% block content %}
+    <h2>{{ brewery }}</h2>
+
+    <h3>All beers</h3>
+
+    <table>
+        {%  for beer in beers %}
+        <tr>
+            <th>
+                <a href="/cellar/beer/{{ beer.pk }}">{{ beer.name }}</a>
+            </th>
+            <td>
+                <a href="/cellar/style/{{ beer.style.pk }}">{{ beer.style.name }}</a>
+            </td>
+        </tr>
+        {%  endfor %}
+    </table>
+
+{% endblock content %}
+
+</body>
+
+</html>

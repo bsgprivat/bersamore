@@ -1,25 +1,95 @@
-<div id="wrapper">
-    <div class="title">
-        <h1>
-            {{ beer.name }}
-        </h1>
-        <h2>{{ beer.brewery }} {{ beer.brewery.country.name }}
-            <img src="/static/images/uploads/flags/{{ beer.brewery.country.code }}.png">
-        </h2>
+{% extends 'base.html' %}
 
-    </div>
-    <div class="beer_info_wrap">
-        <div class="beer_info_img">
-            <img src="/{% if beer.image %}{{ beer.image.url }}{%  else %}/static/images/uploads/beer/emptybeer.jpg{% endif %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    {% block script %}
+    {{ block.super }}
+    {% endblock script %}
+
+</head>
+<body>
+
+{% block top %}
+    Beer Management System [beta]
+    {{ block.super }}
+{% endblock top %}
+
+{% block menu %}
+{#<div id="menubar">#}
+{#    {% for b in beers %}#}
+{#        <span class="menuspan" title="{{ b.style }}">#}
+{#            <a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ b.pk }}"#}
+{#                style="{%  if b == beer %}color:red{% endif %}">#}
+{#            {{ forloop.counter }}#}
+{##}
+{#        </a></span>#}
+{#    {% endfor %}#}
+{#    <span class="menuspan">#}
+{#        <a href="/tasting/{{ tasting.pk }}/wrapitup/">#}
+{#            <img src="http://bsg.ddns.net/static/images/stats.png"  id="statsimg_menu">#}
+{#        </a>#}
+{#    </span>#}
+{##}
+{#</div>#}
+{% endblock menu %}
+
+
+{% block content %}
+
+<img src="http://bsg.ddns.net/static/images/logga.png"
+        style="position: fixed; width: 13%; left: 0; bottom:0">
+
+<div id="content_wrapper">
+{%  if not beer %}
+ You'll need to choose a beer to start with!
+{% else %}
+    <div id="beer_div">
+        <div id="beer_img_td">
+            {%  if not beer.image %}
+                <img src="http://bsg.ddns.net/static/images/uploads/beers/emptybeer.jpg"
+                    id="beer_img">
+            {%  else %}
+                <img src="/{{ beer.image.url }}"
+                    id="beer_img">
+            {%  endif %}
         </div>
-        <div class="beer_info_text">
-            <table>
+
+        <div id="beer_info">
+            <table id="beertable">
+            <tr id="name">
+                <th>
+                    Name
+                </th>
+                <td>
+                    {{ beer.name }}
+                </td>
+            </tr>
+            <tr id="brewery">
+                <th>
+                    Brewery
+                </th>
+                <td>
+                    <a href="/cellar/brewery/{{ beer.brewery.pk }}">{{ beer.brewery }}</a>
+                </td>
+            </tr>
+                <tr id="origin">
+                    <th>
+                        Origin
+                    </th>
+                    <td>
+                         {{ beer.brewery.country.name }}
+                    </td>
+                </tr>
+
                 <tr id="style">
                     <th>
                         Style
                     </th>
                     <td>
-                         {{ beer.style }}
+                        <a href="/cellar/style/{{ beer.style.pk }}">{{ beer.style.name }}</a>
                     </td>
                 </tr>
 
@@ -28,7 +98,7 @@
                         ABV
                     </th>
                     <td>
-                         {{ beer.abv }}
+                         {{ beer.abv }} %
                     </td>
                 </tr>
 
@@ -47,63 +117,112 @@
                     </th>
                     <td>
                         {%  for hop in beer.hops.all %}
-                            {{ hop }}<br>
+                            {{ hop.name }} ({{ hop.country.code }})<br>
                         {% endfor %}
                     </td>
                 </tr>
 
-                <tr id="desc">
+                <tr id="notes">
                     <th>
-                        Description
+                        {%  if beer.description %}Description{% endif %}
                     </th>
                     <td>
                         {{ beer.description }}
                     </td>
                 </tr>
-
-                <tr id="links">
-                    <th>
-                    </th>
-                    <td>
-                        {%  if beer.sysbol_url %}
-                            <a href="{{ beer.sysbol_url }}">
-                            <img src="http://bsg.ddns.net/static/images/systembolaget.png" id="sysbol">
-                        </a>
-                    {% endif %}
-
-                    </td>
-                </tr>
+{#            <tr>#}
+{#                <td colspan="2">#}
+{#                    <div id="stats_div">#}
+{#                        {%  if show_stats %}#}
+{#                            <table id="statstable">#}
+{#                                <tr>#}
+{#                                    <th colspan="2">#}
+{#                                        Statistics#}
+{#                                    </th>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>#}
+{#                                        Looks<br>#}
+{#                                        <strong>#}
+{#                                            {{ avg_looks|floatformat }}#}
+{#                                        </strong>#}
+{#                                    </td>#}
+{#                                    <td>#}
+{#                                        Nose<br>#}
+{#                                        <strong>{{ avg_nose|floatformat }}</strong>#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>#}
+{#                                        Taste<br>#}
+{#                                        <strong>{{ avg_taste|floatformat }}</strong>#}
+{#                                    </td>#}
+{#                                    <td>#}
+{#                                        Overall<br>#}
+{#                                        <strong>{{ avg_overall|floatformat }}</strong>#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>#}
+{#                                        Comments<br><strong>#}
+{#                                        {%  for c in random_comments %}#}
+{#                                            {{ c }}{% if not forloop.last %}<br>{% endif %}#}
+{#                                        {% endfor %}</strong>#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                            </table>#}
+{#                        {% else %}#}
+{#                            <a href="/tasting/overview/{{ tasting.pk }}/?active_beer={{ beer.pk }}&show_stats=1">#}
+{#                                <img src="http://bsg.ddns.net/static/images/stats.png" id="statsimg">#}
+{#                            </a>#}
+{#                        {% endif %}#}
+{##}
+{#                        <div id="chart_div" style="width: 600px; height: 300px"></div>#}
+{##}
+{#                    </div>#}
+{#                </td>#}
+{#            </tr>#}
 
             </table>
         </div>
     </div>
 
-
 </div>
+{% endif %}
+{% endblock content %}
+</body>
+
+
 
 
 <style>
-
-    #wrapper{
-        border: 3px solid gray;
-        padding: 5em;
-        margin: auto;
-        height: 75vh;
-    }
-    .beer_info_img{
+    #beer_img{
+        max-height: 90vh;
+        max-width: 50vh;
         float: left;
-        border: 1px solid brown;
     }
-    .beer_info_img img{
-        max-width: 50%;
-        /*max-height: 100%;*/
+    #content_wrapper{
+        width: 100%;
+        height: 95vh;
     }
-
-    .beer_info_text{
-        border: 1px solid pink;
+    #beer_div{
+        float:left;
+        width: 50%;
     }
-
-    #sysbol{
-        width: 30px;
+    #stats_div{
+        width: 50%;
+        margin-left: 50%;
+    }
+    th{
+        vertical-align: top;
+        text-align: left;
+    }
+    #statstable{
+        width:90%
+    }
+    #statstable td{
+        padding: 2em;
     }
 </style>
+
+</html>

@@ -1,15 +1,6 @@
 from django.db import models
 
 
-SOURCES = (
-    (0, u'Systembolaget'),
-    (1, u'Untappd'),
-    (2, u'Boxbeers'),
-    (3, u'Ratebeer'),
-    (4, u'BeerAdvocate'),
-)
-
-
 class Country(models.Model):
     name = models.CharField(max_length=128)
     code = models.CharField(max_length=2)
@@ -51,28 +42,29 @@ class Beer(models.Model):
                               default=u'static/images/uploads/beers/emptybeer.jpg')
     brewery = models.ForeignKey(Brewery, blank=True, null=True)
     collabs = models.ManyToManyField(Brewery, related_name=u'collabs', blank=True, help_text=u'Collaborating breweries')
-    #, limit_choices_to={})
     hops = models.ManyToManyField(Hops, blank=True)
     style = models.ForeignKey(Style, null=True, blank=True)
     abv = models.FloatField(default=0.0)
     ibu = models.IntegerField(default=0)
     description = models.TextField(blank=True, null=True)
-    sysbol_url = models.URLField(help_text=u'systembolaget url', blank=True)
+    year = models.IntegerField(null=True, blank=True)
+
+#    sysbol_url = models.URLField(help_text=u'systembolaget url', blank=True)
+    sysbol_id = models.IntegerField(null=True, blank=True, help_text=u'aka "varunummer", used to build urls with')
+    sysbol_cart_id = models.IntegerField(null=True, blank=True, help_text=u'aka "nr", used to build carts')
+    untappd_id = models.IntegerField(null=True, blank=True, help_text=u'Untappds unique Beer ID')
 
     class Meta:
         unique_together = ('name', 'brewery')
 
+    def build_sysbol_url(self):
+        if self.sysbol_id:
+            return u'https://www.systembolaget.se/%s' % self.sysbol_id
+        else:
+            return None
+
     def __unicode__(self):
         return u'%s %s - %s' % (self.brewery.name, self.name, self.style)
-
-
-class ForeignID(models.Model):
-    beer = models.ForeignKey(Beer)
-    u_id = models.CharField(max_length=255)
-    source = models.IntegerField(choices=SOURCES)
-
-    class Meta:
-        unique_together = ('beer', 'source')
 
 
 class UploadedUntappdCSV(models.Model):

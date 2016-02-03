@@ -12,88 +12,97 @@
 
 <h2>Your stats for {{ tasting.name }}</h2>
 
+<form method="post" action="." id="build_sysbol_list">
+    <table>
+        <tr>
+            <th class="stats_th" colspan="2">
+            </th>
 
-<table>
-    <tr>
-        <th class="stats_th">
-        </th>
+            <th class="stats_th">
+                Beer
+            </th>
+            <th class="stats_th">
+                Style
+            </th>
+            <th class="stats_th">
+                Brewery
+            </th>
+            <th class="stats_th">
+                Country
+            </th>
+            <th class="stats_th">
+                Abv
+            </th>
+            <th class="stats_th">
+                IBU
+            </th>
+            <th class="stats_th">
+                Looks
+            </th>
+            <th class="stats_th">
+                Nose
+            </th>
+            <th class="stats_th">
+                Taste
+            </th>
+            <th class="stats_th">
+                Overall
+            </th>
+            <th class="stats_th">
+                Notes
+            </th>
 
-        <th class="stats_th">
-            Beer
-        </th>
-        <th class="stats_th">
-            Style
-        </th>
-        <th class="stats_th">
-            Brewery
-        </th>
-        <th class="stats_th">
-            Country
-        </th>
-        <th class="stats_th">
-            Abv
-        </th>
-        <th class="stats_th">
-            IBU
-        </th>
-        <th class="stats_th">
-            Looks
-        </th>
-        <th class="stats_th">
-            Nose
-        </th>
-        <th class="stats_th">
-            Taste
-        </th>
-        <th class="stats_th">
-            Overall
-        </th>
-        <th class="stats_th">
-            Notes
-        </th>
+        </tr>
 
-    </tr>
-
-        {%  for checkin in checkins %}
-            <tr>
-            <td class="stats_td">
-                {% if checkin.beer.sysbol_url %}
-                    <input type="checkbox" value="{{ checkin.beer }}" disabled="disabled"/>
-                            <a href="{{ checkin.beer.sysbol_url }}">
+            {%  for checkin in checkins %}
+                <tr>
+                <td class="stats_td">
+                    {% if checkin.beer.sysbol_cart_id %}
+                        <input type="checkbox"
+                               value="{{ checkin.beer.sysbol_cart_id }}"
+{#                               disabled="disabled"#}
+                               name="sys_id">
+                    {% endif %}
+                </td>
+                <td class="stats_td">
+                    {% if checkin.beer.sysbol_id %}
+                        <a href="{{ checkin.beer.build_sysbol_url }}">
                             <img src="http://bsg.ddns.net/static/images/systembolaget.png" id="sysbol_inline">
                         </a>
-                {% endif %}
+                    {% endif %}
+                </td>
+                <td class="stats_td">
+                    <a href="/cellar/beer/{{ checkin.beer.pk }}">{{ checkin.beer.name }}</a>
+                </td>
+                <td class="stats_td">{{ checkin.beer.style }}</td>
+                <td class="stats_td">{{ checkin.beer.brewery }}</td>
+                <td class="stats_td" title="{{ checkin.beer.brewery.country.name }}">
+                    {{ checkin.beer.brewery.country.code }}
+                </td>
+                <td class="stats_td">{{ checkin.beer.abv }}</td>
+                <td class="stats_td">{{ checkin.beer.ibu }}</td>
+                <td class="stats_td">{{ checkin.looks }}</td>
+                <td class="stats_td">{{ checkin.nose }}</td>
+                <td class="stats_td">{{ checkin.taste }}</td>
+                <td class="stats_td">{{ checkin.overall }}</td>
+                <td class="stats_td">{{ checkin.notes }}</td>
+                </tr>
+            {%  endfor %}
+    {#    <tr>#}
+    {#        <th colspan="6"></th>#}
+    {#        <th>Snitt</th>#}
+    {#        <th>Snitt</th>#}
+    {#        <th>Snitt</th>#}
+    {#        <th>Snitt</th>#}
+    {#        <th></th>#}
+    {#    </tr>#}
+        <tr>
+            <td colspan="12">
+                <input type="submit" value="Add selected beers to systembolaget shopping cart"> (redirects!)
             </td>
-            <td class="stats_td">{{ checkin.beer.name }}</td>
-            <td class="stats_td">{{ checkin.beer.style }}</td>
-            <td class="stats_td">{{ checkin.beer.brewery }}</td>
-            <td class="stats_td" title="{{ checkin.beer.brewery.country.name }}">
-                {{ checkin.beer.brewery.country.code }}
-            </td>
-            <td class="stats_td">{{ checkin.beer.abv }}</td>
-            <td class="stats_td">{{ checkin.beer.ibu }}</td>
-            <td class="stats_td">{{ checkin.looks }}</td>
-            <td class="stats_td">{{ checkin.nose }}</td>
-            <td class="stats_td">{{ checkin.taste }}</td>
-            <td class="stats_td">{{ checkin.overall }}</td>
-            <td class="stats_td">{{ checkin.notes }}</td>
-            </tr>
-        {%  endfor %}
-{#    <tr>#}
-{#        <th colspan="6"></th>#}
-{#        <th>Snitt</th>#}
-{#        <th>Snitt</th>#}
-{#        <th>Snitt</th>#}
-{#        <th>Snitt</th>#}
-{#        <th></th>#}
-{#    </tr>#}
-    <tr>
-        <td colspan="12">
-            <input type="submit" value="Add selected beers to systembolaget shopping cart" disabled="disabled"
-                   title="Coming soon!">
-        </td>
-    </tr>
-</table>
+        </tr>
+    </table>
+</form>
 
 {% endblock content %}
 

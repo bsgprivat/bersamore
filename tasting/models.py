@@ -17,6 +17,8 @@ class Login(models.Model):
 
 class Taster(models.Model):
     user = models.OneToOneField(User)
+    display_email = models.BooleanField(default=False)
+    allow_contacs = models.BooleanField(default=True)
     fav_beers = models.ManyToManyField(Beer, blank=True)
     fav_breweries = models.ManyToManyField(Brewery, blank=True)
     fav_styles = models.ManyToManyField(Style, blank=True)
@@ -37,6 +39,8 @@ class Taster(models.Model):
     def __unicode__(self):
         if self.user.last_name:
             return u'%s %s' % (self.user.first_name, self.user.last_name[0])
+        if self.user.username:
+            return self.user.username
         else:
             return u'%s' % self.user.email
 

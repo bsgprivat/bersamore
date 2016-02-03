@@ -199,18 +199,57 @@ def stats_view(request, tasting_id):
 def profile(request):
     usr = request.user
     tastings = TastingSession.objects.filter(tasters=usr.taster)
-    checkins = Checkin.objects.filter(taster=usr.taster).order_by('-overall')
+    checkins = Checkin.objects.filter(taster=usr.taster).order_by('-date')
 
     context = {
         'usr': usr,
         'tastings': tastings,
-        'checkins': checkins,
+        'checkins': checkins[:10],
     }
 
     return render_to_response(
         'profile.html', context
     )
 
+
+@login_required(login_url='/')
+def checkins(request, filters=None):
+    usr = request.user
+    checkins = Checkin.objects.filter(taster=usr.taster).order_by('-overall')
+    all_beers = checkins.values_list('beer',flat=True).order_by('beer')
+
+    checkin_beers_dict = {}
+    top_beers = []
+
+    for checkin in checkins:
+        try:
+            checkin_beers_dict[checkin.beer].append(checkin.overall)
+        except KeyError:
+            checkin_beers_dict[checkin.beer] = [checkin.overall]
+
+    for k, v in checkin_beers_dict.items():
+        n = len(v)
+        tot = 0
+        for i in v:
+            tot += i
+        avg = tot/n
+        top_beers.append((avg, k))
+
+    top_beers = sorted(top_beers, key=lambda best: float(best[0]))
+    top_beers.reverse()
+    print top_beers
+    context = {
+        'usr': usr,
+        'checkins': checkins,
+        'count': checkins.count(),
+        'all_beers': all_beers,
+        'beers': top_beers,
+        'filters': filters,
+    }
+
+    return render_to_response(
+        'checkins.html', context
+    )
 
 @login_required(login_url='/')
 def settings(request):
@@ -251,12 +290,22 @@ def baseview(request, tasting_id=None):
         'tasting_base.html', context
     )
 
-
+@csrf_exempt
 @login_required(login_url='/')
 def tastestats(request, tasting_id=None):
     tasting = TastingSession.objects.get(pk=int(tasting_id))
     usr = request.user
     checkins = tasting.checkin_set.filter(taster=usr.taster)
+
+    if request.POST:
+        ids_string = u''
+        if u'sys_id' in request.POST:
+            for i in request.POST.getlist(u'sys_id'):
+                ids_string += u'%s:1,' % i
+
+        return redirect(
+            u'https://www.systembolaget.se/dryckeslista?items=%s' % ids_string[:-1]
+        )
 
     context ={
         'usr': usr,
