@@ -40,15 +40,23 @@ class StyleAdmin(admin.ModelAdmin):
     search_fields = (u'name',)
     list_display = (u'name',)
 
+
+class OrderRowInline(admin.TabularInline):
+    model = OrderRow
+
+
 class SysbolOrderAdmin(admin.ModelAdmin):
     search_fields = (u'taster', )
     list_filter = (u'taster', )
     list_display = (u'order_made', u'taster', )
+    inlines = (OrderRowInline,)
+
 
 admin.site.register(Beer, BeerAdmin)
 admin.site.register(Brewery, BreweryAdmin)
 admin.site.register(Country)
 admin.site.register(Style)
 admin.site.register(Hops)
+admin.site.register(BottleSharing)
 admin.site.register(UploadedUntappdCSV, handle_csv_admin)
 admin.site.register(SysbolOrders, SysbolOrderAdmin)

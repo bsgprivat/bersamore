@@ -82,14 +82,32 @@ class StockedBeer(models.Model):
 
 class SysbolOrders(models.Model):
     taster = models.ForeignKey('tasting.Taster')
-    nr = models.IntegerField(help_text=u'Sysbol order number')
+    friends = models.ForeignKey('cellar.BottleSharing', null=True)
+    nr = models.IntegerField(help_text=u'Sysbol order number', null=True, blank=True)
     order_made = models.DateTimeField()
-    ordered_beers = models.ManyToManyField('OrderedBeer', blank=True, null=True)
+    order_arrived = models.DateTimeField(null=True, blank=True)
+    order_picked_up = models.DateTimeField(null=True, blank=True)
+    orderrows = models.ManyToManyField(Beer, through='cellar.OrderRow')
+    imported = models.BooleanField(default=False, help_text=u'Is imported from order history @ systembolaget')
+    internal = models.BooleanField(default=True, help_text=u'Is created from BMS')
+
+    def fetch_order_by_id(self):
+        # use bs4 to get latest info..
+        pass
 
 
-class OrderedBeer(models.Model):
-    beers = models.ManyToManyField(Beer)
+class OrderRow(models.Model):
+    beer = models.ForeignKey(Beer)
+    order = models.ForeignKey(SysbolOrders)
     qty = models.IntegerField(default=1)
+    completed = models.BooleanField(default=False)
+    sent = models.BooleanField(default=False)
+    cancelled = models.BooleanField(default=False)
+
+
+class BottleSharing(models.Model):
+    admin = models.ForeignKey('tasting.Taster', related_name=u'bottleshare_admin')
+    participants = models.ManyToManyField('tasting.Taster', related_name=u'bottleshare_participant')
 
 
 class UploadedUntappdCSV(models.Model):
