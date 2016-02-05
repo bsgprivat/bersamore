@@ -1,3 +1,7 @@
 *.sock
 test.py
+bersamore/settings.py
+db.sqlite3
+/.idea
 *.pyc
+

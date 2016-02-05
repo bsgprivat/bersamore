@@ -24,6 +24,11 @@ class Taster(models.Model):
     fav_styles = models.ManyToManyField(Style, blank=True)
     friends = models.ManyToManyField('tasting.Taster', related_name=u'tasterfriends')
 
+    sysbol_id = models.EmailField(
+        null=True, blank=True,
+        help_text=u'Used to connect against your systembolaget account'
+    )
+
     @property
     def beers(self):
         return self.fav_beers.all()
@@ -47,6 +52,7 @@ class Taster(models.Model):
 
 class TastingSession(models.Model):
     name = models.CharField(max_length=256)
+    administrators = models.ManyToManyField(Taster, related_name=u'tasting_admin')
     description = models.TextField()
     date = models.DateTimeField()
     tasters = models.ManyToManyField(Taster)
@@ -90,6 +96,7 @@ class Checkin(models.Model):
     beer = models.ForeignKey(Beer)
     date = models.DateTimeField(auto_now_add=True)
     tasting = models.ForeignKey(TastingSession, blank=True, null=True)
+    from_untappd = models.BooleanField(default=False)
 
     looks = models.IntegerField(
         blank=True, null=True, validators=[

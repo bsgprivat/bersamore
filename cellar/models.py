@@ -1,4 +1,6 @@
+from datetime import datetime
 from django.db import models
+#from tasting.models import Taster
 
 
 class Country(models.Model):
@@ -48,8 +50,8 @@ class Beer(models.Model):
     ibu = models.IntegerField(default=0)
     description = models.TextField(blank=True, null=True)
     year = models.IntegerField(null=True, blank=True)
+    ean = models.IntegerField(null=True, blank=True)
 
-#    sysbol_url = models.URLField(help_text=u'systembolaget url', blank=True)
     sysbol_id = models.IntegerField(null=True, blank=True, help_text=u'aka "varunummer", used to build urls with')
     sysbol_cart_id = models.IntegerField(null=True, blank=True, help_text=u'aka "nr", used to build carts')
     untappd_id = models.IntegerField(null=True, blank=True, help_text=u'Untappds unique Beer ID')
@@ -65,6 +67,28 @@ class Beer(models.Model):
 
     def __unicode__(self):
         return u'%s %s - %s' % (self.brewery.name, self.name, self.style)
+
+
+class StockedBeer(models.Model):
+    user = models.ForeignKey('tasting.Taster')
+    beer = models.ForeignKey('Beer')
+    purchase_date = models.DateTimeField(blank=True, null=True)
+    best_before_date = models.DateTimeField(blank=True, null=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+
+    def __unicode__(self):
+        return u'%s (%s)' % (self.beer.name, self.purchase_date)
+
+
+class SysbolOrders(models.Model):
+    nr = models.IntegerField(help_text=u'Sysbol order number')
+    order_made = models.DateTimeField()
+    ordered_beers = models.ManyToManyField('OrderedBeer', blank=True, null=True)
+
+
+class OrderedBeer(models.Model):
+    beers = models.ManyToManyField(Beer)
+    qty = models.IntegerField(default=1)
 
 
 class UploadedUntappdCSV(models.Model):

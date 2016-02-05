@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cellar',
-    'tasting'
+    'tasting',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -78,11 +78,8 @@ WSGI_APPLICATION = 'bersamore.wsgi.application'
 
 DATABASES = {
     'default': {
-    'NAME': 'bersamoredb',
-    'USER': 'steffebg',
-    'PASSWORD': '1ElefantBalanserade',
-    'HOST': 'localhost',
-    'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
