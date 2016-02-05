@@ -70,7 +70,7 @@ class Beer(models.Model):
 
 
 class StockedBeer(models.Model):
-    user = models.ForeignKey('tasting.Taster')
+    taster = models.ForeignKey('tasting.Taster')
     beer = models.ForeignKey('Beer')
     purchase_date = models.DateTimeField(blank=True, null=True)
     best_before_date = models.DateTimeField(blank=True, null=True)
@@ -81,6 +81,7 @@ class StockedBeer(models.Model):
 
 
 class SysbolOrders(models.Model):
+    taster = models.ForeignKey('tasting.Taster')
     nr = models.IntegerField(help_text=u'Sysbol order number')
     order_made = models.DateTimeField()
     ordered_beers = models.ManyToManyField('OrderedBeer', blank=True, null=True)
