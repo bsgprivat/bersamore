@@ -1,12 +1,11 @@
 from datetime import datetime
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.utils import timezone
 import requests
 from imports.models import ImportedBeer
 
 
 def scrape_me():
-
     nget = requests.get('http://www.systembolaget.se/api/productsearch/search?subcategory=%C3%96l')
     nums = nget.json()['Metadata']['DocCount']
 
@@ -33,6 +32,7 @@ def scrape_me():
                 thumb_image_url = None
                 available = True
                 size = p['VolumeText']
+                realease = p['SellStartText']
                 if p['Availability']:
                     available = False
 
@@ -58,10 +58,15 @@ def scrape_me():
                     changed = True
 
                 if ib.thumb_image_url != thumb_image_url:
-                    ib.thumb_image_url = thumb_image_url
-                    changed = True
+                    if thumb_image_url:
+                        ib.thumb_image_url = thumb_image_url
+                        changed = True
                 if ib.available != available:
                     ib.available = available
+                    changed = True
+
+                if ib.realease != realease and realease:
+                    ib.realease = realease
                     changed = True
 
                 if changed:
@@ -69,3 +74,74 @@ def scrape_me():
                     ib.save()
     return u'Done'
 
+
+def list_imports(request):
+    print request.GET
+    if request.user.is_superuser:
+        available = False
+        pics = False
+        size = False
+        price_from = 0
+        price_to = 0
+        created_from = False
+        created_to = False
+        updated_from = False
+        updated_to = False
+        filters = True
+
+        imports = ImportedBeer.objects.all().order_by('latest_update')
+        size_list = list(set(imports.values_list('size', flat=True)))
+        size_list.sort()
+
+        if 'available' in request.GET:
+            available = request.GET['available']
+            if available:
+                imports = imports.filter(available=True)
+
+        if 'size' in request.GET:
+            size = request.GET['size']
+            if size:
+                imports = imports.filter(size=size)
+
+        if 'price_from' in request.GET:
+            price_from = request.GET['price_from']
+            if price_from:
+                price_from = float(price_from)
+                imports = imports.filter(sysbol_price__gte=price_from)
+
+        if 'price_to' in request.GET:
+            price_to = request.GET['price_to']
+            if price_to:
+                price_to = float(price_to)
+                imports = imports.filter(sysbol_price__gte=price_to)
+
+        if 'created_from' in request.GET:
+            created_from = request.GET['created_from']
+            if created_from:
+                imports = imports.filter(created__gte=created_from)
+
+        if 'created_to' in request.GET:
+            created_to = request.GET['created_to']
+            if created_to:
+                imports = imports.filter(created__lte=created_to)
+
+        if 'updated_from' in request.GET:
+            updated_from = request.GET['updated_from']
+            if updated_from:
+                imports = imports.filter(latest_update__gte=updated_from)
+
+        if 'updated_to' in request.GET:
+            updated_to = request.GET['updated_to']
+            if updated_to:
+                imports = imports.filter(latest_update__lte=updated_to)
+
+        if 'pics' in request.GET:
+            pics = request.GET['pics']
+            if pics:
+                imports = imports.filter(thumb_image_url__isnull=False)
+
+        if not any([available,pics,size,price_from,price_to,
+                    created_to,created_from,updated_from,updated_to]):
+            filters = None
+
+    return render_to_response('list.html', locals())

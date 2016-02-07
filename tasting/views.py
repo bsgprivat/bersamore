@@ -200,11 +200,15 @@ def profile(request):
     usr = request.user
     tastings = TastingSession.objects.filter(tasters=usr.taster)
     checkins = Checkin.objects.filter(taster=usr.taster).order_by('-date')
+    admin = False
+    if usr.is_superuser:
+        admin = True
 
     context = {
         'usr': usr,
         'tastings': tastings,
         'checkins': checkins[:10],
+        'admin': admin,
     }
 
     return render_to_response(

@@ -23,7 +23,7 @@ class Taster(models.Model):
     fav_beers = models.ManyToManyField(Beer, blank=True)
     fav_breweries = models.ManyToManyField(Brewery, blank=True)
     fav_styles = models.ManyToManyField(Style, blank=True)
-    friends = models.ManyToManyField('tasting.Taster', related_name=u'tasterfriends')
+    friends = models.ManyToManyField('tasting.Taster', related_name=u'tasterfriends', blank=True)
 
     sysbol_id = models.EmailField(
         null=True, blank=True,
@@ -43,7 +43,7 @@ class Taster(models.Model):
         return self.fav_styles.all()
 
     def __unicode__(self):
-        if self.user.firstt_name and self.user.last_name:
+        if self.user.first_name and self.user.last_name:
             return u'%s %s' % (self.user.first_name, self.user.last_name[0])
         if self.user.username:
             return self.user.username

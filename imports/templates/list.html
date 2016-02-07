@@ -1,0 +1,112 @@
+<div id="listheader" xmlns="http://www.w3.org/1999/html">
+<form method="get" action=".">
+<table id="formtable">
+    <tr>
+        <td>
+            <input type="checkbox" name="available" id="avialable"
+                    {% if available %}checked="checked"{% endif %}/>
+            <label for="avialable">Show only available beers</label>
+        <br>
+            <input type="checkbox" name="pics" id="pics"
+                    {% if pics %}checked="checked"{% endif %}/>
+            <label for="pics">Show only beers with thumbnail</label>
+        </td>
+
+        <td>
+        <label for="sizes">Size</label><br>
+            <select id="size" name="size">
+                <option value="">---</option>
+                {%  for size_val in size_list %}
+                    <option value="{{ size_val }}"
+                            {% if size_val == size %}selected{% endif %}>
+                        {{ size_val }}
+                    </option>
+                {% endfor %}
+            </select>
+        </td>
+
+        <td>
+            <label for="price_from">price, from</label><br>
+            <input type="number" id="price_from" name="price_from"
+                    {% if price_from %}value="{{ price_from }}"{% endif %}/><br>
+            <label for="price_to">price, to</label><br>
+            <input type="number" id="price_to" name="price_to"
+                    {% if price_to %}value="{{ price_to }}"{% endif %}/>
+        </td>
+
+        <td>
+            <label for="created_from">Created, from-date</label><br>
+            <input type="datetime" id="created_from" name="created_from"
+                    {% if created_from %}value="{{ created_from }}{% endif %}"/><br>
+            <label for="created_to">Created, to-date</label><br>
+            <input type="datetime" id="created_to" name="created_to"
+                    {% if created_to %}value="{{ created_to }}{% endif %}"/>
+        </td>
+
+        <td>
+            <label for="updated_from">Updated, from-date</label><br>
+            <input type="datetime" id="updated_from" name="updated_from"
+                    {% if updated_from %}value="{{ updated_from }}{% endif %}"/><br>
+            <label for="updated_to">Updated, to-date</label><br>
+            <input type="datetime" id="updated_to" name="updated_to"
+                    {% if updated_to %}value="{{ updated_to }}{% endif %}"/>
+        </td>
+    </tr>
+
+    <tr><td><input type="submit" value="SUBMIT"></td>
+    <td>Hits: {{ imports.count }}<br>
+        {% if not filters %}Use at least one filter..{% endif %}</td>
+        <td>
+        </td>
+        <td colspan="2">
+            All dates, format as: yyyy-mm-dd
+        </td>
+    </tr>
+
+</table>
+</form>
+
+</div>
+
+{%  if filters %}
+    <div id="listcontent">
+        {% include 'list_items.html' %}
+    </div>
+{% endif %}
+
+<style>
+    #listheader{
+        position: fixed;
+        width: 100%;
+        left:0;
+        top:0;
+        border-bottom: 2px solid black;
+        height: 150px;
+        box-shadow: 0 2px 5px black;
+        background-color: lightgray;
+        z-index: 1;
+    }
+    #listcontent{
+        position: relative;
+        top:150px;
+        z-index: 0;
+    }
+    #contenttable{
+        width: 100%;
+    }
+    .contentrow td{
+        border: solid 2px gray;
+    }
+    .piccell{
+        width: 91px;
+    }
+    .action{
+        border: solid 1px blue;
+        background-color: lightblue;
+        padding: 0.1em;
+        margin: 0.1em;
+    }
+    #formtable{
+        height: 50px;
+    }
+</style>

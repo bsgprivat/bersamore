@@ -1,0 +1,36 @@
+<table id="contenttable">
+<tr>
+    <th>#</th>
+    <th>Picture</th>
+    <th>Name</th>
+    <th>Imported</th>
+    <th>Latest update</th>
+    <th>Sysbol ID</th>
+    <th>Price</th>
+    <th>Size</th>
+    <th>Actions</th>
+</tr>
+    {% for ib in imports %}
+        <tr class="contentrow">
+            <th>{{ forloop.counter }}</th>
+            <td class="piccell">{% if ib.thumb_image_url %}<img src="{{ ib.thumb_image_url }}">{% endif %}</td>
+            <td>{{ ib.name }}</td>
+            <td>{{ ib.created|date:"Y.m.d H.i" }}</td>
+            <td>{{ ib.latest_update|date:"Y.m.d H.i" }}</td>
+            <td>{{ ib.sysbol_id }}</td>
+            <td>{{ ib.sysbol_price }}</td>
+            <td>{{ ib.size }}</td>
+            <td>
+                <span class="action">
+                    update bi
+                </span>
+                <span class="action">
+                    check for beer
+                </span>
+                <span class="action">
+                    manually match
+                </span>
+            </td>
+        </tr>
+    {% endfor %}
+</table>

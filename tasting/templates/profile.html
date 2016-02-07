@@ -9,7 +9,11 @@
 {%  endblock menu %}
 
 {%  block content %}
-
+    {% if admin %}
+        <h3>ADMIN stuff</h3>
+        <a href="/imports/list_imports/">Imports</a>
+    <hr>
+    {% endif %}
     <h2>Your tastings</h2>
     {%  for tasting in tastings %}
         <a href="/tasting/{{ tasting.pk }}">

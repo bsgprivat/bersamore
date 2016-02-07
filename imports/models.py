@@ -7,6 +7,7 @@ class ImportedBeer(models.Model):
     image_url = models.CharField(max_length=512, blank=True, null=True, help_text=u'image url')
     thumb_image_url = models.CharField(max_length=512, blank=True, null=True, help_text=u'image url')
     brewery = models.CharField(max_length=512, blank=True, null=True, help_text=u'Name of Brewery')
+    realease = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now=True)
     latest_update = models.DateTimeField(null=True, blank=True)
 
