@@ -1,3 +1,4 @@
+from tasting.api import get_systembolaget_cookies
 from tasting.views import checkin_view, stats_view, checkin_overview, profile, baseview, tastestats
 from django.conf.urls import url
 from django.contrib import admin
@@ -10,6 +11,5 @@ urlpatterns = [
     url(r'^$', baseview),
     url(r'^(?P<tasting_id>\d+)/wrapitup/', stats_view),
     url(r'^overview/(?P<tasting_id>\d+)/$', checkin_overview),
-#    url(r'^profile/$', profile),
-
+    url(r'^api/cook/$', get_systembolaget_cookies),
 ]

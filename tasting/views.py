@@ -259,6 +259,12 @@ def checkins(request, filters=None):
 def settings(request):
     usr = request.user
 
+    print usr.first_name
+    print usr.last_name
+    print usr.username
+    print usr.email
+
+
     context = {
         'usr': usr,
     }

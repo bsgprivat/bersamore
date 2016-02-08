@@ -18,17 +18,26 @@ class Login(models.Model):
 class Taster(models.Model):
     user = models.OneToOneField(User)
     display_email = models.BooleanField(default=False)
+    receieve_email = models.BooleanField(default=True)
     public = models.BooleanField(default=False)
     allow_contacs = models.BooleanField(default=True)
     fav_beers = models.ManyToManyField(Beer, blank=True)
     fav_breweries = models.ManyToManyField(Brewery, blank=True)
     fav_styles = models.ManyToManyField(Style, blank=True)
     friends = models.ManyToManyField('tasting.Taster', related_name=u'tasterfriends', blank=True)
+    # stores in area?
+    # http://systembevakningsagenten.se/api/json/1.0/inventoryForStore.json?id=1001
 
     sysbol_id = models.EmailField(
         null=True, blank=True,
         help_text=u'Used to connect against your systembolaget account'
     )
+    allow_sysbol_fetch = models.BooleanField(
+        default=False,
+        help_text=u'Allow BMS to fetch your orderlists'
+    )
+    untappd_id = models.CharField(max_length=512, blank=True, null=True)
+
 
     @property
     def beers(self):

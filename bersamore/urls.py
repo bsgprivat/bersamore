@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from bersamore.views import index, logout_usr
+from tasting.api import untappd_callback
 from tasting.views import profile, settings, checkins
 
 urlpatterns = [
@@ -27,5 +28,7 @@ urlpatterns = [
     url(r'^logout/$', logout_usr),
     url(r'^profile/$', profile),
     url(r'^checkins/$', checkins),
-    url(r'^settings/$', settings)
+    url(r'^settings/$', settings),
+    url(r'^api/callback/$', untappd_callback),
+
 ]
