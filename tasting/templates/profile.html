@@ -11,8 +11,10 @@
 {%  block content %}
     {% if admin %}
         <h3>ADMIN stuff</h3>
-        <a href="/imports/list_imports/">Imports</a>
+        <a href="/imports/list_imports/">Imports</a><br>
+        <a href="{{ untappd_login_url }}">TESTA UNTAPPD</a>
     <hr>
+
     {% endif %}
     <h2>Your tastings</h2>
     {%  for tasting in tastings %}

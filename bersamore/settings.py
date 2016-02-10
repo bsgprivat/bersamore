@@ -78,6 +78,7 @@ WSGI_APPLICATION = 'bersamore.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
     'NAME': 'bersamoredb',
     'USER': 'steffebg',
     'PASSWORD': '1ElefantBalanserade',
@@ -125,3 +126,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+
+#Untappd:
+UNTAPPD_CLIENTID = u'D593BE394FD29B7FE11D0672D89C959D0C3D7251'
+UNTAPPD_CLIENTSECRET = u'0CB28A694B39E2456E8A85B5EA902E7A6FB019FB'
+UNTAPPD_REDIRECT_URL = u'http://bsg.ddns.net/api/callback/'
+UNTAPPD_AUTH_URL = u'https://untappd.com/oauth/authenticate/'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_NAME = u'_token'
+SESSION_COOKIE_HTTPONLY = True

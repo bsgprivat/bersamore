@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings as conf_settings
 from cellar.models import Beer
 from tasting.models import Checkin, TastingSession
 
@@ -203,12 +204,20 @@ def profile(request):
     admin = False
     if usr.is_superuser:
         admin = True
+    client_id= conf_settings.UNTAPPD_CLIENTID
+    redirect_url = conf_settings.UNTAPPD_REDIRECT_URL
+    auth_url = conf_settings.UNTAPPD_AUTH_URL
+
+    untappd_login_url = u'%s?client_id=%s&response_type=code&redirect_url=%s' % (
+        auth_url, client_id, redirect_url
+    )
 
     context = {
         'usr': usr,
         'tastings': tastings,
         'checkins': checkins[:10],
         'admin': admin,
+        'untappd_login_url': untappd_login_url,
     }
 
     return render_to_response(
@@ -324,3 +333,11 @@ def tastestats(request, tasting_id=None):
     }
 
     return render_to_response('tastestats.html', context)
+
+# def set_c(request):
+#     print request.session
+#     print request.COOKIES
+#     request.session['sess'] = random.randint(1, 23)
+#     return HttpResponse(
+#         request.COOKIES
+#         )
