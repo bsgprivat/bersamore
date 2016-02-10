@@ -76,7 +76,7 @@ def untappd_callback(request):
                 tok = resp['access_token']
                 info_url = u'https://api.untappd.com/v4/user/info/?access_token=%s' % tok
                 r2 = requests.get(info_url)
-                untappd_name = r2.json()['reponse']['user']['user_name']
+                untappd_name = r2.json()['response']['user']['user_name']
                 return HttpResponse(u'HEJ (unattpd:id) %s' % untappd_name)
         except Exception as e:
             return HttpResponse(e)
