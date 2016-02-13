@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from datetime import datetime
 from django.shortcuts import render, render_to_response
 from django.utils import timezone
@@ -33,6 +36,8 @@ def scrape_me():
                 available = True
                 size = p['VolumeText']
                 realease = p['SellStartText']
+                if len(realease) > 11:
+                    realease = realease[10:]
                 if p['Availability']:
                     available = False
 
