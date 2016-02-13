@@ -36,7 +36,9 @@
         <a href="/tasting/{{ tasting.pk }}">
             {{ tasting.name }}
         </a> {% if tasting.finished %}
-            ( Avslutad )
+            ( Finished )
+            <a href="/tasting/{{ tasting.pk }}/stats/"> Your stats</a> |
+            <a href="/tasting/{{ tasting.pk }}/wrapitup/"> Overall stats</a>
     {% else %}
         starts at: {{ tasting.date|date:'d/m-y H:i' }}
     {% endif %}
