@@ -108,6 +108,7 @@ class Checkin(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     tasting = models.ForeignKey(TastingSession, blank=True, null=True)
     from_untappd = models.BooleanField(default=False)
+    pushed_to_untapppd =models.BooleanField(default=False)
 
     looks = models.IntegerField(
         blank=True, null=True, validators=[

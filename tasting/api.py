@@ -109,7 +109,8 @@ def untappd_callback(request):
 
 
 def test_untappd_login(taster):
-    logged_in = False
+    print 'running?'
+    logged_in = False, None
     if taster.untappd_id and taster.untappd_token:
         # try crendentials..
         tok = taster.untappd_token
@@ -118,5 +119,5 @@ def test_untappd_login(taster):
         if u'user' in r2.json()['response']:
             untappd_name = r2.json()['response']['user']['user_name']
             if untappd_name:
-                logged_in = True
+                logged_in = True, r2.json()['response']['user']
     return logged_in

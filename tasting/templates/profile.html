@@ -15,7 +15,17 @@
         {%  if not logged_in %}
             <a href="{{ untappd_login_url }}">Connect to Untappd</a>
         {% else %}
-            <span style="border: 2px solid deeppink; margin: 1em; padding: 1em;">Connected to untappd!</span>
+            <span style="color: deeppink; font-weight: 900">
+                Connected to untappd as <a href="https://untappd.com/user/{{ usr.taster.untappd_id }}">
+                {{ usr.taster.untappd_id }}
+            </a>
+            </span><br>
+            Latest untappd-checkins:<br>
+            {%  if latest %}
+                {% for l in latest %}
+                    {{ l }}<br>
+                {% endfor %}
+            {% endif %}
         {% endif %}
     <hr>
 

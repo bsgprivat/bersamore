@@ -212,7 +212,14 @@ def profile(request):
     untappd_login_url = u'%s?client_id=%s&response_type=code&redirect_url=%s' % (
         auth_url, client_id, redirect_url
     )
-    logged_in = test_untappd_login(usr.taster)
+    logged_in, u_context = test_untappd_login(usr.taster)
+    latest = []
+
+    if u_context:
+        recent = u_context['recent_brews']['items']
+        for r in recent:
+            latest.append(r['beer']['beer_name'])
+
 
     context = {
         'usr': usr,
@@ -220,7 +227,8 @@ def profile(request):
         'checkins': checkins[:10],
         'admin': admin,
         'untappd_login_url': untappd_login_url,
-        'logged_in': logged_in
+        'logged_in': logged_in,
+        'latest': latest
     }
 
     return render_to_response(
