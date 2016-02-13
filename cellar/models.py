@@ -15,6 +15,7 @@ class Brewery(models.Model):
     name = models.CharField(max_length=512)
     country = models.ForeignKey(Country, blank=True, null=True)
     url = models.URLField(help_text=u'Brewery site url', blank=True)
+    untappd_id = models.IntegerField(null=True, blank=True)
 
     def __unicode__(self):
         return u'%s' % self.name

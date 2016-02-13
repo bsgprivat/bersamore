@@ -12,21 +12,22 @@
     {% if admin %}
         <h3>ADMIN stuff</h3>
         <a href="/imports/list_imports/">Imports</a><br>
-        {%  if not logged_in %}
-            <a href="{{ untappd_login_url }}">Connect to Untappd</a>
-        {% else %}
-            <span style="color: deeppink; font-weight: 900">
-                Connected to untappd as <a href="https://untappd.com/user/{{ usr.taster.untappd_id }}">
-                {{ usr.taster.untappd_id }}
-            </a>
-            </span><br>
-            Latest untappd-checkins:<br>
-            {%  if latest %}
-                {% for l in latest %}
-                    {{ l }}<br>
-                {% endfor %}
-            {% endif %}
+    <hr>
+    {%  if not logged_in %}
+        <a href="{{ untappd_login_url }}">Connect to Untappd</a>
+    {% else %}
+        <span style="color: deeppink; font-weight: 900">
+            Connected to untappd as <a href="https://untappd.com/user/{{ usr.taster.untappd_id }}">
+            {{ usr.taster.untappd_id }}
+        </a>
+        </span><br>
+        Latest untappd-checkins:<br>
+        {%  if latest %}
+            {% for l in latest %}
+                {{ l.0 }} - {{ l.1 }}. Rating: {{ l.2 }} <br>
+            {% endfor %}
         {% endif %}
+    {% endif %}
     <hr>
 
     {% endif %}

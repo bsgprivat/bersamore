@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+import re
 from django.shortcuts import render, render_to_response
 from django.utils import timezone
 import requests
@@ -92,11 +93,17 @@ def list_imports(request):
         created_to = False
         updated_from = False
         updated_to = False
+        name = False
         filters = True
 
         imports = ImportedBeer.objects.all().order_by('latest_update')
         size_list = list(set(imports.values_list('size', flat=True)))
         size_list.sort()
+
+        if 'name' in request.GET:
+            name = request.GET['name']
+            if name:
+                imports = imports.filter(name__iregex=re.escape(name))
 
         if 'available' in request.GET:
             available = request.GET['available']
@@ -145,8 +152,8 @@ def list_imports(request):
             if pics:
                 imports = imports.filter(thumb_image_url__isnull=False)
 
-        if not any([available,pics,size,price_from,price_to,
-                    created_to,created_from,updated_from,updated_to]):
+        if not any([name, available, pics, size, price_from, price_to,
+                    created_to, created_from, updated_from, updated_to]):
             filters = None
 
     return render_to_response('list.html', locals())

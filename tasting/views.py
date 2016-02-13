@@ -218,7 +218,13 @@ def profile(request):
     if u_context:
         recent = u_context['recent_brews']['items']
         for r in recent:
-            latest.append(r['beer']['beer_name'])
+            latest.append(
+                [
+                    r['beer']['beer_name'],
+                    r['beer']['beer_style'],
+                    r['beer']['auth_rating']
+                ]
+            )
 
 
     context = {

@@ -109,6 +109,7 @@ class Checkin(models.Model):
     tasting = models.ForeignKey(TastingSession, blank=True, null=True)
     from_untappd = models.BooleanField(default=False)
     pushed_to_untapppd =models.BooleanField(default=False)
+    untappd_id = models.IntegerField(null=True, blank=True)
 
     looks = models.IntegerField(
         blank=True, null=True, validators=[

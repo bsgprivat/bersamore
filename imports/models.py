@@ -5,7 +5,10 @@ from bs4 import BeautifulSoup
 class ImportedBeer(models.Model):
     name = models.CharField(max_length=512, blank=True, null=True, help_text=u'Name of beer')
     image_url = models.CharField(max_length=512, blank=True, null=True, help_text=u'image url')
-    thumb_image_url = models.CharField(max_length=512, blank=True, null=True, help_text=u'image url')
+    thumb_image_url = models.CharField(
+        max_length=512, blank=True, null=True, help_text=u'image url',
+        default=u'https//static.systembolaget.se/content/assets/images/products/thumbnail_noimage.png'
+    )
     brewery = models.CharField(max_length=512, blank=True, null=True, help_text=u'Name of Brewery')
     realease = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now=True)

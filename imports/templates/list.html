@@ -13,6 +13,10 @@
         </td>
 
         <td>
+        <label for="name">Name (includes)</label><br>
+        <input type="text" id="name" name="name"
+            {% if name %}value="{{ name }}{% endif %}"/>
+        <br>
         <label for="sizes">Size</label><br>
             <select id="size" name="size">
                 <option value="">---</option>
