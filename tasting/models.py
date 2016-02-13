@@ -37,6 +37,7 @@ class Taster(models.Model):
         help_text=u'Allow BMS to fetch your orderlists'
     )
     untappd_id = models.CharField(max_length=512, blank=True, null=True)
+    untappd_token = models.CharField(max_length=512, blank=True, null=True)
 
 
     @property

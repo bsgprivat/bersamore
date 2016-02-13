@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from tasting.models import Taster
 
 __author__ = 'steffe'
 
@@ -68,7 +69,6 @@ def untappd_callback(request):
         args = u'?client_id=%s&client_secret=%s&response_type=code&redirect_url=%s&code=%s' % (
             client_id, client_secret, redirect_url, code
         )
-
         r = requests.get(url+args)
         try:
             if 'response' in r.json():
@@ -77,26 +77,46 @@ def untappd_callback(request):
                 info_url = u'https://api.untappd.com/v4/user/info/?access_token=%s' % tok
                 r2 = requests.get(info_url)
                 untappd_name = r2.json()['response']['user']['user_name']
-                return HttpResponse(u'HEJ (untappd:id) %s' % untappd_name)
+                taster = request.user.taster
+                taster.untappd_id = untappd_name
+                taster.untappd_token = tok
+                taster.save()
+                #return HttpResponse(u'HEJ (untappd:id) %s' % untappd_name)
+                return redirect('/profile')
         except Exception as e:
             return HttpResponse(e)
-
-        return HttpResponse(r.json()['response'])
     else:
-        return HttpResponse('BAAAD')
+        return HttpResponse('Ehm, nope?')
+
+# info_url = u'https://api.untappd.com/v4/user/info/?access_token=%s' % tok
+# r2 = requests.get(info_url)
+# untappd_name = r2.json()['response']['user']['user_name']
+# return HttpResponse(u'HEJ (untappd:id) %s' % untappd_name)
+
+# @login_required(login_url='/')
+# def login_untappd(request, code=None):
+#     code = untappd_callback()
+#     url = u'https://untappd.com/oauth/authorize/'
+#     client_id=settings.UNTAPPD_CLIENTID
+#     client_secret=settings.UNTAPPD_CLIENTSECRET
+#     redirect_url = settings.UNTAPPD_REDIRECT_URL
+#     code = request.GET[u'code']
+#     args = u'?client_id=%s&client_secret=%s&response_type=code&redirect_url=%s&code=%s' % (
+#         client_id, client_secret, redirect_url, code
+#     )
+#
+#     r = requests.get(url+args)
 
 
-@login_required(login_url='/')
-def login_untappd(request, code=None):
-    code = untappd_callback()
-    url = u'https://untappd.com/oauth/authorize/'
-    client_id=settings.UNTAPPD_CLIENTID
-    client_secret=settings.UNTAPPD_CLIENTSECRET
-    redirect_url = settings.UNTAPPD_REDIRECT_URL
-    code = request.GET[u'code']
-    args = u'?client_id=%s&client_secret=%s&response_type=code&redirect_url=%s&code=%s' % (
-        client_id, client_secret, redirect_url, code
-    )
-
-    r = requests.get(url+args)
-
+def test_untappd_login(taster):
+    logged_in = False
+    if taster.untappd_id and taster.untappd_token:
+        # try crendentials..
+        tok = taster.untappd_token
+        info_url = u'https://api.untappd.com/v4/user/info/?access_token=%s' % tok
+        r2 = requests.get(info_url)
+        if u'user' in r2.json()['response']:
+            untappd_name = r2.json()['response']['user']['user_name']
+            if untappd_name:
+                logged_in = True
+    return logged_in

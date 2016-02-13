@@ -7,6 +7,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as conf_settings
 from cellar.models import Beer
+from tasting.api import test_untappd_login
 from tasting.models import Checkin, TastingSession
 
 
@@ -211,6 +212,7 @@ def profile(request):
     untappd_login_url = u'%s?client_id=%s&response_type=code&redirect_url=%s' % (
         auth_url, client_id, redirect_url
     )
+    logged_in = test_untappd_login(usr.taster)
 
     context = {
         'usr': usr,
@@ -218,6 +220,7 @@ def profile(request):
         'checkins': checkins[:10],
         'admin': admin,
         'untappd_login_url': untappd_login_url,
+        'logged_in': logged_in
     }
 
     return render_to_response(

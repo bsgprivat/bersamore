@@ -12,7 +12,11 @@
     {% if admin %}
         <h3>ADMIN stuff</h3>
         <a href="/imports/list_imports/">Imports</a><br>
-        <a href="{{ untappd_login_url }}">TESTA UNTAPPD</a>
+        {%  if not logged_in %}
+            <a href="{{ untappd_login_url }}">Connect to Untappd</a>
+        {% else %}
+            <span style="border: 2px solid deeppink; margin: 1em; padding: 1em;">Connected to untappd!</span>
+        {% endif %}
     <hr>
 
     {% endif %}
