@@ -19,7 +19,7 @@ class BeerAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                u'name', u'image', u'brewery', u'abv', u'ibu', u'description',
+                u'name', u'image', u'style', u'brewery', u'abv', u'ibu', u'description',
                 u'year', u'hops', u'collabs'
             )
         }),

@@ -7,6 +7,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^beer/(?P<beer_id>\d+)/$', beer_view),
+    url(r'^beer/$', beer_view),
     url(r'^brewery/(?P<brewery_id>\d+)/$', brewery_view),
     url(r'^style/(?P<style_id>\d+)/$', style_view),
 ]

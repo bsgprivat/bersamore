@@ -1,0 +1,78 @@
+<div id="profile_menu">
+    <table id="profile_menu">
+        <tr>
+            <th class="menuitem" id="beer_menu">
+                BEERS
+            </th>
+            <th class="menuitem" id="tasting_menu">
+                TASTINGS
+            </th>
+            <th class="menuitem" id="user_menu">
+                YOU
+            </th>
+
+            <th class="menuitem" id="untappd_menu">
+                UNTAPPD
+            </th>
+        </tr>
+
+        <tr>
+            <td colspan="4">
+                <div class="submenu" id="beer_menu">
+                    <span>Beers</span>
+                    <span>Breweries</span>
+                    <span>Styles</span>
+                    <span>Countries</span>
+                </div>
+
+                <div class="submenu" id="user_menu">
+                    <span>Checkins</span>
+                    <span>Find users</span>
+                    <span>Friends</span>
+                    <span>Favourite Beers</span>
+                    <span>Favourite Breweries</span>
+                    <span>Favourite Styles</span>
+                    <span>Bottlesharing</span>
+                </div>
+
+                <div class="submenu" id="tasting_menu">
+                    <span>Your tastings</span>
+                    <span>Arrange tasting</span>
+                </div>
+
+                <div class="submenu" id="untappd_menu">
+                    <span>Import friends</span>
+                </div>
+
+            </td>
+        </tr>
+    </table>
+{#    <span class="menuitem">#}
+{#        <a href="">USERS</a>#}
+{#            <span class="submenu">Find user</span>#}
+{#    </span>#}
+{##}
+{#    <span class="menuitem">#}
+{#        <a href="">TASTINGS</a>#}
+{#    </span>#}
+{##}
+{#    <span class="menuitem">#}
+{#        <a href="">UNTAPPD</a>#}
+{#        <span class="submenu">Checkins</span>#}
+{#        <span class="submenu">Beers</span>#}
+{#        <span class="submenu">Breweries</span>#}
+{#        <span class="submenu">Styles</span>#}
+{#        <span class="submenu">Countries</span>#}
+{#    </span>#}
+</div>
+
+<script>
+
+
+    $('.menuitem').hover(function(){
+        $('.submenu').hide();
+        var _id = $(this).attr('id');
+        $('.submenu#' + _id).show();
+    });
+
+</script>

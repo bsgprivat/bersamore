@@ -285,14 +285,17 @@ def checkins(request, filters=None):
 def settings(request):
     usr = request.user
 
-    print usr.first_name
-    print usr.last_name
-    print usr.username
-    print usr.email
+    client_id = conf_settings.UNTAPPD_CLIENTID
+    redirect_url = conf_settings.UNTAPPD_REDIRECT_URL
+    auth_url = conf_settings.UNTAPPD_AUTH_URL
 
+    untappd_login_url = u'%s?client_id=%s&response_type=code&redirect_url=%s' % (
+        auth_url, client_id, redirect_url
+    )
 
     context = {
         'usr': usr,
+        'untappd_login_url': untappd_login_url
     }
 
     return render_to_response(
@@ -350,11 +353,3 @@ def tastestats(request, tasting_id=None):
     }
 
     return render_to_response('tastestats.html', context)
-
-# def set_c(request):
-#     print request.session
-#     print request.COOKIES
-#     request.session['sess'] = random.randint(1, 23)
-#     return HttpResponse(
-#         request.COOKIES
-#         )

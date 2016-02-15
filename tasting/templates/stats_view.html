@@ -5,22 +5,22 @@
 {% endblock top %}
 
 {% block menu %}
-<div id="menubar">
-    {% for b in beers %}
-        <span class="menuspan" title="{{ b.style }}">
-            <a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ b.pk }}"
-                style="{%  if b == beer %}color:red{% endif %}">
-            {{ forloop.counter }}
-
-        </a></span>
-    {% endfor %}
-    <span class="menuspan">
-        <a href="/tasting/{{ tasting.pk }}/wrapitup/">
-            <img src="http://bsg.ddns.net/static/images/stats.png"  id="statsimg_menu">
-        </a>
-    </span>
-
-</div>
+{#<div id="menubar">#}
+{#    {% for b in beers %}#}
+{#        <span class="menuspan" title="{{ b.style }}">#}
+{#            <a href="/tasting/overview/{{ tasting.pk }}?active_beer={{ b.pk }}"#}
+{#                style="{%  if b == beer %}color:red{% endif %}">#}
+{#            {{ forloop.counter }}#}
+{##}
+{#        </a></span>#}
+{#    {% endfor %}#}
+{#    <span class="menuspan">#}
+{#        <a href="/tasting/{{ tasting.pk }}/wrapitup/">#}
+{#            <img src="http://bsg.ddns.net/static/images/stats.png"  id="statsimg_menu">#}
+{#        </a>#}
+{#    </span>#}
+{##}
+{#</div>#}
 {% endblock menu %}
 
 {%  block content %}
@@ -39,7 +39,7 @@
         {% endif %}
         </tr>
     {% endfor %}
-</>
+</table>
 
 {#<hr>#}
 {#{%  for checkin in checkins %}#}

@@ -5,6 +5,8 @@ from models import *
 class TasterAdmin(admin.ModelAdmin):
     filter_horizontal = (u'friends', u'fav_beers', u'fav_breweries', u'fav_styles')
     search_fields = (u'name', )
+    list_display = (u'user', u'untappd_id')#, u'allow_contacts')
+
 
 
 class TastingInline(admin.TabularInline):

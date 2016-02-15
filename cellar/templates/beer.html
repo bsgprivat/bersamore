@@ -36,15 +36,16 @@
 {#</div>#}
 {% endblock menu %}
 
-
 {% block content %}
 
+{#{% include 'profilemenu.html' %}#}
+{#{% include 'beermenu.html' %}#}
 <img src="http://bsg.ddns.net/static/images/logga.png"
         style="position: fixed; width: 13%; left: 0; bottom:0">
 
 <div id="content_wrapper">
 {%  if not beer %}
- You'll need to choose a beer to start with!
+Start filtering..
 {% else %}
     <div id="beer_div">
         <div id="beer_img_td">

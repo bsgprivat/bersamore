@@ -10,6 +10,11 @@ INVITATION_STATUSES = (
 )
 
 
+
+class Store(models.Model):
+    store_id = models.IntegerField()
+
+
 class Login(models.Model):
     usr = models.ForeignKey(User)
     dt = models.DateTimeField(auto_now_add=True)
@@ -17,15 +22,13 @@ class Login(models.Model):
 
 class Taster(models.Model):
     user = models.OneToOneField(User)
-    display_email = models.BooleanField(default=False)
     receieve_email = models.BooleanField(default=True)
-    public = models.BooleanField(default=False)
-    allow_contacs = models.BooleanField(default=True)
+    allow_contacts = models.BooleanField(default=True)
     fav_beers = models.ManyToManyField(Beer, blank=True)
     fav_breweries = models.ManyToManyField(Brewery, blank=True)
     fav_styles = models.ManyToManyField(Style, blank=True)
     friends = models.ManyToManyField('tasting.Taster', related_name=u'tasterfriends', blank=True)
-    # stores in area?
+    stores = models.ManyToManyField(Store, blank=True)
     # http://systembevakningsagenten.se/api/json/1.0/inventoryForStore.json?id=1001
 
     sysbol_id = models.EmailField(

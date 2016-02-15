@@ -30,7 +30,7 @@ def scrape_me():
                     name_plus = u' - ' + p['ProductNameThin']
                 name = p['ProductNameBold'] + name_plus
                 url = u'https://www.systembolaget.se' + u'%s' % p['ProductUrl']
-                sysbol_id = p['ProductNumber'][:-2]
+                sysbol_id = p['ProductId']
                 sysbol_cart_id = p['ProductNumber']
                 sysbol_price = float(p['PriceText'].replace(',', '.'))
                 thumb_image_url = None

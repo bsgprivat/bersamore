@@ -30,40 +30,40 @@
             <input type="password" name="pwd" id="pwd"/>
             <label for="pwd">Password</label><br>
 
-            <input type="checkbox" name="public"
-                    {% if usr.taster.public %}checked="checked"{% endif %}>
-            Uncheck to make account private, allowing only friends to view your activities.<br>
-
             <input type="checkbox" name="receive_email"
                     {% if usr.taster.receieve_email %}checked="checked"{% endif %}>
-            Uncheck to stop receiving (system)-mail from the BMS.<br>
+            Uncheck to stop receiving (system)-mail from BMS.<br>
 
             <input type="checkbox" name="allow_contacts"
                     {% if usr.taster.allow_contacts %}checked="checked"{% endif %}>
-            Uncheck to disallow others users to contact you.<br>
-            [Invitations to tastings, shared orders etc]
+            Uncheck to disallow other users to contact you.<br>
+            [Invitations to tastings, shared orders, hidden from user-search etc]
 
-            <br><br>
+            <br><hr>
             <strong>External connections</strong><br>
-        
+            Systembolaget<br>
             <input type="email" name="sysbol_id" id="sysbol_id" value="{{ usr.taster.sysbol_id }}" autocomplete="off"/>
             <label for="email">Email used at your systembolaget.se account</label><br>
             <input type="checkbox" name="allow_sysbol_fetch"
                     {% if usr.taster.allow_sysbol_fetch %}checked="checked"{% endif %}>
             Check to allow BMS to fetch your order-lists from systembolaget.se<br>
-            
+            <span style="color: red;">Not yet implemented</span>
+            <hr>
+            Untappd<br>
             <input type="text" name="untappd_id" id="untappd_id"
                    value="{% if usr.taster.untappd_id %}
                    {{ usr.taster.untappd_id }}
                    {% else %}{% endif %}" autocomplete="off"
             disabled="disabled">
-            <label for="untappd_id">Untappd ID</label> (will be fetched automatically)<br>
-{#            <a href="https://untappd.com/oauth/authenticate/?client_id=CLIENTID&response_type=code&redirect_url=REDIRECT_URL">#}
-{#                Connect to Untappd#}
-{#            </a>#}
+            <label for="untappd_id">Untappd ID</label>
+            (will be fetched automatically {% if not usr.taster.untappd_id %}
+            <a href="{{ untappd_login_url }}">Connect to Untappd</a>{% endif %})<br>
+
+            <input type="checkbox" name="checkin_to_untappd" id="checkin_to_untappd">
+            <label for="checkin_to_untappd">Allow BMS to push checkins to Untappd</label>
 
         
-            <br>
+            <hr>
             <input type="submit" value="update" disabled="disabled" title="Not avialable yet...">
         </form>
 

@@ -40,13 +40,45 @@
 {#            box-shadow: 2px 2px orange;#}
             text-align: center;
             color: whitesmoke;
-            text-shadow: 2px 2px 2px #000;
+{#            text-shadow: 2px 2px 2px #000;#}
             border-bottom: solid 8px darkgray;
         }
+
+        #profile_menu{
+            color: #222222;
+            height: 50px;
+            width:100%;
+        }
+        .menuitem{
+            margin: 0.3em;
+            padding: 0.3em;
+            text-decoration: none;
+        }
+        .menuitem:hover{
+            background-color: darkgrey;
+        }
+        .menuitem a:link{
+            text-decoration: none;
+        }
+        .menuitem a:hover{
+            text-decoration: none;
+        }
+        .submenu{
+            display: none;
+        }
+        .submenu span{
+            size: 0.9em;
+            font-family: monospace;
+            margin-left: 1em;
+            padding:0.3em;
+        }
+        .submenu span:hover{
+            background-color: darkgrey;
+        }
+
         .menuspan{
             padding-left: 1.5em;
             font-weight: 900;
-
         }
 
         #menu a:link{

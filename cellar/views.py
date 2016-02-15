@@ -5,10 +5,17 @@ from cellar.models import Beer, UploadedUntappdCSV, Brewery, Style
 
 
 def beer_view(request, beer_id=None):
-    beer = Beer.objects.get(pk=int(beer_id))
+    if beer_id:
+        beer = Beer.objects.get(pk=int(beer_id))
+    else:
+        beer = None
+    styles = Style.objects.all()
+    breweries = Brewery.objects.all()
 
     context = {
-        'beer': beer
+        'beer': beer,
+        'styles': styles,
+        'breweries': breweries
     }
 
     return render_to_response('beer.html', context)
