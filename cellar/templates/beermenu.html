@@ -1,19 +1,29 @@
 <div id="beer_menu">
-Find beers by:
+Found: {{ beer_count }} Beers
+
 <form id="beerfinder" name="beerfinder" method="post" action=".">
     <table>
         <tr>
             <td>
                 <label for="name">Name</label>
-                <input type="text" name="name" id="name" value="{{ name }}"><br>
+                <input type="text" name="name" id="name"
+                       {% if filter_name %}value="{{ filter_name }}"{% endif %}
+                        ><br>
 
                 <label for="hops">Hops</label>
-                <input type="text" name="hops" id="hops">
+                <select name="hops" id="hops">
+                    <option></option>
+                    {%  for hop in hops %}
+                        <option value="{{ hop.pk }}" {% if filter_hops == hop.pk %}selected{% endif %}>
+                            {{ hop.name }}
+                        </option>
+                    {% endfor %}
+                </select>
             </td>
             <td>
                 <label for="style">Style</label>
                 <select name="style" id="style">
-                    <option value="0">---</option>
+                    <option></option>
                     {%  for style in styles %}
                         <option value="{{ style.pk }}" {% if filter_style == style.pk %}selected{% endif %}>
                             {{ style.name }}
@@ -24,9 +34,9 @@ Find beers by:
 
                 <label for="brewery">Brewery</label>
                 <select name="brewery" id="brewery">
-                    <option value="0">---</option>
+                    <option></option>
                     {%  for brewery in breweries %}
-                        <option value="{{ brewery.pk }}">{{ brewery.name }}</option>
+                        <option value="{{ brewery.pk }}" {% if filter_brewey == brewery.pk %}selected{% endif %}>{{ brewery.name }}</option>
                     {% endfor %}
                 </select>
             <br>
@@ -34,20 +44,20 @@ Find beers by:
                 <select name="country" id="country">
                     <option></option>
                     {%  for country in countries %}
-                        <option value="{{ country.pk }}">{{ country.name }}</option>
+                        <option value="{{ country.pk }}" {% if filter_country == country.pk %}selected{% endif %}>{{ country.name }}</option>
                     {% endfor %}
                 </select>
             </td>
 
             <td>
                 <label for="abv">ABV</label><br>
-                <input class="num" type="number" name="abv_from" id="abv"><br>
-                <input class="num" type="number" name="abv_to" id="abv"><br>
+                <label>> </label> <input class="num" type="number" name="abv_from" id="abv" value="{{ filter_abv_from }}"><br>
+                <label>< </label> <input class="num" type="number" name="abv_to" id="abv" value="{{ filter_abv_to }}"><br>
             </td>
             <td>
                 <label for="ibu">IBU</label><br>
-                <input class="num" type="number" name="ibu_from" id="ibu"><br>
-                <input class="num" type="number" name="ibu_to" id="ibu"><br>
+                <label>> </label> <input class="num" type="number" name="ibu_from" id="ibu" value="{{ filter_ibu_from }}"><br>
+                <label>< </label> <input class="num" type="number" name="ibu_to" id="ibu" value="{{ filter_ibu_to }}"><br>
             </td>
         </tr>
         <tr>

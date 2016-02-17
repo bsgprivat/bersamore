@@ -1,6 +1,8 @@
 from datetime import datetime
 from django.db import models
 #from tasting.models import Taster
+from django.db.models import Avg
+#from tasting.models import Taster, Checkin
 
 
 class Country(models.Model):
@@ -39,12 +41,49 @@ class Style(models.Model):
         return u'%s' % self.name
 
 
+class BeerImage(models.Model):
+    image = models.ImageField(
+        null=True, blank=True, upload_to=u'static/images/uploads/beers/gallery/',
+        default=u'static/images/uploads/beers/emptybeer.jpg'
+    )
+
+    def __unicode__(self):
+        return u'%s' % self.image.name
+
+
+class UploadedBeerImage(models.Model):
+    beer = models.ForeignKey(u'Beer')
+    image = models.ForeignKey(BeerImage)
+    approved = models.BooleanField(default=False)
+    uploaded_by = models.ForeignKey('tasting.Taster')
+
+    def __unicode__(self):
+        return u'%s - %s - %s' % (self.beer, self.approved, self.uploaded_by)
+
+    def show_img(self):
+        return u'<img src="/%s">' % self.image.image.url
+
+    show_img.allow_tags = True
+
+
 class Beer(models.Model):
     name = models.CharField(max_length=512)
-    image = models.ImageField(null=True, blank=True, upload_to=u'static/images/uploads/beers/',
-                              default=u'static/images/uploads/beers/emptybeer.jpg')
+    image = models.ImageField(
+        null=True, blank=True, upload_to=u'static/images/uploads/beers/',
+        default=u'static/images/uploads/beers/emptybeer.jpg'
+    )
+    gallery = models.ManyToManyField(BeerImage, through=UploadedBeerImage, blank=True)
+    thumbnail = models.ImageField(
+        null=True, blank=True, upload_to=u'static/images/uploads/beers/thumbnails/',
+#        default=u'static/images/uploads/beers/emptybeer.jpg'
+    )
+    thumbnail_url = models.URLField(
+        null=True, blank=True
+    )
     brewery = models.ForeignKey(Brewery, blank=True, null=True)
-    collabs = models.ManyToManyField(Brewery, related_name=u'collabs', blank=True, help_text=u'Collaborating breweries')
+    collabs = models.ManyToManyField(
+        Brewery, related_name=u'collabs', blank=True, help_text=u'Collaborating breweries'
+    )
     hops = models.ManyToManyField(Hops, blank=True)
     style = models.ForeignKey(Style, null=True, blank=True)
     abv = models.FloatField(default=0.0)
@@ -53,7 +92,7 @@ class Beer(models.Model):
     year = models.IntegerField(null=True, blank=True)
     ean = models.IntegerField(null=True, blank=True)
 
-    sysbol_id = models.IntegerField(null=True, blank=True, help_text=u'aka "varunummer", used to build urls with')
+    sysbol_id = models.IntegerField(null=True, blank=True, help_text=u'aka "varunummer", used to build urls')
     sysbol_cart_id = models.IntegerField(null=True, blank=True, help_text=u'aka "nr", used to build carts')
     untappd_id = models.IntegerField(null=True, blank=True, help_text=u'Untappds unique Beer ID')
 
@@ -69,6 +108,33 @@ class Beer(models.Model):
     def build_untappd_url(self):
         if self.untappd_id:
             return u'https://www.untappd.com/beer//%s' % self.untappd_id
+        else:
+            return None
+
+    @property
+    def avg_rating(self):
+        from tasting.models import Checkin
+        avg = Checkin.objects.filter(beer=self).aggregate(Avg('overall'))
+        if avg:
+            return avg
+        else:
+            return None
+
+    @property
+    def thumb(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        elif self.thumbnail_url:
+            return self.thumbnail_url
+        else:
+            return None
+
+    @property
+    def img(self):
+        if self.image:
+            return self.image.url
+        elif self.uploadedbeerimage_set.exists():
+            return self.uploadedbeerimage_set.first()
         else:
             return None
 
@@ -115,6 +181,7 @@ class OrderRow(models.Model):
 class BottleSharing(models.Model):
     admin = models.ForeignKey('tasting.Taster', related_name=u'bottleshare_admin')
     participants = models.ManyToManyField('tasting.Taster', related_name=u'bottleshare_participant')
+
 
 
 class UploadedUntappdCSV(models.Model):

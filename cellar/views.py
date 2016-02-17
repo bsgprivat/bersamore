@@ -2,35 +2,47 @@ import re
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from cellar.models import Beer, UploadedUntappdCSV, Brewery, Style, Country
+from cellar.models import Beer, UploadedUntappdCSV, Brewery, Style, Country, Hops
 
 
 @csrf_exempt
 def beerfinder(request):
     beers = Beer.objects.all()
     styles = Style.objects.all()
+    hops = Hops.objects.all()
     breweries = Brewery.objects.all()
+    countries = Country.objects.all()
+    get_highest_abv = beers.order_by('abv').first().abv
+    get_highest_ibu = beers.order_by('ibu').first().ibu
+
     filter = False
-    filter_brewery = False
+    filter_brewery = 0
     filter_name = None
     filter_style = 0
+    filter_country = 0
+    filter_hops = 0
+    filter_abv_from = 0.0
+    filter_abv_to = get_highest_abv
+    filter_ibu_from = 0
+    filter_ibu_to = get_highest_ibu
 
     if request.POST:
+        print beers
         if 'name' in request.POST:
             filter_name = request.POST['name']
-            if bool(filter_name):
+            if len(filter_name) > 2:
                 beers = beers.filter(name__iregex=re.escape(filter_name))
                 filter = True
-                
+
         if 'brewery' in request.POST:
             filter_brewery = request.POST['brewery']
-            if int(filter_brewery) > 0:
+            if bool(filter_brewery):
                 beers = beers.filter(brewery__id=int(filter_brewery))
                 filter = True
 
         if 'style' in request.POST:
             filter_style = request.POST['style']
-            if int(filter_style) > 0:
+            if bool(filter_style):
                 beers = beers.filter(style__id=int(filter_style))
                 filter = True
 
@@ -43,7 +55,7 @@ def beerfinder(request):
         if 'hops' in request.POST:
             filter_hops = request.POST['hops']
             if filter_hops:
-                beers = beers.filter(name__iregex=re.escape(filter_hops))
+                beers = beers.filter(hops__id=int(filter_hops))
                 filter = True
 
         if 'ibu_from' in request.POST:
@@ -67,6 +79,8 @@ def beerfinder(request):
             if filter_abv_to:
                 beers = beers.filter(abv__lte=float(filter_abv_to))
                 filter = True
+
+    beer_count = beers.count()
 
     return render_to_response('beerfinder.html', locals())
 

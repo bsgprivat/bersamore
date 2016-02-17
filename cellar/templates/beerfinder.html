@@ -37,6 +37,7 @@
             <th>Country</th>
             <th>ABV</th>
             <th>IBU</th>
+            <th>AVG Rate</th>
             <th>Actions</th>
         </tr>
         {%  for beer in beers %}
@@ -53,6 +54,7 @@
             <td>{{ beer.brewery.country.name }}</td>
             <td>{{ beer.abv }}</td>
             <td>{{ beer.ibu }}</td>
+            <td>{{ beer.avg_rating }}</td>
             <td>Checkin</td>
         </tr>
 

@@ -11,6 +11,11 @@ class handle_csv_admin(admin.ModelAdmin):
     actions = [handle_csv, ]
 
 
+class UploadedBeerImageInline(admin.TabularInline):
+    model = UploadedBeerImage
+    readonly_fields = (u'show_img',)
+
+
 class BeerAdmin(admin.ModelAdmin):
     search_fields = (u'name', u'brewery__name', u'style__name')
     list_display = (u'name', u'brewery', u'style', u'sysbol_id', u'untappd_id')
@@ -28,6 +33,7 @@ class BeerAdmin(admin.ModelAdmin):
             'fields': (u'sysbol_id', u'sysbol_cart_id', u'untappd_id'),
         }),
     )
+    inlines = (UploadedBeerImageInline,)
 
 
 class BreweryAdmin(admin.ModelAdmin):
@@ -52,6 +58,10 @@ class SysbolOrderAdmin(admin.ModelAdmin):
     inlines = (OrderRowInline,)
 
 
+class UploadedBeerAdmin(admin.ModelAdmin):
+    list_display = (u'show_img', u'beer', u'approved')
+
+
 admin.site.register(Beer, BeerAdmin)
 admin.site.register(Brewery, BreweryAdmin)
 admin.site.register(Country)
@@ -60,3 +70,5 @@ admin.site.register(Hops)
 admin.site.register(BottleSharing)
 admin.site.register(UploadedUntappdCSV, handle_csv_admin)
 admin.site.register(SysbolOrders, SysbolOrderAdmin)
+admin.site.register(UploadedBeerImage, UploadedBeerAdmin)
+admin.site.register(BeerImage)
