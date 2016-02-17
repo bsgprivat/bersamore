@@ -1,11 +1,11 @@
 from tasting.api import get_systembolaget_cookies
-from tasting.views import checkin_view, stats_view, checkin_overview, baseview, tastestats
+from tasting.views import tasting_checkin_view, stats_view, checkin_overview, baseview, tastestats
 from django.conf.urls import url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^checkin/(?P<tasting_id>\d+)/(?P<beer_i>\d+)/$', checkin_view),
-    url(r'^checkin/(?P<tasting_id>\d+)/$', checkin_view),
+    url(r'^checkin/(?P<tasting_id>\d+)/(?P<beer_i>\d+)/$', tasting_checkin_view),
+    url(r'^checkin/(?P<tasting_id>\d+)/$', tasting_checkin_view),
     url(r'^(?P<tasting_id>\d+)/$', baseview),
     url(r'^(?P<tasting_id>\d+)/stats/$', tastestats),
     url(r'^$', baseview),

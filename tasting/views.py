@@ -13,7 +13,56 @@ from tasting.models import Checkin, TastingSession
 
 @csrf_exempt
 @login_required(login_url='/')
-def checkin_view(request, tasting_id=None, beer_i=None):
+def checkin_view(request, beer_id=None):
+    checkin = None
+    checkins = None
+    beer = None
+    error = u''
+    usr = request.user
+
+    if beer_id:
+        beer = Beer.objects.get(pk=int(beer_id))
+        checkins = Checkin.objects.filter(beer=beer, taster=usr.taster)
+
+        if request.POST:
+            b_id = int(request.POST['beer'])
+            beer = Beer.objects.get(pk=b_id)
+
+            notes = request.POST['notes']
+            looks = int(request.POST['looks'])
+            nose = int(request.POST['nose'])
+            taste = int(request.POST['taste'])
+            overall = int(request.POST['overall'])
+
+            checkin, created = Checkin.objects.get_or_create(
+                beer=beer, taster=usr.taster,
+            )
+
+            checkin.looks = looks
+            checkin.nose = nose
+            checkin.taste = taste
+            checkin.overall = overall
+            checkin.notes = notes
+            checkin.save()
+
+            return redirect(u'.', b_id)
+    else:
+        error = u'You have to choose a beer.'
+
+    context = {
+        'error': error,
+        'beer': beer,
+        'usr': usr,
+        'checkin': checkin,
+        'checkins': checkins,
+    }
+
+    return render_to_response('checkin.html', context)
+
+
+@csrf_exempt
+@login_required(login_url='/')
+def tasting_checkin_view(request, tasting_id=None, beer_i=None):
     checkin = None
     tasting = None
     beer = None
@@ -84,7 +133,7 @@ def checkin_view(request, tasting_id=None, beer_i=None):
         'tasting': tasting
     }
 
-    return render_to_response('checkin.html', context)
+    return render_to_response('tasting_checkin.html', context)
 
 
 @login_required(login_url='/')
@@ -288,10 +337,12 @@ def settings(request):
     client_id = conf_settings.UNTAPPD_CLIENTID
     redirect_url = conf_settings.UNTAPPD_REDIRECT_URL
     auth_url = conf_settings.UNTAPPD_AUTH_URL
-
     untappd_login_url = u'%s?client_id=%s&response_type=code&redirect_url=%s' % (
         auth_url, client_id, redirect_url
     )
+
+    if request.POST:
+        print request.POST
 
     context = {
         'usr': usr,

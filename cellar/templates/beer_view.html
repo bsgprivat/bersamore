@@ -1,10 +1,70 @@
+{% extends 'base.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title></title>
+    {% block script %}
+    {{ block.super }}
+    {% endblock script %}
+
 </head>
 <body>
 
+{% block top %}
+    Beer Management System [beta]
+    {{ block.super }}
+{% endblock top %}
+
+{% block menu %}
+{% endblock menu %}
+
+{% block content %}
+
+{% include 'profilemenu.html' %}
+{% include 'beermenu.html' %}
+<img src="http://bsg.ddns.net/static/images/logga.png"
+        style="position: fixed; width: 13%; left: 0; bottom:0">
+
+<div id="content_wrapper">
+{% if beer %}
+{% include 'beer.html' %}
+
+{% endif %}
+
+{% endblock content %}
+</div>
 </body>
+
+<style>
+    #beer_img{
+        max-height: 90vh;
+        max-width: 50vh;
+        float: left;
+    }
+    #content_wrapper{
+        width: 100%;
+        height: 95vh;
+    }
+    #beer_div{
+        float:left;
+        width: 50%;
+    }
+    #stats_div{
+        width: 50%;
+        margin-left: 50%;
+    }
+    th{
+        vertical-align: top;
+        text-align: left;
+    }
+    #statstable{
+        width:90%
+    }
+    #statstable td{
+        padding: 2em;
+    }
+</style>
+
 </html>

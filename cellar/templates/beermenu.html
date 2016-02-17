@@ -1,29 +1,58 @@
 <div id="beer_menu">
 Find beers by:
-<form id="beerfinder" name="beerfinder" method="get" action=".">
+<form id="beerfinder" name="beerfinder" method="post" action=".">
     <table>
         <tr>
             <td>
                 <label for="name">Name</label><br>
-                <input type="text" name="name" id="name">
+                <input type="text" name="name" id="name" value="{{ name }}">
             </td>
-            <td>
+            <td><h1>{{ filter_style }}</h1>
                 <label for="style">Style</label><br>
                 <select name="style" id="style">
-                    <option></option>
+                    <option value="0">---</option>
                     {%  for style in styles %}
-                        <option value="{{ style.pk }}">{{ style.name }}</option>
+                        <option value="{{ style.pk }}" {% if filter_style == style.pk %}selected{% endif %}>
+                            {{ style.name }} {{ filter_style }} {{ style.pk }}
+                        </option>
                     {% endfor %}
                 </select>
             </td>
             <td>
                 <label for="brewery">Brewery</label><br>
                 <select name="brewery" id="brewery">
-                    <option></option>
+                    <option value="0">---</option>
                     {%  for brewery in breweries %}
-                        <option value="{{ brewery.pk }}">{{ brewery.name }}</option>
+                        <option value="{{ brewery.pk }}" selected>{{ brewery.name }}</option>
                     {% endfor %}
                 </select>
+            </td>
+            <td>
+                <label for="country">Country</label><br>
+                <select name="country" id="country">
+                    <option></option>
+                    {%  for country in countries %}
+                        <option value="{{ country.pk }}">{{ country.name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <label for="hops">Hops</label><br>
+                <input type="text" name="hops" id="hops">
+            </td>
+            
+            <td>
+                <label for="abv">ABV</label><br>
+                <input class="num" type="number" name="abv_from" id="abv"><br>
+                <input class="num" type="number" name="abv_to" id="abv"><br>
+            </td>
+            <td>
+                <label for="ibu">IBU</label><br>
+                <input class="num" type="number" name="ibu_from" id="ibu"><br>
+                <input class="num" type="number" name="ibu_to" id="ibu"><br>
+            </td>
+            <td>
+                <input type="submit">
             </td>
         </tr>
     </table>
@@ -32,6 +61,29 @@ Find beers by:
 </form>
 </div>
 
-<script>
+<style>
+    input.num{
+        width: 3em;
+    }
+    td{
+        border-right: 1px solid darkgrey;
+        padding-right: 1em;
+    }
+    table{
+        width: 100%;
+    }
 
+</style>
+
+<script>
+    $('#name').on('keyup', function(){
+        if ($(this).val().length > 2){
+            $('#beerfinder').submit()
+        }
+    });
+    $('#hops').on('keyup', function(){
+        if ($(this).val().length > 2){
+            $('#beerfinder').submit()
+        }
+    })
 </script>

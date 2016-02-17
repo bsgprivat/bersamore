@@ -1,10 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+    <div id="beer_div">
+        <div id="beer_img_td">
+            {%  if not beer.image %}
+                <img src="http://bsg.ddns.net/static/images/uploads/beers/emptybeer.jpg"
+                    id="beer_img">
+            {%  else %}
+                <img src="/{{ beer.image.url }}"
+                    id="beer_img">
+            {%  endif %}
+        </div>
 
-</body>
-</html>
+        <div id="beer_info">
+            <table id="beertable">
+            <tr id="name">
+                <th>
+                    Name
+                </th>
+                <td>
+                    {{ beer.name }}
+                </td>
+            </tr>
+            <tr id="brewery">
+                <th>
+                    Brewery
+                </th>
+                <td>
+                    <a href="/cellar/brewery/{{ beer.brewery.pk }}">{{ beer.brewery }}</a>
+                </td>
+            </tr>
+                <tr id="origin">
+                    <th>
+                        Origin
+                    </th>
+                    <td>
+                         {{ beer.brewery.country.name }}
+                    </td>
+                </tr>
+
+                <tr id="style">
+                    <th>
+                        Style
+                    </th>
+                    <td>
+                        <a href="/cellar/style/{{ beer.style.pk }}">{{ beer.style.name }}</a>
+                    </td>
+                </tr>
+
+                <tr id="abv">
+                    <th>
+                        ABV
+                    </th>
+                    <td>
+                         {{ beer.abv }} %
+                    </td>
+                </tr>
+
+                <tr id="ibu">
+                    <th>
+                        IBU
+                    </th>
+                    <td>
+                         {{ beer.ibu }}
+                    </td>
+                </tr>
+
+                <tr id="hops">
+                    <th>
+                        Hops
+                    </th>
+                    <td>
+                        {%  for hop in beer.hops.all %}
+                            {{ hop.name }} ({{ hop.country.code }})<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+
+                <tr id="notes">
+                    <th>
+                        {%  if beer.description %}Description{% endif %}
+                    </th>
+                    <td>
+                        {{ beer.description }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>

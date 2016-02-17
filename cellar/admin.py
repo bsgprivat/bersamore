@@ -13,7 +13,7 @@ class handle_csv_admin(admin.ModelAdmin):
 
 class BeerAdmin(admin.ModelAdmin):
     search_fields = (u'name', u'brewery__name', u'style__name')
-    list_display = (u'name', u'brewery', u'style')
+    list_display = (u'name', u'brewery', u'style', u'sysbol_id', u'untappd_id')
     filter_horizontal = (u'collabs', u'hops')
     list_filter = (u'brewery__country', u'brewery', u'abv', u'ibu')
     fieldsets = (

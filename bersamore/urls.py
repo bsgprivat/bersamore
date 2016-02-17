@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from bersamore.views import index, logout_usr
 from tasting.api import untappd_callback
-from tasting.views import profile, settings, checkins
+from tasting.views import profile, settings, checkins, checkin_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^profile/$', profile),
     url(r'^checkins/$', checkins),
     url(r'^settings/$', settings),
+    url(r'^checkin/(?P<beer_id>\d+)/$', checkin_view),
     url(r'^api/callback/$', untappd_callback),
 
 ]
