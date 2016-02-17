@@ -10,9 +10,33 @@ INVITATION_STATUSES = (
 )
 
 
+class County(models.Model):
+    name = models.CharField(max_length=256)
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+
+class City(models.Model):
+    name = models.CharField(max_length=256)
+    county = models.ForeignKey(County)
+
+    def __unicode__(self):
+        return u'%s %s' % (
+            self.name, self.county
+        )
+
 
 class Store(models.Model):
-    store_id = models.IntegerField()
+    store_id = models.IntegerField(blank=True, null=True)
+    address = models.CharField(max_length=256)
+    city = models.ForeignKey(City)
+    zip_code = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return u'%s %s %s' % (
+            self.store_id, self.address, self.city
+        )
 
 
 class Login(models.Model):

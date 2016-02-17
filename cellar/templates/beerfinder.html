@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    {% block script %}
+    {{ block.super }}
+    {% endblock script %}
+
+</head>
+<body>
+
+{% block top %}
+    Beer Management System [beta]
+    {{ block.super }}
+{% endblock top %}
+
+{% block menu %}
+{% endblock menu %}
+
+{% block content %}
+
+{% include 'profilemenu.html' %}
+{% include 'beermenu.html' %}
+<img src="http://bsg.ddns.net/static/images/logga.png"
+        style="position: fixed; width: 13%; left: 0; bottom:0">
+
+<div id="content_wrapper">
+
+{% if beers and not beer %}
+        <table>
+        <tr>
+            <th>Name</th>
+            <th>Style</th>
+            <th>Brewery</th>
+            <th>Country</th>
+            <th>ABV</th>
+            <th>IBU</th>
+            <th>Actions</th>
+        </tr>
+        {%  for beer in beers %}
+        <tr>
+            <td>
+                <a href="/cellar/beer/{{ beer.pk }}">{{ beer.name }}</a>
+            </td>
+            <td>
+                <a href="/cellar/style/{{ beer.style.pk }}">{{ beer.style }}</a>
+            </td>
+            <td>
+                <a href="/cellar/brewery/{{ beer.brewery.pk }}">{{ beer.brewery }}</a>
+            </td>
+            <td>{{ beer.brewery.country.name }}</td>
+            <td>{{ beer.abv }}</td>
+            <td>{{ beer.ibu }}</td>
+            <td>Checkin</td>
+        </tr>
+
+            {% endfor %}
+        </table>
+{% endif %}
+
+{% if beer %}
+    <div id="beer_div">
+        <div id="beer_img_td">
+            {%  if not beer.image %}
+                <img src="http://bsg.ddns.net/static/images/uploads/beers/emptybeer.jpg"
+                    id="beer_img">
+            {%  else %}
+                <img src="/{{ beer.image.url }}"
+                    id="beer_img">
+            {%  endif %}
+        </div>
+
+        <div id="beer_info">
+            <table id="beertable">
+            <tr id="name">
+                <th>
+                    Name
+                </th>
+                <td>
+                    {{ beer.name }}
+                </td>
+            </tr>
+            <tr id="brewery">
+                <th>
+                    Brewery
+                </th>
+                <td>
+                    <a href="/cellar/brewery/{{ beer.brewery.pk }}">{{ beer.brewery }}</a>
+                </td>
+            </tr>
+                <tr id="origin">
+                    <th>
+                        Origin
+                    </th>
+                    <td>
+                         {{ beer.brewery.country.name }}
+                    </td>
+                </tr>
+
+                <tr id="style">
+                    <th>
+                        Style
+                    </th>
+                    <td>
+                        <a href="/cellar/style/{{ beer.style.pk }}">{{ beer.style.name }}</a>
+                    </td>
+                </tr>
+
+                <tr id="abv">
+                    <th>
+                        ABV
+                    </th>
+                    <td>
+                         {{ beer.abv }} %
+                    </td>
+                </tr>
+
+                <tr id="ibu">
+                    <th>
+                        IBU
+                    </th>
+                    <td>
+                         {{ beer.ibu }}
+                    </td>
+                </tr>
+
+                <tr id="hops">
+                    <th>
+                        Hops
+                    </th>
+                    <td>
+                        {%  for hop in beer.hops.all %}
+                            {{ hop.name }} ({{ hop.country.code }})<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+
+                <tr id="notes">
+                    <th>
+                        {%  if beer.description %}Description{% endif %}
+                    </th>
+                    <td>
+                        {{ beer.description }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endif %}
+{% endblock content %}
+</body>
+
+
+
+
+<style>
+    #beer_img{
+        max-height: 90vh;
+        max-width: 50vh;
+        float: left;
+    }
+    #content_wrapper{
+        width: 100%;
+        height: 95vh;
+    }
+    #beer_div{
+        float:left;
+        width: 50%;
+    }
+    #stats_div{
+        width: 50%;
+        margin-left: 50%;
+    }
+    th{
+        vertical-align: top;
+        text-align: left;
+    }
+    #statstable{
+        width:90%
+    }
+    #statstable td{
+        padding: 2em;
+    }
+</style>
+
+</html>
