@@ -66,6 +66,12 @@ class Beer(models.Model):
         else:
             return None
 
+    def build_untappd_url(self):
+        if self.untappd_id:
+            return u'https://www.untappd.com/beer//%s' % self.untappd_id
+        else:
+            return None
+
     def __unicode__(self):
         return u'%s %s - %s' % (self.brewery.name, self.name, self.style)
 

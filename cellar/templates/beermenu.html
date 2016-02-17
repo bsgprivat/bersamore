@@ -7,13 +7,13 @@ Find beers by:
                 <label for="name">Name</label><br>
                 <input type="text" name="name" id="name" value="{{ name }}">
             </td>
-            <td><h1>{{ filter_style }}</h1>
+            <td>
                 <label for="style">Style</label><br>
                 <select name="style" id="style">
                     <option value="0">---</option>
                     {%  for style in styles %}
                         <option value="{{ style.pk }}" {% if filter_style == style.pk %}selected{% endif %}>
-                            {{ style.name }} {{ filter_style }} {{ style.pk }}
+                            {{ style.name }}
                         </option>
                     {% endfor %}
                 </select>
@@ -23,7 +23,7 @@ Find beers by:
                 <select name="brewery" id="brewery">
                     <option value="0">---</option>
                     {%  for brewery in breweries %}
-                        <option value="{{ brewery.pk }}" selected>{{ brewery.name }}</option>
+                        <option value="{{ brewery.pk }}">{{ brewery.name }}</option>
                     {% endfor %}
                 </select>
             </td>
