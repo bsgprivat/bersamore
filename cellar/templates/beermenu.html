@@ -4,11 +4,14 @@ Find beers by:
     <table>
         <tr>
             <td>
-                <label for="name">Name</label><br>
-                <input type="text" name="name" id="name" value="{{ name }}">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" value="{{ name }}"><br>
+
+                <label for="hops">Hops</label>
+                <input type="text" name="hops" id="hops">
             </td>
             <td>
-                <label for="style">Style</label><br>
+                <label for="style">Style</label>
                 <select name="style" id="style">
                     <option value="0">---</option>
                     {%  for style in styles %}
@@ -17,18 +20,17 @@ Find beers by:
                         </option>
                     {% endfor %}
                 </select>
-            </td>
-            <td>
-                <label for="brewery">Brewery</label><br>
+            <br>
+
+                <label for="brewery">Brewery</label>
                 <select name="brewery" id="brewery">
                     <option value="0">---</option>
                     {%  for brewery in breweries %}
                         <option value="{{ brewery.pk }}">{{ brewery.name }}</option>
                     {% endfor %}
                 </select>
-            </td>
-            <td>
-                <label for="country">Country</label><br>
+            <br>
+                <label for="country">Country</label>
                 <select name="country" id="country">
                     <option></option>
                     {%  for country in countries %}
@@ -36,11 +38,7 @@ Find beers by:
                     {% endfor %}
                 </select>
             </td>
-            <td>
-                <label for="hops">Hops</label><br>
-                <input type="text" name="hops" id="hops">
-            </td>
-            
+
             <td>
                 <label for="abv">ABV</label><br>
                 <input class="num" type="number" name="abv_from" id="abv"><br>
@@ -51,8 +49,10 @@ Find beers by:
                 <input class="num" type="number" name="ibu_from" id="ibu"><br>
                 <input class="num" type="number" name="ibu_to" id="ibu"><br>
             </td>
-            <td>
-                <input type="submit">
+        </tr>
+        <tr>
+            <td colspan="6">
+                <input type="submit" value="Find 'em">
             </td>
         </tr>
     </table>
