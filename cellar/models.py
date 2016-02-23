@@ -61,7 +61,7 @@ class UploadedBeerImage(models.Model):
         return u'%s - %s - %s' % (self.beer, self.approved, self.uploaded_by)
 
     def show_img(self):
-        return u'<img src="/%s">' % self.image.image.url
+        return u'<img height="30" src="/%s">' % self.image.image.url
 
     show_img.allow_tags = True
 
