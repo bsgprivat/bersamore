@@ -22,9 +22,9 @@ def beerfinder(request):
     filter_country = 0
     filter_hops = 0
     filter_abv_from = 0.0
-    filter_abv_to = get_highest_abv
+    filter_abv_to = 100
     filter_ibu_from = 0
-    filter_ibu_to = get_highest_ibu
+    filter_ibu_to = 1000
 
     if request.POST:
         print beers

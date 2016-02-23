@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from django.conf.urls.static import static
 from django.contrib import admin
-from bersamore.views import index, logout_usr
+from django.conf import settings as sett
+from bersamore.views import index, logout_usr, test
 from tasting.api import untappd_callback
 from tasting.views import profile, settings, checkins, checkin_view
 
@@ -25,11 +27,12 @@ urlpatterns = [
     url(r'^tasting/', include('tasting.urls')),
     url(r'^imports/', include('imports.urls')),
     url(r'^$', index),
+    url(r'^$', index),
     url(r'^logout/$', logout_usr),
     url(r'^profile/$', profile),
     url(r'^checkins/$', checkins),
     url(r'^settings/$', settings),
     url(r'^checkin/(?P<beer_id>\d+)/$', checkin_view),
     url(r'^api/callback/$', untappd_callback),
-
+    url(r'^test/$', test),
 ]

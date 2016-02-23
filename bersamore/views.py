@@ -29,3 +29,9 @@ def index(request):
 def logout_usr(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+
+def test(request):
+    if request.superuser:
+        x=0
+        return render_to_response('base_temp.html', locals())
