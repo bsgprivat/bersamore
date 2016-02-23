@@ -32,6 +32,6 @@ def logout_usr(request):
 
 
 def test(request):
-    if request.superuser:
+    if request.user.is_superuser:
         x=0
         return render_to_response('base_temp.html', locals())
