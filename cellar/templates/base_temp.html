@@ -1,3 +1,4 @@
+{% block head %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,50 +11,79 @@
   <link href="http://bsg.ddns.net/static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="http://bsg.ddns.net/static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
+{% endblock head %}
+
 <body class="orange lighten-5">
+{% block nav %}
   <nav class="blue-grey darken-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">the BMS</a>
+      <div class="nav-wrapper container">
+        <class id="logo-container" class="thin">
+            Beer Management System
+        </class>
       <ul id="nav-mobile" class="side-nav">
         <li><a href="#">Navbar Link</a></li>
       </ul>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#"><i class="material-icons">search</i></a></li>
-        <li><a href="#"><i class="material-icons">view_module</i></a></li>
-        <li><a href="#"><i class="material-icons">refresh</i></a></li>
-        <li><a href="#"><i class="material-icons">more_vert</i></a></li>
+        <li>
+            <img src="http://blog.bobbylikesbeer.com/wp-content/themes/blackboard/images/untappd.png" height="40px"
+                     style="vertical-align: middle"
+                    title="Connected to Untappd"></li>
+        <li><a href="#"><i class="material-icons">perm_identity</i></a></li>
+        <li><a href="#"><i class="material-icons">group</i></a></li>
+        <li><a href="/settings/"><i class="material-icons">settings</i></a></li>
+        <li><a href="/logout/"><i class="material-icons">input</i></a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
   </nav>
+
+    <nav class="white darken-1" role="navigation">
+    <div class="nav-wrapper container">
+      <form>
+        <div class="input-field">
+          <input id="search" type="search" required title="Find beers, breweries, friends etc.">
+          <label for="search"><i class="material-icons blue-grey-text">search</i></label>
+          <i class="material-icons">close</i>
+        </div>
+      </form>
+    </div>
+  </nav>
+{% endblock nav %}
+
+{% block content %}
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
       <br><br>
-      <h1 class="header center orange-text">Beer Management System</h1>
-      <div class="row center">
-        <h5 class="header col s12 light">Enhancing your hobbies since 2016</h5>
-      </div>
-      <div class="row center">
-        <a href="..." id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
-      </div>
-      <br><br>
-
+      <h1 class="header center orange-text">Welcome {{ usr }}</h1>
+{#      <div class="row center">#}
+{#        <h5 class="header col s12 light">Enhancing your hobbies since 2016</h5>#}
+{#      </div>#}
+{#      <div class="row center">#}
+{#        <a href="..." id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>#}
+{#      </div>#}
+{#      #}
     </div>
   </div>
 
 
   <div class="container">
     <div class="section">
-
-      <!--   Icon Section   -->
       <div class="row">
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">done</i></h2>
-            <h5 class="center">Get started</h5>
+            <h5 class="center">Latest checkins</h5>
+            <div class="collection">
+                {% for c in checkins %}
+                    <a href="{{ c.pk }}" class="light collection-item">
+                        {{ c.beer.name }}
+                        {{ c.beer.brewery.name }}
+                        {{ c.beer.style.name }}
+                        |
+                        {{ c.overall }}
 
-            <p class="light">
-                Testar ikonerna..
-            </p>
+                    </a>
+                {% endfor %}
+            </div>
           </div>
         </div>
 
@@ -79,49 +109,48 @@
       </div>
 
     </div>
-    <br><br>
 
-    <div class="section">
-
-    </div>
   </div>
+{% endblock content %}
+{##}
+{#  <footer class="page-footer orange">#}
+{#    <div class="container">#}
+{#      <div class="row">#}
+{#        <div class="col l6 s12">#}
+{#          <h5 class="white-text">Info</h5>#}
+{#          <p class="grey-text text-lighten-4">Yada yada yada</p>#}
+{##}
+{##}
+{#        </div>#}
+{#        <div class="col l3 s12">#}
+{#          <h5 class="white-text">Settings</h5>#}
+{#          <ul>#}
+{#            <li><a class="white-text" href="#!">Link 1</a></li>#}
+{#          </ul>#}
+{#        </div>#}
+{#        <div class="col l3 s12">#}
+{#          <h5 class="white-text">Get in touch</h5>#}
+{#          <ul>#}
+{#            <li><a class="white-text" href="#!">Link 1</a></li>#}
+{##}
+{#          </ul>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{#    <div class="footer-copyright">#}
+{#      <div class="container orange-text text-lighten-3">#}
+{#        &copy; Stefan Göransson 2016#}
+{#      </div>#}
+{#    </div>#}
+{#  </footer>#}
+{##}
 
-  <footer class="page-footer orange">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Info</h5>
-          <p class="grey-text text-lighten-4">Yada yada yada</p>
 
-
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Get in touch</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
-      <div class="container orange-text text-lighten-3">
-        &copy; Stefan Göransson 2016
-      </div>
-    </div>
-  </footer>
-
-
-  <!--  Scripts-->
+{% block script %}  <!--  Scripts-->
   <script src="http://bsg.ddns.net/static/js/jquery.js"></script>
   <script src="http://bsg.ddns.net/static/js/materialize.js"></script>
   <script src="http://bsg.ddns.net/static/js/init.js"></script>
+{% endblock script %}
 
   </body>
 </html>

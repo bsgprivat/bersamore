@@ -1,0 +1,96 @@
+{% extends 'base_temp.html' %}
+
+{%  block head %}
+    {{ block.super }}
+{% endblock %}
+
+{%  block nav %}
+    {{ block.super }}
+{%  endblock nav %}
+
+{%  block content %}
+<div class="container">
+    {% if admin %}
+        <h3>ADMIN stuff</h3>
+        <a href="/imports/list_imports/">Imports</a><br>
+    <hr>
+    {%  if not logged_in %}
+        <a href="{{ untappd_login_url }}">Connect to Untappd</a>
+    {% else %}
+        <span style="color: deeppink; font-weight: 900">
+            Connected to untappd as <a href="https://untappd.com/user/{{ usr.taster.untappd_id }}">
+            {{ usr.taster.untappd_id }}
+        </a>
+        </span><br>
+        Latest untappd-checkins:<br>
+        {%  if latest %}
+            {% for l in latest %}
+                {{ l.0 }} - {{ l.1 }}. Rating: {{ l.2 }} <br>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+    <hr>
+
+    {% endif %}
+    <h2>Your tastings</h2>
+    {%  for tasting in tastings %}
+        <a href="/tasting/{{ tasting.pk }}">
+            {{ tasting.name }}
+        </a> {% if tasting.finished %}
+            ( Finished )
+            <a href="/tasting/{{ tasting.pk }}/stats/"> Your stats</a> |
+            <a href="/tasting/{{ tasting.pk }}/wrapitup/"> Overall stats</a>
+    {% else %}
+        starts at: {{ tasting.date|date:'d/m-y H:i' }}
+    {% endif %}
+        <br>
+    {% endfor %}
+
+    {%  if usr.taster.checkin_set.exists %}
+        <h2>Your 10 latest checkins</h2>
+        <table>
+        <tr>
+            <th>
+                Beer
+            </th>
+            <th>
+                Style
+            </th>
+            <th>
+                Brewery
+            </th>
+            <th>
+                Rating
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Tasting
+            </th>
+        </tr>
+        {%  for checkin in checkins %}
+            <tr>
+            <td>
+                <a href="/cellar/beer/{{ checkin.beer.pk }}">{{ checkin.beer.name }}</a>
+            </td>
+            <td>
+                <a href="/cellar/style/{{ checkin.beer.style.pk }}">{{ checkin.beer.style.name }}</a>
+            </td>
+            <td>
+                <a href="/cellar/brewery/{{ checkin.beer.brewery.pk }}">{{ checkin.beer.brewery }}</a>
+            </td>
+            <td>{{ checkin.overall }}</td>
+            <td>{{ checkin.date|date:'d/m-y' }}</td>
+            <td>{{ checkin.tasting.name }}</td>
+            </tr>
+        {%  endfor %}
+        </table>
+                <a href="/checkins/">View all checkins</a>
+    {%  endif %}
+</div>
+{%  endblock content %}
+
+{% block script %}
+{{ block.super }}
+{% endblock script %}

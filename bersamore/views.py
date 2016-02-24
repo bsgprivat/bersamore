@@ -30,8 +30,8 @@ def logout_usr(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-
+@login_required(login_url='/')
 def test(request):
-    if request.user.is_superuser:
-        x=0
-        return render_to_response('base_temp.html', locals())
+    usr = request.user.taster
+    checkins = usr.checkin_set.all()
+    return render_to_response('base_temp.html', locals())
