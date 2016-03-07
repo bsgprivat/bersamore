@@ -109,7 +109,7 @@ def untappd_callback(request):
 
 
 def test_untappd_login(taster):
-    print 'running?'
+    print u'Checking untappd'
     logged_in = False, None
     if taster.untappd_id and taster.untappd_token:
         # try crendentials..

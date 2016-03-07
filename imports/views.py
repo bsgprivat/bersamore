@@ -17,7 +17,6 @@ def scrape_me():
     pages = [page for page in range(0, pnum)]
     if pages:
         for page in pages:
-            print page
             start_url = u'http://www.systembolaget.se/api/productsearch/search?subcategory=%C3%96l&sortfield=SellStartDate&sortdirection=Descending&site=all&fullassortment=1&nofilters=1&page='
             start_url += u'%s' % page
             r = requests.get(start_url)

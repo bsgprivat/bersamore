@@ -79,6 +79,10 @@ class Taster(models.Model):
     def styles(self):
         return self.fav_styles.all()
 
+    @property
+    def checkin_count(self):
+        return Checkin.objects.filter(taster=self).count()
+
     def __unicode__(self):
         if self.user.first_name and self.user.last_name:
             return u'%s %s' % (self.user.first_name, self.user.last_name[0])
@@ -86,6 +90,31 @@ class Taster(models.Model):
             return self.user.username
         else:
             return u'%s' % self.user.email
+
+
+class Friendship(models.Model):
+    status = models.IntegerField(default=0, choices=INVITATION_STATUSES)
+    inviter = models.ForeignKey(Taster, related_name=u'friend_inviter')
+    receiver = models.ForeignKey(Taster, related_name=u'friend_receiver')
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_accepted = models.DateTimeField(blank=True, null=True)
+
+    def users(self):
+        return Taster.objects.filter(id__in=[self.inviter.pk, self.receiver.pk])
+
+    def friends(self, taster):
+        invs = self.filter(status=1, inviter=taster).values_list('receiver', flat=True)
+        recs = self.filter(status=1, receiver=taster).values_list('inviter', flat=True)
+        ids = recs+invs
+        friends = Taster.objects.filter(id__in=ids)
+        return friends
+
+    class Meta:
+        unique_together = ('inviter', 'receiver')
+        ordering = ['-date_accepted', '-date_created']
+
+    def __unicode__(self):
+        return u'%s + %s %s' % (self.inviter, self.receiver, self.get_status_display())
 
 
 class TastingSession(models.Model):
@@ -167,3 +196,8 @@ class Checkin(models.Model):
 
     def __unicode__(self):
         return u'%s %s %s (%s)' % (self.taster, self.beer, self.tasting, self.overall)
+
+    def save(self, *args, **kwargs):
+        super(Checkin, self).save(*args, **kwargs)
+        beer = self.beer
+        beer.recalculate()

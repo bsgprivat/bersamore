@@ -2,13 +2,14 @@ from __future__ import division
 import random
 import datetime
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings as conf_settings
 from cellar.models import Beer
 from tasting.api import test_untappd_login
-from tasting.models import Checkin, TastingSession
+from tasting.models import Checkin, TastingSession, Friendship
 
 
 @csrf_exempt
@@ -247,51 +248,6 @@ def stats_view(request, tasting_id):
 
 
 @login_required(login_url='/')
-def profile(request):
-    usr = request.user
-    tastings = TastingSession.objects.filter(tasters=usr.taster)
-    checkins = Checkin.objects.filter(taster=usr.taster).order_by('-date')
-    admin = False
-    if usr.is_superuser:
-        admin = True
-    client_id= conf_settings.UNTAPPD_CLIENTID
-    redirect_url = conf_settings.UNTAPPD_REDIRECT_URL
-    auth_url = conf_settings.UNTAPPD_AUTH_URL
-
-    untappd_login_url = u'%s?client_id=%s&response_type=code&redirect_url=%s' % (
-        auth_url, client_id, redirect_url
-    )
-    logged_in, u_context = test_untappd_login(usr.taster)
-    latest = []
-
-    if u_context:
-        recent = u_context['recent_brews']['items']
-        for r in recent:
-            latest.append(
-                [
-                    r['beer']['beer_name'],
-                    r['beer']['beer_style'],
-                    r['beer']['auth_rating']
-                ]
-            )
-
-
-    context = {
-        'usr': usr,
-        'tastings': tastings,
-        'checkins': checkins[:10],
-        'admin': admin,
-        'untappd_login_url': untappd_login_url,
-        'logged_in': logged_in,
-        'latest': latest
-    }
-
-    return render_to_response(
-        'profile.html', context
-    )
-
-
-@login_required(login_url='/')
 def checkins(request, filters=None):
     usr = request.user
     checkins = Checkin.objects.filter(taster=usr.taster).order_by('-overall')
@@ -316,7 +272,7 @@ def checkins(request, filters=None):
 
     top_beers = sorted(top_beers, key=lambda best: float(best[0]))
     top_beers.reverse()
-    print top_beers
+    # print top_beers
     context = {
         'usr': usr,
         'checkins': checkins,
@@ -331,22 +287,97 @@ def checkins(request, filters=None):
     )
 
 @login_required(login_url='/')
+@csrf_exempt
 def settings(request):
     usr = request.user
-
+    taster = usr.taster
     client_id = conf_settings.UNTAPPD_CLIENTID
     redirect_url = conf_settings.UNTAPPD_REDIRECT_URL
     auth_url = conf_settings.UNTAPPD_AUTH_URL
     untappd_login_url = u'%s?client_id=%s&response_type=code&redirect_url=%s' % (
         auth_url, client_id, redirect_url
     )
+    error = u''
+    msg = u''
 
     if request.POST:
-        print request.POST
+        # passwords
+        old = None
+        new = None
+        again = None
+        if u'old_pwd' in request.POST:
+            old = request.POST['old_pwd']
+            if usr.check_password(old):
+                if u'new_pwd' and u'again_pwd' in request.POST:
+                    new = request.POST['new_pwd']
+                    again = request.POST['again_pwd']
+                    if new and again:
+                        if new != again:
+                            error = u"New passwords doesn't match"
+                        elif new == again == old:
+                            error = u"New password is old password.."
+                        else:
+                            msg = u'Password changed.'
+                            usr.set_password(new)
+                            usr.save()
+                    else:
+                        error = u'Empty fields..?'
+            else:
+                error = u'Old password is incorrect'
+        elif u'username' in request.POST:
+            username = request.POST[u'username']
+            firstname = request.POST[u'firstname']
+            lastname = request.POST[u'lastname']
+            email = request.POST[u'email']
+
+            if any([username, email]):
+                #  Need to check against other users..
+                users = User.objects.exclude(id=usr.pk)
+                if users.filter(username=username):
+                    error += u'Username is taken! '
+                else:
+                    if usr.username != username:
+                        usr.username = username
+                        usr.save()
+                        msg += u'Username updated '
+
+                if users.filter(email=email):
+                    error += u'Email is taken! '
+                else:
+                    if usr.email != email:
+                        usr.email = email
+                        usr.save()
+                        msg += u'Email updated '
+
+            if firstname != usr.first_name:
+                usr.first_name = firstname
+                msg += u'First name updated '
+                usr.save()
+            if lastname != usr.last_name:
+                usr.last_name = lastname
+                msg += u'Last name updated '
+                usr.save()
+
+            if u'receive_email' not in request.POST:
+                taster.receieve_email = False
+                msg += u'No more emails. '
+            else:
+                taster.receieve_email = True
+
+            if u'allow_contacts' not in request.POST:
+                taster.allow_contacts = False
+                msg += u'Account is anonymous. '
+
+            else:
+                taster.allow_contacts = True
+
+            taster.save()
 
     context = {
         'usr': usr,
-        'untappd_login_url': untappd_login_url
+        'untappd_login_url': untappd_login_url,
+        'error': error,
+        'msg': msg,
     }
 
     return render_to_response(
@@ -404,3 +435,71 @@ def tastestats(request, tasting_id=None):
     }
 
     return render_to_response('tastestats.html', context)
+
+@login_required(login_url='/')
+def profile(request):
+    usr = request.user
+    tastings = TastingSession.objects.filter(tasters=usr.taster)
+    checkins = Checkin.objects.filter(taster=usr.taster).order_by('-date')
+
+    invs = usr.taster.friend_inviter
+    recs = usr.taster.friend_receiver
+
+    accepted = {}
+    avaiting_resp_inv = {}
+    avaiting_resp_rec = {}
+
+    for i in invs.all():
+        if i.status == 1:
+            accepted[i.receiver.user.username] = i
+        elif i.status == 0:
+            avaiting_resp_inv[i.receiver.user.username] = i
+
+    for r in recs.all():
+        if r.status == 1:
+            accepted[r.inviter.user.username] = r
+        elif r.status == 0:
+            avaiting_resp_rec[r.inviter.user.username] = r
+
+    admin = False
+    if usr.is_superuser:
+        admin = True
+    client_id= conf_settings.UNTAPPD_CLIENTID
+    redirect_url = conf_settings.UNTAPPD_REDIRECT_URL
+    auth_url = conf_settings.UNTAPPD_AUTH_URL
+
+    untappd_login_url = u'%s?client_id=%s&response_type=code&redirect_url=%s' % (
+        auth_url, client_id, redirect_url
+    )
+    logged_in, u_context = test_untappd_login(usr.taster)
+    latest = []
+
+    if u_context:
+        recent = u_context['recent_brews']['items']
+        for r in recent:
+            latest.append(
+                [
+                    r['beer']['beer_name'],
+                    r['beer']['beer_style'],
+                    r['beer']['auth_rating'],
+                    r['beer']['bid']
+                ]
+            )
+
+
+    context = {
+        'usr': usr,
+        'tastings': tastings,
+        'checkins': checkins[:10],
+        'admin': admin,
+        'untappd_login_url': untappd_login_url,
+        'logged_in': logged_in,
+        'latest': latest,
+        'accepted': accepted,
+        'invs': avaiting_resp_inv,
+        'recs': avaiting_resp_rec
+    }
+
+    return render_to_response(
+        'new_profile.html', context
+    )

@@ -27,7 +27,6 @@ def beerfinder(request):
     filter_ibu_to = 1000
 
     if request.POST:
-        print beers
         if 'name' in request.POST:
             filter_name = request.POST['name']
             if len(filter_name) > 2:

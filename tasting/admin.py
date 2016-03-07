@@ -51,6 +51,7 @@ admin.site.register(Login, LoginAdmin)
 admin.site.register(County)
 admin.site.register(City)
 admin.site.register(Store)
+admin.site.register(Friendship)
 
 #TODO: no need?
 admin.site.register(Checkin, CheckinAdmin)

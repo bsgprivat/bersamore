@@ -1,0 +1,64 @@
+{% extends 'base_temp.html' %}
+
+{%  block head %}
+    {{ block.super }}
+{% endblock %}
+
+{%  block nav %}
+    {{ block.super }}
+{%  endblock nav %}
+
+{%  block content %}
+<div id="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <h4>Browse Users</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s1 m1 l1">
+                {% for l in letters %}
+                    <a href="?letter={{ l }}" class="thin btn">{{ l }}</a>
+                {% endfor %}
+            </div>
+
+            <div class="col s11 m11 l11">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-field="id">Name</th>
+                            <th data-field="id">Date joined</th>
+                            <th data-field="id">Checkins</th>
+                            <th data-field="id">Friend</th>
+                            <th data-field="id">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for u in users %}
+                        <tr>
+                            <td>{{ u.username }}</td>
+                            <td>{{ u.date_joined }}</td>
+                            <td>{{ u.taster.checkin_count }}</td>
+                            <td>
+                                <i class="material-icons green-text">check</i> or >
+                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path fill="#000000" d="M13,13C11,13 7,14 7,16V18H19V16C19,14 15,13 13,13M19.62,13.16C20.45,13.88 21,14.82 21,16V18H24V16C24,14.46 21.63,13.5 19.62,13.16M13,11A3,3 0 0,0 16,8A3,3 0 0,0 13,5A3,3 0 0,0 10,8A3,3 0 0,0 13,11M18,11A3,3 0 0,0 21,8A3,3 0 0,0 18,5C17.68,5 17.37,5.05 17.08,5.14C17.65,5.95 18,6.94 18,8C18,9.06 17.65,10.04 17.08,10.85C17.37,10.95 17.68,11 18,11M8,10H5V7H3V10H0V12H3V15H5V12H8V10Z" />
+                                </svg>
+
+                            </td>
+                            <td>
+                                [invite to tasting] [add to bottlesharing]
+                            </td>
+                        </tr>
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{%  endblock content %}
+
+{% block script %}
+{{ block.super }}
+{% endblock script %}

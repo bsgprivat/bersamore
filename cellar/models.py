@@ -92,6 +92,11 @@ class Beer(models.Model):
     year = models.IntegerField(null=True, blank=True)
     ean = models.IntegerField(null=True, blank=True)
 
+#    checkins = models.IntegerField(default=0)
+#    checkin_tot = models.IntegerField(default=0)
+    avg = models.FloatField(default=0)
+
+
     sysbol_id = models.IntegerField(null=True, blank=True, help_text=u'aka "varunummer", used to build urls')
     sysbol_cart_id = models.IntegerField(null=True, blank=True, help_text=u'aka "nr", used to build carts')
     untappd_id = models.IntegerField(null=True, blank=True, help_text=u'Untappds unique Beer ID')
@@ -138,6 +143,12 @@ class Beer(models.Model):
         else:
             return None
 
+    def recalculate(self):
+        from tasting.models import Checkin
+        avg = Checkin.objects.filter(beer=self).aggregate(Avg('overall'))
+        self.avg = avg.values()[0]
+        self.save()
+
     def __unicode__(self):
         return u'%s %s - %s' % (self.brewery.name, self.name, self.style)
 
@@ -181,7 +192,6 @@ class OrderRow(models.Model):
 class BottleSharing(models.Model):
     admin = models.ForeignKey('tasting.Taster', related_name=u'bottleshare_admin')
     participants = models.ManyToManyField('tasting.Taster', related_name=u'bottleshare_participant')
-
 
 
 class UploadedUntappdCSV(models.Model):

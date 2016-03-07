@@ -34,20 +34,20 @@ class ImportedBeer(models.Model):
 
     def update(self):
         if self.url:
-            print self.url
+            # print self.url
             r = requests.get(self.url)
-            print r.text
+            # print r.text
             fetch = BeautifulSoup(r.text, 'html.parser')
             price = fetch.find('li', {"class": 'price'})
             name = fetch.find('li', {"class": 'subtitle'})
             brewery = fetch.find('li', {"class": 'name'})
-
-            print price
-            print price.string
-            print name
-            print name.string
-            print brewery
-            print brewery.string
+            #
+            # print price
+            # print price.string
+            # print name
+            # print name.string
+            # print brewery
+            # print brewery.string
 
     def __unicode__(self):
         return u'%s' % self.name

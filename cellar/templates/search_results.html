@@ -1,0 +1,55 @@
+  <div class="container">
+    <div class="section">
+
+        <div class="row">
+            <div class="col s12 m12">
+                <h5>Searching for {{ q }}</h5>
+
+                <div class="light">
+                    Didn't find what you were after? Browse for:
+                    <a href="/beers/" class="orange-text">Beers</a>
+                    <a href="/breweries/" class="orange-text">Breweries</a>
+                    <a href="/styles/" class="orange-text">Styles</a>
+                    <a href="/users/" class="orange-text">Users</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% if beers %}
+                <div class="col s6">
+                  <div class="icon-block">
+                    <h5 class="center">Beers</h5>
+                        <ul class="collection">
+                            {% for b in beer_list %}
+                                <li  class="light collection-item">
+                                    <a href="{{ b.pk }}">
+                                        {{ b.name }}
+                                        </a>
+                                    <a href="x" class="secondary-content">HEPP</a>
+                                </li>
+
+                            {% endfor %}
+                        </ul>
+                        {% if more_beers %}{{ more_beers }}{% endif %}
+                  </div>
+                </div>
+            {% endif %}
+
+            {% if tasters %}
+                <div class="col s6">
+                  <div class="icon-block">
+                    <h5 class="center">Users</h5>
+                      <div class="collection">
+                          {% for t in tasters %}
+                              <a href="{{ t.pk }}" class="light collection-item">{{ t }}</a>
+                            {% endfor %}
+                      </div>
+                  </div>
+                </div>
+            {% endif %}
+      </div>
+    </div>
+  </div>
+
+

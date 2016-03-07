@@ -1,0 +1,60 @@
+{% extends 'base_temp.html' %}
+
+{%  block head %}
+    {{ block.super }}
+{% endblock %}
+
+{%  block nav %}
+    {{ block.super }}
+{%  endblock nav %}
+
+{%  block content %}
+<div id="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <h4>Browse Beers</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s1 m1 l1">
+                {% for l in letters %}
+                    <a href="?letter={{ l }}" class="thin btn">{{ l }}</a>
+                {% endfor %}
+            </div>
+
+            <div class="col s11 m11 l11">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-field="id">Name</th>
+                            <th data-field="id">Brewery</th>
+                            <th data-field="id">Country</th>
+                            <th data-field="id">IBU</th>
+                            <th data-field="id">ABV</th>
+                            <th data-field="id">Avg</th>
+                            <th data-field="id">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for b in beers %}
+                        <tr>
+                            <td>{{ b.name }}</td>
+                            <td>{{ b.brewery.name }}</td>
+                            <td>{{ b.brewery.country.code }}</td>
+                            <td>{{ b.ibu }}</td>
+                            <td>{{ b.abv }}</td>
+                            <td>0.0/{{ b.avg }}</td>
+                            <td>[ Add to fav ] [ Add to tasting] [ Add to Bottlesharing ]</td>
+                        </tr>
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{%  endblock content %}
+
+{% block script %}
+{{ block.super }}
+{% endblock script %}

@@ -1,70 +1,178 @@
-{% extends 'base.html' %}
+{% extends 'base_temp.html' %}
 
-{%  block top %}
-    Välkommen {{ usr.first_name }}
+{%  block head %}
     {{ block.super }}
 {% endblock %}
 
-{%  block menu %}
-{%  endblock menu %}
+{%  block nav %}
+    {{ block.super }}
+{%  endblock nav %}
 
 {%  block content %}
+    <div id="wrapper">
 
-    <h2>Settings</h2>
-        Change your account settings:
-        <form method="post" action=".">
+        <div class="container">
+            <div class="section">
+
+            {%  if error %}
+                <div class="row">
+                    <div class="col s12 m12 l12 red-text">
+                        <h5>Error: {{ error }}</h5>
+                    </div>
+                </div>
+            {% endif %}
+
+            {%  if msg %}
+                <div class="row">
+                    <div class="col s12 m12 l12 green white-text">
+                        <h5>{{ msg }}</h5>
+                    </div>
+                </div>
+            {% endif %}
+
+                <div class="row">
+                    <form method="post" action="." name="pwd_form" id="pwd_form">
+                    <div class="input-field col s12 m12 l12">
+                        <h4>Change Password</h4>
+                    </div>
+                    <div class="input-field col s12 m6 l4">
+                        <input type="password" name="old_pwd" id="old_pwd" autocomplete="off" value=""/>
+                        <label for="old_pwd">Old Password</label>
+                    </div>
+                    <div class="input-field col s12 m6 l4">
+                        <input type="password" name="new_pwd" id="new_pwd" autocomplete="off" value=""/>
+                        <label for="new_pwd">New Password</label>
+                    </div>
+                    <div class="input-field col s12 m6 l4">
+                        <input type="password" name="again_pwd" id="again_pwd" autocomplete="off" value=""/>
+                        <label for="again_pwd">Repeat</label>
+                    </div>
+                    <div class="input-field col s12 m12 l12">
+                        <input type="submit" value="Update password" class="
+                        waves-effect waves-light btn blue-grey white-text">
+                    </div>
+                    </form>
+                </div>
 
 
-            <input type="text" name="username" id="username" value="{{ usr.username }}" autocomplete="off"/>
-            <label for="username">Username</label><br>
+                <div class="row">
+                    <div class="s12 m12 l12"><hr>
+                        <h4>Account Settings</h4>
+                    </div>
+                </div>
 
-            <input type="email" name="email" id="email" value="{{ usr.email }}" autocomplete="off"/>
-            <label for="email">Email</label><br>
+                <form method="post" action="." name="settings_form" id="settings_form">
 
-            <input type="text" name="firstname" id="firstname" value="{{ usr.first_name }}" autocomplete="off"/>
-            <label for="firstname">Firstname</label><br>
+                <div class="row">
+                    <div class="input-field col s12 m6 l4">
+                        <input type="text" name="username" id="username" value="{{ usr.username }}" autocomplete="off"/>
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="input-field col s12 m6 l4">
+                        <input type="email" name="email" id="email" value="{{ usr.email }}" autocomplete="off"/>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="input-field col s12 m6 l4">
 
-            <input type="text" name="lastname" id="lastname" value="{{ usr.last_name }}" autocomplete="off"/>
-            <label for="lastname">Lastname</label><br>
+                        <input type="text" name="firstname" id="firstname" value="{{ usr.first_name }}" autocomplete="off"/>
+                        <label for="firstname">Firstname</label>
+                    </div>
 
-            <input type="password" name="pwd" id="pwd"/>
-            <label for="pwd">Password</label><br>
+                    <div class="input-field col s12 m6 l4">
+                        <input type="text" name="lastname" id="lastname" value="{{ usr.last_name }}" autocomplete="off"/>
+                        <label for="lastname">Lastname</label>
+                    </div>
+                </div>
 
-            <input type="checkbox" name="receive_email"
-                    {% if usr.taster.receieve_email %}checked="checked"{% endif %}>
-            Uncheck to stop receiving (system)-mail from BMS.<br>
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <hr>
+                        <h4>Interactions</h4>
+                    </div>
 
-            <input type="checkbox" name="allow_contacts"
-                    {% if usr.taster.allow_contacts %}checked="checked"{% endif %}>
-            Uncheck to disallow other users to contact you.<br>
-            [Invitations to tastings, shared orders, hidden from user-search etc]
+                    <div class="input-field col s12 m6 l4">
+                        <input type="checkbox" name="receive_email" id="receive_email"
+                                {% if usr.taster.receieve_email %}checked="checked"{% endif %}>
+                        <label for="receive_email">
+                            Uncheck to block all system-generated emails from BMS.
+                            (Such as notifications of re-stocked beers)
+                        </label>
+                    </div>
 
-            <br><hr>
-            <strong>External connections</strong><br>
-            Systembolaget<br>
-            <input type="email" name="sysbol_id" id="sysbol_id" value="{{ usr.taster.sysbol_id }}" autocomplete="off"/>
-            <label for="email">Email used at your systembolaget.se account</label><br>
-            <input type="checkbox" name="allow_sysbol_fetch"
-                    {% if usr.taster.allow_sysbol_fetch %}checked="checked"{% endif %}>
-            Check to allow BMS to fetch your order-lists from systembolaget.se<br>
-            <span style="color: red;">Not yet implemented</span>
-            <hr>
-            Untappd<br>
-            <input type="text" name="untappd_id" id="untappd_id"
-                   value="{% if usr.taster.untappd_id %}
-                   {{ usr.taster.untappd_id }}
-                   {% else %}{% endif %}" autocomplete="off"
-            disabled="disabled">
-            <label for="untappd_id">Untappd ID</label>
-            (will be fetched automatically {% if not usr.taster.untappd_id %}
-            <a href="{{ untappd_login_url }}">Connect to Untappd</a>{% endif %})<br>
+                    <div class="input-field col s12 m6 l4">
+                        <input type="checkbox" name="allow_contacts" id="allow_contacts"
+                                {% if usr.taster.allow_contacts %}checked="checked"{% endif %}>
+                        <label for="allow_contacts">
+                            Uncheck to disallow other users to contact you.
+                            (Invitations to tastings, shared orders, hidden from user-search etc)
+                        </label>
+                    </div>
+                </div>
 
-            <input type="checkbox" name="checkin_to_untappd" id="checkin_to_untappd">
-            <label for="checkin_to_untappd">Allow BMS to push checkins to Untappd</label>
+                <div class="row">
+                        <div class="col s12 m12 l12">
+                            <hr>
+                            <h4>External connections</h4>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <h5>Systembolaget</h5> <span style="color: red;">Not yet implemented</span>
+                    </div>
 
-        
-            <hr>
-            <input type="submit" value="update" disabled="disabled" title="Not avialable yet...">
-        </form>
+                    <div class="input-field col s12 m6 l4">
+                        <input type="email" name="sysbol_id"
+                               id="sysbol_id" value="{{ usr.taster.sysbol_id }}"
+                               autocomplete="off" disabled/>
+                        <label for="sysbol_id">Email used at your systembolaget.se account</label>
+                    </div>
 
+                    <div class="input-field col s12 m6 l4">
+
+                        <input type="checkbox" name="allow_sysbol_fetch" id="allow_sysbol_fetch"
+                                {% if usr.taster.allow_sysbol_fetch %}checked="checked"{% endif %}
+                                disabled>
+                        <label for="allow_sysbol_fetch">
+                            Check to allow BMS to fetch your order-lists from systembolaget.se
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12 m12 l12">
+                        <h5>Untappd</h5>
+                    </div>
+
+                    <div class="input-field col s12 m6 l4">
+                        <input type="text" name="untappd_id" id="untappd_id"
+                               value="{% if usr.taster.untappd_id %}
+                               {{ usr.taster.untappd_id }}
+                               {% else %}{% endif %}" autocomplete="off"
+                        disabled>
+                        <label for="untappd_id">Untappd ID</label>
+
+                        {% if not usr.taster.untappd_id %}
+                            (will be fetched automatically)
+                            <a href="{{ untappd_login_url }}">Connect to Untappd</a>
+                            Connection allows BMS to fetch data from your Untappd-account.
+                        {% endif %}
+                    </div>
+
+                    <div class="input-field col s12 m6 l4">
+                        <input type="checkbox" name="checkin_to_untappd" id="checkin_to_untappd"
+                                {% if not usr.taster.untappd_id %}disabled{% endif %}>
+                        <label for="checkin_to_untappd">Allow BMS to push checkins to Untappd</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l12"><hr>
+                        <input type="submit" value="Update settings"
+                               class="waves-effect waves-light btn blue-grey white-text">
+                    </div>
+                </div>
+
+                </form>
+            </div>
+        </div>
+</div>
 {%  endblock content %}
